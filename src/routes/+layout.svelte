@@ -5,7 +5,6 @@
 	import Analytics from '$lib/components/Analytics.svelte';
 	import SideMenu from '$lib/components/SideMenu.svelte';
 	import GlobalToast from '$lib/components/GlobalToast.svelte';
-	import { env } from '$env/dynamic/public';
 </script>
 
 <Analytics />
@@ -17,9 +16,4 @@
 	<slot>
 		<!-- Content here -->
 	</slot>
-	{#if env.PUBLIC_LOCALHOST}
-		<div class="bg-warning text-warning-content fixed bottom-0 left-0 w-full pl-4 text-xs">
-			dev database
-		</div>
-	{/if}
 </div>
