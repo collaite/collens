@@ -26,9 +26,8 @@ const config = {
 			fallback: '404.html'
 		}),
 		paths: {
-			base: process.argv.includes('dev') ? '' : 'build/'
-
-		},
+			     base: process.env.NODE_ENV === "production" ? "/collens" : "",
+			   },
 
 		alias: {
 			// these are the aliases and paths to them
