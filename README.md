@@ -6,13 +6,13 @@
 
 
 ## Local development
-Be sure you have installed node and pnpm on your computer before running the application locally. 
+Be sure you have installed node and pnpm on your computer before running the application locally.
 
-Running the app locally: 
+Running the app locally:
 ```bash
 pnpm dev
 ```
-The changes in the `main` branch will be automatically deployed to github pages. 
+The changes in the `main` branch will be automatically deployed to github pages.
 
 
 Build the application for production:
