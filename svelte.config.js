@@ -1,5 +1,4 @@
 import path from 'path';
-// import adapter from '@sveltejs/adapter-node';
 import adapter from '@sveltejs/adapter-static';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 import { mdsvex } from "mdsvex";
@@ -23,7 +22,8 @@ const config = {
 	kit: {
 		// https://kit.svelte.dev/docs/adapter-static
 		adapter: adapter({
-			fallback: '404.html'
+			fallback: '404.html',
+			precompress: true
 		}),
 		paths: {
 			     base: process.env.NODE_ENV === "production" ? "/collens" : "",
