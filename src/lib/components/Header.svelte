@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
+	import { base } from '$app/paths';
 	import { browser } from '$app/environment';
 	import Logo from '$lib/assets/icons/Logo.svelte';
 	import FeedbackButton from '$lib/components/feedback/FeedbackButton.svelte';
@@ -59,7 +60,7 @@
 			</button>
 			<a
 				class="flex-initial flex-shrink-0 mr-3 max-w-[140px] sm:max-w-[160px] h-auto no-drag select-none"
-				href="/"
+				href="{base}/"
 			>
 				<Logo />
 			</a>
@@ -77,7 +78,7 @@
 					</a>
 				{/each}
 			</div>
-
+			<a class="mr-3" href="{base}/about">About Collens</a>
 			<FeedbackButton showButton={isDesktop} />
 
 			<!-- <DaisyUIThemeSwitcher class="z-50 ml-auto sm:ml-14 " /> -->
