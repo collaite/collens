@@ -11,7 +11,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # If you're using pnpm, add this step then change the commands and cache key below to use `pnpm`
       - name: Install pnpm
         uses: pnpm/action-setup@v3
         with:
@@ -29,13 +28,11 @@ jobs:
       - name: build
         env:
           BASE_PATH: '/${{ github.event.repository.name }}'
-        run: |
-          pnpm run build
+        run: pnpm run build
 
       - name: Upload Artifacts
         uses: actions/upload-pages-artifact@v3
         with:
-          # Ensure this matches the output directory of your build command
           path: 'build/'
 
   deploy:
@@ -51,6 +48,9 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
       - name: Deploy
         id: deployment
         uses: actions/deploy-pages@v1
