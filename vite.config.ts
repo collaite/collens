@@ -20,6 +20,9 @@ export default defineConfig({
 			autoInstall: true,
 		}),
 	],
+	build: {
+		outDir: 'build' // ensure the output directory is 'build'
+	}
 	// optimizeDeps: {
 	// 	disabled: true,
 	// },

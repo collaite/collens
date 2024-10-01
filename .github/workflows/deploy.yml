@@ -28,7 +28,12 @@ jobs:
       - name: build
         env:
           BASE_PATH: '/${{ github.event.repository.name }}'
-        run: pnpm run build
+        run: |
+          pnpm run build
+          pnpm run postbuild
+          # List contents of the root and build directory for debugging
+          ls -la
+          ls -la build/
 
       - name: Upload Artifacts
         uses: actions/upload-pages-artifact@v3
@@ -48,9 +53,6 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
-      - name: List build directory content
-        run: ls -la build/
-
       - name: Checkout
         uses: actions/checkout@v4
 
@@ -59,5 +61,3 @@ jobs:
         uses: actions/deploy-pages@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-
-
