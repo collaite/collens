@@ -1,28 +1,16 @@
----
-# layout: blog
----
-<script>
-  import TiltImage from '$lib/components/TiltImage.svelte'
-  import ProfilePicture from '$lib/components/ProfilePicture.svelte'
+<script lang="ts">
+      import { base } from '$app/paths';
 </script>
+## About COLLaiTE Collens
 
-<ProfilePicture/>
+<img src="{base}/images/COLLaiTE_v1.gif"/>
 
-Hello! I’m J. Gonzalez, a seasoned Digital Product Designer and Web Engineer with over 15 years of experience in the field. Currently, I lead various projects as a Research Software Engineer at The Netherlands eScience Center.
+Welcome to our Text Comparison Tool!
 
-<TiltImage src="/images/about.webp"/>
+Literary works are dynamic entities, evolving through various stages before and even after publication. From initial notes and draft manuscripts to typescripts and final editions, each version of a work bears the hallmarks of its development—deletions, additions, and substitutions shaping the final masterpiece. Today, these documents are diligently transcribed, annotated, and encoded into a machine-readable format, enabling deeper analysis by scholars.
 
-🔍 What I Do:
-I’m a proponent of cutting-edge technologies, specializing in SvelteKit, Vite, ThreeJS, and BabylonJS, among others. My work focuses on crafting visually compelling and scientifically robust digital platforms. From corporate branding to 3D point cloud navigation systems for museums, I create seamless digital experiences that bring visions to life.
+Our tool leverages cutting-edge machine learning technologies to offer a revolutionary way to study these texts. Unlike existing tools, our comparison platform integrates both text and annotations, preserving relevant scholarly information that was previously overlooked. This innovative approach allows scholars to delve into the textual evolution with unparalleled precision and detail.
 
-🎯 My Approach:
-As a practitioner of the Design Thinking methodology and Agile Kanban processes, I always place the user at the center of my design and development projects. I believe in the power of prototypes, wireframes, and most importantly, user feedback, to guide my designs from concept to completion.
+By using our comparison tool, researchers can gain valuable insights into the creative process behind literary works, making both subtle and significant changes visible and understandable. Explore the development trajectories of your favorite literary pieces and gain a deeper understanding of the art of writing and revision.
 
-👨‍🔬 Research & Interests:
-My background includes a Masters in Artificial Intelligence, and my research intersects human-computer interaction and behavioral sciences. I am passionate about breaking down complex problems and democratizing communication between users and organizations.
-
-🌱 Looking Ahead:
-I look at the world with an optimistic lens, always seeking to optimize user experiences, even in everyday activities. If you’re intrigued by what I can offer, I am open to projects and collaborative opportunities that align with my skill set.
-
-🤝 Let’s Collaborate:
-Interested in taking your project to the next level? Get in Touch
+Join us in advancing the field of literary studies to new heights with our advanced text comparison tool!
