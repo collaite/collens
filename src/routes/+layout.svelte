@@ -10,7 +10,9 @@
 <Analytics />
 <GlobalToast />
 
-<div class="grid h-dvh w-dvw grid-rows-[auto_auto_1fr] overflow-hidden relative">
+<div
+	class="grid h-dvh w-dvw grid-rows-[auto_auto_1fr] sm:grid-rows-[auto_1fr] overflow-hidden relative"
+>
 	<Header />
 	<SideMenu />
 	<slot>
