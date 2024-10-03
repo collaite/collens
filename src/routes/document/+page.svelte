@@ -1,19 +1,21 @@
 <script>
+	import { base } from '$app/paths';
+
 	let pages = [
 		{
 			url: 'https://ctwhome.com/document/page/1',
 			title: 'Page 1',
-			image: '/examples/1.png'
+			image: `${base}/examples/1.png`
 		},
 		{
 			url: 'https://ctwhome.com/document/page/2',
 			title: 'Page 2',
-			image: '/examples/2.png'
+			image: `${base}/examples/2.png`
 		},
 		{
 			url: 'https://ctwhome.com/document/page/3',
 			title: 'Page 3',
-			image: '/examples/3.png'
+			image: `${base}/examples/3.png`
 		}
 	];
 
