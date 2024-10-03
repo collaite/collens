@@ -6,26 +6,13 @@
 	import FeedbackButton from '$lib/components/feedback/FeedbackButton.svelte';
 	// import DaisyUIThemeSwitcher from '$lib/components/themeChamge/DaisyUIThemeSwitcher.svelte';
 	import { onMount } from 'svelte';
-	// import Login from './Login/LoginButton.svelte';
 	import { toggleMenu } from '$lib/stores/menu.store';
 	import IconamoonMenuBurgerHorizontalBold from '~icons/iconamoon/menu-burger-horizontal-bold';
 
-	let active = 'Latest Work';
 	let activeCategory = '';
-	let activeTag = '';
 	let isDesktop = true;
 
-	$: {
-		if (browser) {
-			activeCategory = $page.url.searchParams.get('category');
-			activeTag = $page.url.searchParams.get('tag');
-		}
-	}
-
 	onMount(() => {
-		activeCategory = $page.url.searchParams.get('category') || '';
-		activeTag = $page.url.searchParams.get('tag') || '';
-
 		const mediaQuery = window.matchMedia('(min-width: 640px)');
 		isDesktop = mediaQuery.matches;
 
@@ -45,9 +32,7 @@
 	];
 </script>
 
-<nav class="bien-nav mb-10">
-	<div class="bien-glass" />
-	<div class="bien-glass-edge" />
+<nav class="bien-nav">
 	<div class="relative container mx-auto py-2">
 		<!--Desktop Header-->
 		<header class="flex items-center gap-3 px-2 sm:px-0">
@@ -78,7 +63,7 @@
 					</a>
 				{/each}
 			</div>
-			<a class="mr-3" href="{base}/about">About Collens</a>
+			<a class="mr-3 menu-link" href="{base}/about">About Collens</a>
 			<FeedbackButton showButton={isDesktop} />
 
 			<!-- <DaisyUIThemeSwitcher class="z-50 ml-auto sm:ml-14 " /> -->
@@ -90,7 +75,7 @@
 
 <style lang="postcss">
 	.menu-link {
-		@apply text-base-content text-opacity-80 hover:text-opacity-100 font-medium transition hover:text-secondary;
+		@apply text-base-content text-opacity-80 hover:text-opacity-100 font-medium transition hover:text-secondary cursor-pointer;
 	}
 
 	.menu-link.active {
@@ -104,6 +89,9 @@
 		left: 0;
 		right: 0;
 		top: 0;
+		@apply bg-primary;
+		--filter: blur(90px) saturate(160%) brightness(1.3);
+		backdrop-filter: var(--filter);
 		/* height: 100px; */
 	}
 

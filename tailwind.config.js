@@ -5,6 +5,9 @@ export default {
 	content: ['./src/**/*.{html,js,svelte,ts,md}'],
 	theme: {
 		extend: {
+			dropShadow: {
+        'custom': '5px 5px 5px rgba(0, 0, 0, 0.1)',
+      },
 			typography: {
         DEFAULT: {
 					css: {
@@ -33,20 +36,21 @@ export default {
 	daisyui: {
 		themes: [
 			{
-				chat: {
-					primary: '#ffb83d',
-					'primary-focus': '#db8b00',
-					'primary-content': 'black',
-					secondary: '#5e9c91',
-					'secondary-focus': '#3e655f',
-					'secondary-content': '#FFFFFF',
+
+				collaite: {
+					primary: '#0D151E',
+					'primary-focus': '#182738',
+					'primary-content': 'white',
+					secondary: '#ffb83d',
+					'secondary-focus': '#db8b00',
+					'secondary-content': 'black',
 					accent: '#37cdbe',
 					'accent-focus': '#2aa79b',
 					'accent-content': '#FFFFFF',
 					neutral: '#3d4451',
 					'neutral-focus': '#2a2e37',
 					'neutral-content': '#ffffff',
-					'base-100': '#171717',
+					'base-100': '#D8D2C6',
 					'base-200': '#212121',
 					'base-300': '#2e2e2e',
 					'base-content': '#E8E8E8',
