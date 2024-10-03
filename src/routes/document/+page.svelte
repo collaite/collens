@@ -41,6 +41,7 @@
 	>
 		<div class="my-4">
 			<img
+				draggable="false"
 				class="min-w-[500px] min-w-[500px] h-auto drop-shadow-custom"
 				src={pages[selectedPage].image}
 				alt=""
