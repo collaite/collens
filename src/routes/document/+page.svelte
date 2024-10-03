@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { base } from '$app/paths';
 
 	// Function to handle wheel event and transform vertical scroll to horizontal
@@ -13,23 +13,20 @@
 
 	let pages = [
 		{
-			url: 'https://ctwhome.com/document/page/1',
 			title: 'Page 1',
 			image: `${base}/examples/1.png`
 		},
 		{
-			url: 'https://ctwhome.com/document/page/2',
 			title: 'Page 2',
 			image: `${base}/examples/2.png`
 		},
 		{
-			url: 'https://ctwhome.com/document/page/3',
 			title: 'Page 3',
 			image: `${base}/examples/3.png`
 		}
 	];
 
-	let selectedPage = 1;
+	let selectedPage: number = 1;
 </script>
 
 <div class="relative">
@@ -64,11 +61,11 @@
 					<img
 						draggable="false"
 						class="drop-shadow-custom rounded-lg border-4 border-transparent select-none hover:border-white transition"
-						class:border-secondary={selectedPage === index}
+						class:!border-secondary={selectedPage == index}
 						src={page.image}
 						alt={page.title}
 					/>
-					{index + 1}
+					{index}
 				</button>
 			{/each}
 		</div>
