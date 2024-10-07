@@ -7,7 +7,12 @@
 		src: string;
 	}
 
-	const imageStore = writable<ImageData[]>([]);
+	interface FolderData {
+		id: string;
+		images: ImageData[];
+	}
+
+	const foldersStore = writable<FolderData[]>([]);
 	let isDragging = false;
 	let errorMessage = '';
 
@@ -56,7 +61,7 @@
 		});
 
 		Promise.all(imagePromises).then((images) => {
-			imageStore.set(images);
+			foldersStore.update((folders) => [...folders, { id: Date.now().toString(), images }]);
 		});
 	}
 
@@ -120,16 +125,27 @@
 				{/if}
 
 				<div class="mt-8">
-					{#if $imageStore.length === 0}
+					{#if $foldersStore.length === 0}
 						<p class="text-gray-600">
 							No images loaded yet. Drag and drop a folder to get started.
 						</p>
 					{:else}
-						<div class="grid grid-cols-3 gap-4">
-							{#each $imageStore as image}
-								<img src={image.src} alt={image.name} class="w-full h-auto rounded-lg shadow-md" />
-							{/each}
-						</div>
+						{#each $foldersStore as folder, index}
+							<div class="mb-8 p-4 bg-gray-100 rounded-lg">
+								<h2 class="text-lg font-semibold mb-2">Folder {index + 1}</h2>
+								<a href="{base}/document?id={folder.id}" class="block">
+									<div class="grid grid-cols-3 gap-4">
+										{#each folder.images as image}
+											<img
+												src={image.src}
+												alt={image.name}
+												class="w-full h-auto rounded-lg shadow-md"
+											/>
+										{/each}
+									</div>
+								</a>
+							</div>
+						{/each}
 					{/if}
 				</div>
 			</div>
