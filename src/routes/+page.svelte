@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { base } from '$app/paths';
-	import { writable } from 'svelte/store';
+	import { persisted } from 'svelte-persisted-store';
 
 	interface ImageData {
 		name: string;
@@ -12,7 +12,7 @@
 		images: ImageData[];
 	}
 
-	const foldersStore = writable<FolderData[]>([]);
+	const foldersStore = persisted<FolderData[]>('folders', []);
 	let isDragging = false;
 	let errorMessage = '';
 
