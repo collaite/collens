@@ -95,6 +95,10 @@
 	function handleDragLeave() {
 		isDragging = false;
 	}
+
+	function removeFolder(id: string) {
+		foldersStore.update((folders) => folders.filter((folder) => folder.id !== id));
+	}
 </script>
 
 <div class="flex flex-col items-center justify-center min-h-screen overflow-auto -mt-28">
@@ -131,8 +135,14 @@
 						</p>
 					{:else}
 						{#each $foldersStore as folder, index}
-							<div class="mb-8 p-4 bg-gray-100 rounded-lg">
+							<div class="mb-8 p-4 bg-gray-100 rounded-lg relative">
 								<h2 class="text-lg font-semibold mb-2">Folder {index + 1}</h2>
+								<button
+									class="absolute top-2 right-2 text-red-500 hover:text-red-700"
+									on:click={() => removeFolder(folder.id)}
+								>
+									Remove
+								</button>
 								<a href="{base}/document?id={folder.id}" class="block">
 									<div class="grid grid-cols-3 gap-4">
 										{#each folder.images as image}
