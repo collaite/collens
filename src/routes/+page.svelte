@@ -110,9 +110,8 @@
 				<a class="btn btn-primary btn-md" href="{base}/document">Open Document</a>
 
 				<div
-					class="mt-8 border-4 border-dashed rounded-lg p-8 transition-colors duration-300 ease-in-out"
-					class:border-blue-500={isDragging}
-					class:border-gray-300={!isDragging}
+					class="mt-8 border-gray-400 border-4 border-dashed rounded-lg p-8 transition-colors duration-300 ease-in-out"
+					class:!border-blue-500={isDragging}
 					on:drop={handleDrop}
 					on:dragover={handleDragOver}
 					on:dragleave={handleDragLeave}
@@ -160,6 +159,15 @@
 				</div>
 			</div>
 		</div>
+	</div>
+	<!-- Logos -->
+	<div class="mt-4 flex gap-4">
+		<a href="https://www.huygens.knaw.nl/en/" target="_blank">
+			<img class="h-10" src="{base}/images/huygens-dark.png" alt="Huygens" />
+		</a>
+		<a href="https://www.esciencecenter.nl/" target="_blank">
+			<img class="h-10" src="{base}/images/escience-dark.png" alt="Huygens" />
+		</a>
 	</div>
 </div>
 
