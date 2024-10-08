@@ -31,7 +31,6 @@
 
 <div class="relative">
 	<!-- Content -->
-
 	<div
 		class="absolute top-0 right-0 bottom-0 left-0 pl-[230px] flex gap-8 overflow-scroll pr-10"
 		on:wheel={handleWheel}
