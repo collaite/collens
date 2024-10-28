@@ -8,6 +8,7 @@
 		type Folder
 	} from '$lib/stores/indexeddb-store';
 	import DragDropFolder from '$lib/components/DragDropFolder.svelte';
+	import FolderCard from '$lib/components/FolderCard.svelte';
 
 	onMount(() => {
 		indexedDBStore.init();
@@ -17,25 +18,6 @@
 		const { files } = event.detail;
 		const newFolder: Folder = { id: Date.now().toString(), files };
 		await indexedDBStore.addFolder(newFolder);
-	}
-
-	function isImageFile(file: FileData): boolean {
-		const imageTypes = ['image/png', 'image/jpeg', 'image/webp', 'image/tiff', 'image/avif'];
-		return imageTypes.includes(file.type);
-	}
-
-	function getVisibleImages(folder: Folder) {
-		return (folder.files || []).filter(isImageFile).slice(0, 3);
-	}
-
-	function getFileStats(folder: Folder) {
-		const files = folder.files || [];
-		const imageCount = files.filter(isImageFile).length;
-		return {
-			total: files.length,
-			images: imageCount,
-			other: files.length - imageCount
-		};
 	}
 </script>
 
@@ -55,35 +37,8 @@
 							No files loaded yet. Drag and drop files or folders to get started.
 						</p>
 					{:else}
-						{#each $indexedDBStore as folder, index}
-							<div class="mb-8 p-4 bg-gray-100 rounded-lg relative">
-								<h2 class="text-lg font-semibold mb-2">Folder {index + 1}</h2>
-								<button
-									class="absolute top-2 right-2 text-red-500 hover:text-red-700"
-									on:click={() => removeFolder(folder.id)}
-								>
-									Remove
-								</button>
-								<a href="{base}/document?id={folder.id}" class="block">
-									<div class="grid grid-cols-3 gap-4">
-										{#each getVisibleImages(folder) as file}
-											<img
-												src={file.src}
-												alt={file.name}
-												class="w-full h-auto rounded-lg shadow-md"
-											/>
-										{/each}
-									</div>
-									{#if folder.files}
-										{@const stats = getFileStats(folder)}
-										<div class="mt-4 text-sm text-gray-600">
-											<p>Total files: {stats.total}</p>
-											<p>Images: {stats.images}</p>
-											<p>Other files: {stats.other}</p>
-										</div>
-									{/if}
-								</a>
-							</div>
+						{#each $indexedDBStore as folder}
+							<FolderCard {folder} onRemove={removeFolder} />
 						{/each}
 					{/if}
 				</div>
