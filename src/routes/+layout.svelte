@@ -1,9 +1,9 @@
 <script lang="ts">
 	import '$lib/assets/css/app.css';
 	import '$lib/assets/css/code-highlighted-prisma.css';
-	import Header from '$lib/components/Header.svelte';
-	import SideMenu from '$lib/components/SideMenu.svelte';
-	import GlobalToast from '$lib/components/GlobalToast.svelte';
+	import Header from '$components/ui/Header.svelte';
+	import SideMenu from '$components/ui/SideMenu.svelte';
+	import GlobalToast from '$components/ui/GlobalToast.svelte';
 </script>
 
 <GlobalToast />

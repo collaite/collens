@@ -3,7 +3,7 @@
 	import { base } from '$app/paths';
 	import { browser } from '$app/environment';
 	import Logo from '$lib/assets/icons/Logo.svelte';
-	import FeedbackButton from '$lib/components/feedback/FeedbackButton.svelte';
+	import FeedbackButton from '$components/ui/feedback/FeedbackButton.svelte';
 	// import DaisyUIThemeSwitcher from '$lib/components/themeChamge/DaisyUIThemeSwitcher.svelte';
 	import { onMount } from 'svelte';
 	import { toggleMenu } from '$lib/stores/menu.store';

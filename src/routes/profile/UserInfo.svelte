@@ -1,5 +1,5 @@
 <script>
-	import LogOutButton from '$lib/components/Login/LogOutButton.svelte';
+	import LogOutButton from '$components/ui/Login/LogOutButton.svelte';
 	import { page } from '$app/stores';
 </script>
 

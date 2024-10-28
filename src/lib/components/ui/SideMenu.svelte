@@ -1,7 +1,7 @@
 <script lang="ts">
+	import FeedbackButton from '$components/ui/feedback/FeedbackButton.svelte';
 	import { isMenuOpen, closeMenu, openMenu } from '$lib/stores/menu.store';
 	// import ChatList from './chats/ChatList.svelte';
-	import FeedbackButton from './feedback/FeedbackButton.svelte';
 	import { onMount } from 'svelte';
 
 	let containerElement: HTMLElement;
