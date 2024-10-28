@@ -1,5 +1,6 @@
 import { writable } from 'svelte/store';
 import { openDB, type IDBPDatabase } from 'idb';
+import { goto } from '$app/navigation';
 
 export interface FileData {
   name: string;
@@ -93,4 +94,5 @@ export const indexedDBStore = {
 
 export const removeFolder = async (id: string) => {
   await indexedDBStore.removeFolder(id);
+  goto('/');
 };

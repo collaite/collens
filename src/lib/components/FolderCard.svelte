@@ -13,7 +13,6 @@
 	function getVisibleImages(folder: Folder) {
 		return (folder.files || []).filter(isImageFile).slice(0, 3);
 	}
-
 	function getFileStats(folder: Folder) {
 		const files = folder.files || [];
 		const imageCount = files.filter(isImageFile).length;
@@ -25,21 +24,29 @@
 	}
 </script>
 
-<div class="card w-full bg-base-100 shadow-xl mb-8">
-	<div class="card-body">
-		<div class="flex justify-between items-start">
-			<div>
-				<h2 class="card-title">{folder.title}</h2>
-				<p class="text-base-content/70">{folder.description}</p>
-			</div>
-			<button class="btn btn-sm btn-error" on:click={() => onRemove(folder.id)}>Remove</button>
-		</div>
-		<a href="{base}/document?id={folder.id}" class="block mt-4">
-			<div class="grid grid-cols-3 gap-4">
-				{#each getVisibleImages(folder) as file}
-					<img src={file.src} alt={file.name} class="w-full h-auto rounded-lg shadow-md" />
+<div class="h-[500px] group hover:scale-105 transition-all duration-500">
+	<a href="{base}/document?id={folder.id}" class="block">
+		<div class=" w-full mb-8">
+			<div class="relative flex items-center justify-center h-64 w-full mb-4">
+				{#each getVisibleImages(folder).reverse() as file, i}
+					<div
+						class="card-item absolute w-48 h-auto transition-all duration-500 ease-in-out"
+						style="--index: {i};"
+					>
+						<img
+							src={file.src}
+							alt={file.name}
+							class="w-full h-full object-cover rounded"
+							style="filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));"
+						/>
+					</div>
 				{/each}
 			</div>
+		</div>
+		<div class="text-center px-4">
+			<h2 class="text-2xl font-bold mb-2">{folder.title}</h2>
+			<p class="opacity-70 line-clamp-3">{folder.description || 'Description...'}</p>
+
 			{#if folder.files}
 				{@const stats = getFileStats(folder)}
 				<div class="mt-4 text-sm text-base-content/70">
@@ -48,6 +55,29 @@
 					<p>Other files: {stats.other}</p>
 				</div>
 			{/if}
-		</a>
-	</div>
+			<button class="btn btn-sm btn-outline mt-4" on:click={() => onRemove(folder.id)}>
+				Remove
+			</button>
+		</div>
+	</a>
 </div>
+
+<style>
+	.card-item {
+		transform: rotate(calc(var(--index) * -8deg))
+			translate(calc(var(--index) * 12px), calc(var(--index) * 8px));
+		will-change: transform;
+	}
+
+	.group:hover .card-item:nth-child(1) {
+		transform: translate(-40px, 20px) rotate(-15deg);
+	}
+
+	.group:hover .card-item:nth-child(2) {
+		transform: translate(0, -30px) rotate(0deg);
+	}
+
+	.group:hover .card-item:nth-child(3) {
+		transform: translate(40px, 20px) rotate(15deg);
+	}
+</style>
