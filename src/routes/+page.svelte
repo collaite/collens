@@ -4,7 +4,7 @@
 	import {
 		indexedDBStore,
 		removeFolder,
-		type ImageData,
+		type FileData,
 		type Folder
 	} from '$lib/stores/indexeddb-store';
 	import DragDropFolder from '$lib/components/DragDropFolder.svelte';
@@ -13,10 +13,29 @@
 		indexedDBStore.init();
 	});
 
-	async function handleFolderDropped(event: CustomEvent<{ images: ImageData[] }>) {
-		const { images } = event.detail;
-		const newFolder: Folder = { id: Date.now().toString(), images };
+	async function handleFolderDropped(event: CustomEvent<{ files: FileData[] }>) {
+		const { files } = event.detail;
+		const newFolder: Folder = { id: Date.now().toString(), files };
 		await indexedDBStore.addFolder(newFolder);
+	}
+
+	function isImageFile(file: FileData): boolean {
+		const imageTypes = ['image/png', 'image/jpeg', 'image/webp', 'image/tiff', 'image/avif'];
+		return imageTypes.includes(file.type);
+	}
+
+	function getVisibleImages(folder: Folder) {
+		return (folder.files || []).filter(isImageFile).slice(0, 3);
+	}
+
+	function getFileStats(folder: Folder) {
+		const files = folder.files || [];
+		const imageCount = files.filter(isImageFile).length;
+		return {
+			total: files.length,
+			images: imageCount,
+			other: files.length - imageCount
+		};
 	}
 </script>
 
@@ -25,7 +44,7 @@
 		<div class="hero-content text-neutral-content text-center">
 			<div class="max-w-md text-primary">
 				<h1 class="mb-5 text-5xl font-bold">COLLens</h1>
-				<p class="mb-5">Web visualization tool for COLLaiTE.</p>
+				<p class="mb-5">Visualization tool for COLLaiTE.</p>
 				<a class="btn btn-primary btn-md" href="{base}/document">Open Document</a>
 
 				<DragDropFolder on:folderDropped={handleFolderDropped} />
@@ -33,7 +52,7 @@
 				<div class="mt-8">
 					{#if $indexedDBStore.length === 0}
 						<p class="text-gray-600">
-							No images loaded yet. Drag and drop a folder to get started.
+							No files loaded yet. Drag and drop files or folders to get started.
 						</p>
 					{:else}
 						{#each $indexedDBStore as folder, index}
@@ -47,14 +66,22 @@
 								</button>
 								<a href="{base}/document?id={folder.id}" class="block">
 									<div class="grid grid-cols-3 gap-4">
-										{#each folder.images as image}
+										{#each getVisibleImages(folder) as file}
 											<img
-												src={image.src}
-												alt={image.name}
+												src={file.src}
+												alt={file.name}
 												class="w-full h-auto rounded-lg shadow-md"
 											/>
 										{/each}
 									</div>
+									{#if folder.files}
+										{@const stats = getFileStats(folder)}
+										<div class="mt-4 text-sm text-gray-600">
+											<p>Total files: {stats.total}</p>
+											<p>Images: {stats.images}</p>
+											<p>Other files: {stats.other}</p>
+										</div>
+									{/if}
 								</a>
 							</div>
 						{/each}

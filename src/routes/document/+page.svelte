@@ -1,14 +1,19 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import { base } from '$app/paths';
-	import { indexedDBStore, type Folder, type ImageData } from '$lib/stores/indexeddb-store';
+	import { indexedDBStore, type Folder, type FileData } from '$lib/stores/indexeddb-store';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 
 	let selectedFolder: Folder | undefined;
-	let selectedImage: ImageData | undefined;
+	let selectedFile: FileData | undefined;
 	let loading = true;
 	let error = '';
+
+	function isImageFile(file: FileData): boolean {
+		const imageTypes = ['image/png', 'image/jpeg', 'image/webp', 'image/tiff', 'image/avif'];
+		return imageTypes.includes(file.type);
+	}
 
 	// Function to handle wheel event and transform vertical scroll to horizontal
 	function handleWheel(event: WheelEvent) {
@@ -23,8 +28,13 @@
 			const folderId = $page.url.searchParams.get('id');
 			if (folderId) {
 				selectedFolder = $indexedDBStore.find((folder) => folder.id === folderId);
-				if (selectedFolder && selectedFolder.images.length > 0) {
-					selectedImage = selectedFolder.images[0];
+				if (selectedFolder && selectedFolder.files) {
+					const imageFiles = selectedFolder.files.filter(isImageFile);
+					if (imageFiles.length > 0) {
+						selectedFile = imageFiles[0];
+					} else {
+						error = 'No image files found in the folder.';
+					}
 				} else {
 					error = 'Folder not found or empty.';
 				}
@@ -41,6 +51,10 @@
 
 	function goBack() {
 		goto(`${base}/`);
+	}
+
+	function getImageFiles(folder: Folder): FileData[] {
+		return (folder.files || []).filter(isImageFile);
 	}
 </script>
 
@@ -68,12 +82,12 @@
 			on:wheel={handleWheel}
 		>
 			<div class="my-4 flex-shrink-0">
-				{#if selectedImage}
+				{#if selectedFile}
 					<img
 						draggable="false"
 						class="w-[500px] h-auto drop-shadow-custom"
-						src={selectedImage.src}
-						alt={selectedImage.name}
+						src={selectedFile.src}
+						alt={selectedFile.name}
 					/>
 				{/if}
 			</div>
@@ -88,14 +102,14 @@
 		>
 			<!-- Pages -->
 			<div class="overflow-auto">
-				{#each selectedFolder.images as image, index}
-					<button class="mb-4 w-full" on:click={() => (selectedImage = image)}>
+				{#each getImageFiles(selectedFolder) as file, index}
+					<button class="mb-4 w-full" on:click={() => (selectedFile = file)}>
 						<img
 							draggable="false"
 							class="w-full h-auto drop-shadow-custom rounded-lg border-4 border-transparent select-none hover:border-white transition"
-							class:!border-secondary={selectedImage === image}
-							src={image.src}
-							alt={image.name}
+							class:!border-secondary={selectedFile === file}
+							src={file.src}
+							alt={file.name}
 						/>
 						<span class="text-white">{index + 1}</span>
 					</button>

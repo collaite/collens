@@ -1,13 +1,11 @@
 <script lang="ts">
 	import { createEventDispatcher } from 'svelte';
-	import type { ImageData } from '$lib/stores/documents.store';
+	import type { FileData } from '$lib/stores/indexeddb-store';
 
 	const dispatch = createEventDispatcher();
 
 	let isDragging = false;
 	let errorMessage = '';
-
-	const allowedExtensions = ['png', 'jpg', 'jpeg', 'webp', 'tiff', 'avif'];
 
 	async function handleDrop(event: DragEvent) {
 		event.preventDefault();
@@ -15,66 +13,101 @@
 		errorMessage = '';
 
 		const items = Array.from(event.dataTransfer?.items || []);
-		const imageFiles: File[] = [];
+		const files: { file: File; path: string }[] = [];
 
-		for (const item of items) {
-			if (item.kind === 'file') {
-				const entry = item.webkitGetAsEntry();
-				if (entry && entry.isDirectory) {
-					await processDirectory(entry, imageFiles);
+		try {
+			for (const item of items) {
+				if (item.kind === 'file') {
+					const entry = item.webkitGetAsEntry();
+					if (entry) {
+						if (entry.isDirectory) {
+							await processDirectory(entry, '', files);
+						} else {
+							const file = await getFileFromEntry(entry);
+							if (file) {
+								files.push({ file, path: file.name });
+							}
+						}
+					}
 				}
 			}
-		}
 
-		const filteredImageFiles = imageFiles.filter((file) => {
-			const extension = file.name.split('.').pop()?.toLowerCase();
-			return (
-				allowedExtensions.includes(extension || '') &&
-				['1', '2', '3'].includes(file.name.split('.')[0])
-			);
-		});
+			if (files.length === 0) {
+				errorMessage = 'Please drop at least one file or folder.';
+				return;
+			}
 
-		if (filteredImageFiles.length < 3) {
-			errorMessage =
-				'Please drop a folder containing at least 3 image files named 1, 2, and 3 with extensions: png, jpg, webp, tiff, or avif.';
-			return;
-		}
-
-		const imagePromises = filteredImageFiles.map((file) => {
-			return new Promise<ImageData>((resolve) => {
-				const reader = new FileReader();
-				reader.onload = (e) => {
-					const target = e.target as FileReader;
-					resolve({ name: file.name, src: target.result as string });
-				};
-				reader.readAsDataURL(file);
+			const filePromises = files.map(({ file, path }) => {
+				return new Promise<FileData>((resolve) => {
+					const reader = new FileReader();
+					reader.onload = (e) => {
+						const target = e.target as FileReader;
+						resolve({
+							name: file.name,
+							size: file.size,
+							type: file.type,
+							lastModified: file.lastModified,
+							src: target.result as string,
+							path
+						});
+					};
+					reader.readAsDataURL(file);
+				});
 			});
-		});
 
-		Promise.all(imagePromises).then((images) => {
-			dispatch('folderDropped', { images });
+			const processedFiles = await Promise.all(filePromises);
+			dispatch('folderDropped', { files: processedFiles });
+		} catch (error) {
+			console.error('Error processing files:', error);
+			errorMessage = 'An error occurred while processing the files.';
+		}
+	}
+
+	function getFileFromEntry(entry: any): Promise<File | null> {
+		return new Promise((resolve) => {
+			if (entry.isFile) {
+				entry.file((file: File) => resolve(file));
+			} else {
+				resolve(null);
+			}
 		});
 	}
 
-	function processDirectory(directoryEntry: any, imageFiles: File[]): Promise<void> {
+	function processDirectory(
+		directoryEntry: any,
+		currentPath: string,
+		files: { file: File; path: string }[]
+	): Promise<void> {
 		return new Promise((resolve) => {
 			const reader = directoryEntry.createReader();
-			reader.readEntries((entries: any[]) => {
-				const promises = entries.map((entry) => {
-					if (entry.isFile) {
-						return new Promise<void>((fileResolve) => {
-							entry.file((file: File) => {
-								imageFiles.push(file);
-								fileResolve();
-							});
-						});
-					} else if (entry.isDirectory) {
-						return processDirectory(entry, imageFiles);
+			const readEntries = () => {
+				reader.readEntries(async (entries: any[]) => {
+					if (entries.length === 0) {
+						resolve();
+						return;
 					}
-					return Promise.resolve();
+
+					const promises = entries.map((entry) => {
+						const path = currentPath ? `${currentPath}/${entry.name}` : entry.name;
+						if (entry.isFile) {
+							return new Promise<void>((fileResolve) => {
+								entry.file((file: File) => {
+									files.push({ file, path });
+									fileResolve();
+								});
+							});
+						} else if (entry.isDirectory) {
+							return processDirectory(entry, path, files);
+						}
+						return Promise.resolve();
+					});
+
+					await Promise.all(promises);
+					readEntries(); // Continue reading if there are more entries
 				});
-				Promise.all(promises).then(() => resolve());
-			});
+			};
+
+			readEntries();
 		});
 	}
 
@@ -95,10 +128,9 @@
 	on:dragover={handleDragOver}
 	on:dragleave={handleDragLeave}
 >
-	<p class="text-lg font-semibold mb-2">Drag and drop a folder with images here</p>
+	<p class="text-lg font-semibold mb-2">Drag and drop files or folders here</p>
 	<p class="text-sm text-gray-600">
-		The folder should contain at least 3 image files named 1, 2, and 3 with extensions: png, jpg,
-		webp, tiff, or avif.
+		You can drop any type of files or folders. The folder structure will be preserved.
 	</p>
 </div>
 
