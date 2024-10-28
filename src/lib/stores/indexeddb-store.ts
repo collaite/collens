@@ -13,6 +13,8 @@ export interface FileData {
 export interface Folder {
   id: string;
   files: FileData[];
+  title?: string;
+  description?: string;
 }
 
 const DB_NAME = 'CollensDB';
@@ -21,9 +23,9 @@ const STORE_NAME = 'folders';
 let db: IDBPDatabase;
 
 const initDB = async () => {
-  db = await openDB(DB_NAME, 2, {
+  db = await openDB(DB_NAME, 3, {
     upgrade(db, oldVersion) {
-      if (oldVersion < 2) {
+      if (oldVersion < 3) {
         // Delete old store and create new one with updated schema
         if (db.objectStoreNames.contains(STORE_NAME)) {
           db.deleteObjectStore(STORE_NAME);
@@ -49,16 +51,37 @@ export const indexedDBStore = {
       files: folder.files || folder.images?.map((img: any) => ({
         ...img,
         path: img.name
-      })) || []
+      })) || [],
+      title: folder.title || 'Untitled Document',
+      description: folder.description || 'No description available'
     }));
     set(migratedFolders);
   },
   addFolder: async (folder: Folder) => {
-    // Ensure files array exists
+    // Ensure files array exists and find project_details.json
+    const files = folder.files || [];
+    const projectDetailsFile = files.find(f => f.name === 'project_details.json');
+    let title = 'Untitled Document';
+    let description = 'No description available';
+
+    if (projectDetailsFile) {
+      try {
+        const response = await fetch(projectDetailsFile.src);
+        const projectDetails = await response.json();
+        title = projectDetails.title;
+        description = projectDetails.description;
+      } catch (error) {
+        console.error('Error parsing project_details.json:', error);
+      }
+    }
+
     const folderToAdd = {
       ...folder,
-      files: folder.files || []
+      files,
+      title,
+      description
     };
+
     await db.add(STORE_NAME, folderToAdd);
     update(folders => [...folders, folderToAdd]);
   },
