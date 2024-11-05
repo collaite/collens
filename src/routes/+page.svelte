@@ -22,8 +22,8 @@
 </script>
 
 <div class="flex flex-col items-center justify-center overflow-auto">
-	<div class="overflow-y-auto overflow-x-hidden">
-		<div class="mt-20 mb-6 flex flex-col items-center">
+	<div class="overflow-y-auto overflow-x-hidden px-10">
+		<div class="mb-6 mt-20 flex flex-col items-center">
 			<h1 class="mb-5 text-5xl font-bold">COLLens</h1>
 			<p class="mb-5">Visualization tool for COLLaiTE.</p>
 		</div>
@@ -35,7 +35,7 @@
 							No files loaded yet. Drag and drop files or folders to get started.
 						</p>
 					{:else}
-						<div class="flex gap-20 flex-wrap justify-center">
+						<div class="flex flex-wrap justify-center gap-20">
 							{#each $indexedDBStore as folder}
 								<div class=" w-72">
 									<FolderCard {folder} onRemove={removeFolder} />
@@ -46,7 +46,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="max-w-[350px] mx-auto mt-32">
+		<div class="mx-auto mt-32 max-w-[350px]">
 			<DragDropFolder on:folderDropped={handleFolderDropped} />
 		</div>
 	</div>
