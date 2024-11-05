@@ -104,7 +104,7 @@
 </script>
 
 {#if showButton}
-	<button class="btn btn-sm" on:click={() => modal.showModal()}>Feedback</button>
+	<button class="btn btn-sm btn-primary" on:click={() => modal.showModal()}>Feedback</button>
 {/if}
 
 <dialog id="feedback_modal" class="modal">
@@ -112,14 +112,14 @@
 		<h3 class="text-lg font-bold">Feedback</h3>
 		<textarea
 			bind:this={textarea}
-			class="textarea w-full mt-10"
+			class="textarea w-full mt-10 ring-1 ring-secondary-focus ring-base-200"
 			name="feedback"
 			id="feedback"
 			placeholder="Write your feedback here"
 			rows="6"
 		></textarea>
 		<div class="modal-action justify-between">
-			<button class="btn" on:click={closeModal}>Cancel</button>
+			<button class="btn btn-ghost" on:click={closeModal}>Cancel</button>
 			<button class="btn btn-primary" on:click={sendFeedback}>Send Feedback</button>
 		</div>
 	</div>

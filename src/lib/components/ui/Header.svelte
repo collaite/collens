@@ -73,9 +73,9 @@
 	</div>
 </nav>
 
-<style lang="postcss">
+<style>
 	.menu-link {
-		@apply text-base-content text-opacity-80 hover:text-opacity-100 font-medium transition hover:text-secondary cursor-pointer;
+		@apply text-base-100 text-opacity-80 hover:text-opacity-100 font-medium transition hover:text-secondary cursor-pointer;
 	}
 
 	.menu-link.active {
@@ -93,56 +93,5 @@
 		--filter: blur(90px) saturate(160%) brightness(1.3);
 		backdrop-filter: var(--filter);
 		/* height: 100px; */
-	}
-
-	/* Frosted Navigation bar */
-	.bien-glass {
-		position: absolute;
-		inset: 0;
-		/*   Extend the backdrop to the bottom for it to "collect the light" outside of the nav */
-		--extended-by: 100px;
-		bottom: calc(-1 * var(--extended-by));
-
-		--filter: blur(30px);
-		-webkit-backdrop-filter: var(--filter);
-		backdrop-filter: var(--filter);
-		pointer-events: none;
-
-		/*   Cut the part of the backdrop that falls outside of <nav /> */
-		--cutoff: calc(100% - var(--extended-by));
-		-webkit-mask-image: linear-gradient(
-			to bottom,
-			black 0,
-			black var(--cutoff),
-			transparent var(--cutoff)
-		);
-	}
-
-	.bien-glass-edge {
-		position: absolute;
-		z-index: -1;
-		left: 0;
-		right: 0;
-
-		--extended-by: 80px;
-		--offset: 20px;
-		--thickness: 2px;
-		height: calc(var(--extended-by) + var(--offset));
-		/*   Offset is used to snuck the border backdrop slightly under the main backdrop for  smoother effect */
-		top: calc(100% - var(--offset) + var(--thickness));
-
-		/*   Make the blur bigger so that the light bleed effect spreads wider than blur on the first backdrop */
-		/*   Increase saturation and brightness to fake smooth chamfered edge reflections */
-		--filter: blur(90px) saturate(160%) brightness(1.3);
-		-webkit-backdrop-filter: var(--filter);
-		backdrop-filter: var(--filter);
-		pointer-events: none;
-
-		-webkit-mask-image: linear-gradient(
-			to bottom,
-			black 0,
-			black var(--offset),
-			transparent var(--offset)
-		);
 	}
 </style>
