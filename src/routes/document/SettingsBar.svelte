@@ -1,12 +1,14 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
 	import MetricCircle from '../../lib/components/MetricCircle.svelte';
 	import { base } from '$app/paths';
 	import { page } from '$app/stores';
 	import IcBaselineArrowBack from '~icons/ic/baseline-arrow-back';
 	import PhLinkLight from '~icons/ph/link-light';
 	import FluentDocumentBulletListMultiple20Filled from '~icons/fluent/document-bullet-list-multiple-20-filled';
-
 	import Toggle from '../../lib/components/Toggle.svelte';
+
+	const dispatch = createEventDispatcher();
 
 	$: isCollateX = $page.route.id === '/document/x';
 
@@ -22,32 +24,11 @@
 		};
 	}
 
-	let witnesses: WitnessData[] = [
-		{
-			id: 'W1',
-			title: 'Witness title',
-			enabled: true,
-			metrics: { red: 12, blue: 2, green: 12, yellow: 10 }
-		},
-		{
-			id: 'W2',
-			title: 'Witness title',
-			enabled: false,
-			metrics: { red: 5, blue: 10, green: 12, yellow: 0 }
-		},
-		{
-			id: 'W3',
-			title: 'Witness title',
-			enabled: false,
-			metrics: { red: 5, blue: 2, green: 12, yellow: 0 }
-		},
-		{
-			id: 'W4',
-			title: 'Witness title',
-			enabled: true,
-			metrics: { red: 5, blue: 2, green: 12, yellow: 0 }
-		}
-	];
+	export let witnesses: WitnessData[] = [];
+
+	function handleToggle(witness: WitnessData) {
+		dispatch('toggleWitness', { id: witness.id });
+	}
 </script>
 
 <div
@@ -64,7 +45,7 @@
 						<span class="text-content/70">{witness.title}</span>
 					</div>
 
-					<Toggle checked={witness.enabled} />
+					<Toggle checked={witness.enabled} on:change={() => handleToggle(witness)} />
 				</div>
 
 				<div class="flex items-center justify-between">

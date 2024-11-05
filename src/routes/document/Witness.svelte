@@ -1,24 +1,203 @@
 <script lang="ts">
 	import { foldersStore } from '$lib/stores/documents.store';
 	import ImageSidebar from './ImageSidebar.svelte';
+	import type { Folder, FileData } from '$lib/stores/indexeddb-store';
 
-	export let selectedFile: any = {};
-	export let selectedFolder: any = {};
-	export let getImageFiles: (folder: any) => any[];
+	export let selectedFile: FileData | undefined = undefined;
+	export let selectedFolder: Folder | undefined = undefined;
+	export let getImageFiles: (folder: Folder) => FileData[];
+
+	$: imageFiles = selectedFolder ? getImageFiles(selectedFolder) : [];
+	$: witnessId = selectedFolder?.id?.replace('witness_', '') || '1';
+	$: witnessTitle = selectedFolder?.title || 'Witness title';
+	$: currentView = 'transcription';
+
+	let showMiddleColumn = true;
+	let xmlContent: string | null = null;
+
+	const views = [
+		{ id: 'transcription', label: 'Transcription' },
+		{ id: 'notes', label: 'Notes' }
+	];
+
+	async function loadXMLContent() {
+		if (!selectedFolder) return;
+
+		// Find XML file in the folder
+		const xmlFile = selectedFolder.files.find((f) => f.name.endsWith('.xml'));
+		if (!xmlFile) return;
+
+		try {
+			// Since the file content is stored as a data URL in src, we need to fetch it
+			const response = await fetch(xmlFile.src);
+			const text = await response.text();
+
+			// Extract the text content from XML
+			// For now, we'll extract content from the <body> tag
+			const bodyMatch = text.match(/<body>([\s\S]*?)<\/body>/);
+			if (bodyMatch) {
+				xmlContent = bodyMatch[1]
+					.replace(/<[^>]+>/g, '') // Remove XML tags
+					.replace(/\n\s+/g, '\n') // Clean up whitespace
+					.trim();
+			}
+		} catch (error) {
+			console.error('Error loading XML content:', error);
+		}
+	}
+
+	$: if (selectedFolder) {
+		loadXMLContent();
+	}
+
+	function handleImageSelect(file: FileData) {
+		selectedFile = file;
+	}
+
+	function getPageNumber(file: FileData): string {
+		const match = file.name.match(/(\d+)\.png$/);
+		return match ? match[1] : '';
+	}
+
+	function getWitnessLabel(): string {
+		return `W${witnessId}`;
+	}
+
+	function handleViewChange(view: string) {
+		currentView = view;
+	}
+
+	function toggleMiddleColumn() {
+		showMiddleColumn = !showMiddleColumn;
+	}
 </script>
 
-<!-- <pre>{JSON.stringify($foldersStore, null, 2)}</pre> -->
-<!-- <ImageSidebar {selectedFolder} {selectedFile} {getImageFiles} /> -->
-<ImageSidebar />
+<div class="flex h-full w-full flex-col gap-1">
+	<!-- Header -->
+	<div
+		class="flex items-center justify-between rounded-lg bg-[#0f1419] px-3 py-1.5 text-white shadow-md"
+	>
+		<h1 class="truncate text-base font-bold">{getWitnessLabel()} - {witnessTitle}</h1>
+		<div class="ml-2 flex items-center gap-1.5">
+			<button
+				class="h-4 w-4 rounded-full bg-error opacity-90 transition-all hover:opacity-100"
+				title="Delete witness"
+				aria-label="Delete witness"
+			/>
+			<button
+				class="h-4 w-4 rounded-full bg-info opacity-90 transition-all hover:opacity-100"
+				title="Compare witnesses"
+				aria-label="Compare witnesses"
+			/>
+			<button
+				class="h-4 w-4 rounded-full bg-success opacity-90 transition-all hover:opacity-100"
+				title="Add annotation"
+				aria-label="Add annotation"
+			/>
+			<button
+				class="h-4 w-4 rounded-full bg-base-content/20 transition-all hover:bg-base-content/30"
+				title="Toggle image view"
+				aria-label="Toggle image view"
+				on:click={toggleMiddleColumn}
+			>
+				<svg viewBox="0 0 24 24" class="m-auto h-2.5 w-2.5 fill-current" aria-hidden="true">
+					<path
+						d={showMiddleColumn
+							? 'M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z'
+							: 'M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z'}
+					/>
+				</svg>
+			</button>
+		</div>
+	</div>
 
-<div class="my-4 flex-shrink-0 bg-red-400">
-	{#if selectedFile}
-		<img
-			draggable="false"
-			class="h-auto w-[500px] drop-shadow-custom"
-			src={selectedFile.src}
-			alt={selectedFile.name}
-		/>
-	{/if}
+	<!-- Main content -->
+	<div class="flex min-h-0 flex-1 gap-2">
+		<!-- Left sidebar with thumbnails -->
+		<div class="w-[160px] flex-shrink-0">
+			<ImageSidebar
+				{selectedFolder}
+				{selectedFile}
+				{getImageFiles}
+				onImageSelect={handleImageSelect}
+			/>
+		</div>
+
+		<!-- Middle section with selected image -->
+		{#if showMiddleColumn}
+			<div class="relative flex-1 transition-all duration-200">
+				{#if selectedFile}
+					<div class="relative flex h-full w-full items-start justify-center">
+						<img
+							draggable="false"
+							class="h-full min-w-[500px] rounded-lg object-contain object-top"
+							src={selectedFile.src}
+							alt="Page {getPageNumber(selectedFile)} of {witnessTitle}"
+							style="filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));"
+						/>
+						<div class="absolute left-2 top-2 flex items-center gap-2">
+							<span class="rounded bg-[#0f1419]/80 px-2 py-0.5 text-sm font-medium text-white">
+								{getWitnessLabel()} - Page {getPageNumber(selectedFile)}
+							</span>
+						</div>
+					</div>
+				{/if}
+			</div>
+		{/if}
+
+		<!-- Right section with text -->
+		<div
+			class="flex w-[500px] flex-shrink-0 flex-col overflow-hidden rounded-lg bg-[#E6E2CF]"
+			style="filter: drop-shadow(rgba(0, 0, 0, 0.2) 0px 10px 14px)"
+		>
+			<div class="sticky top-0 z-10 border-b border-base-300 bg-base-200 px-4 py-2">
+				<div class="flex items-center justify-between">
+					<div>
+						<h2 class="text-base font-bold">
+							{getWitnessLabel()} - Page {getPageNumber(selectedFile)}
+						</h2>
+						<div class="mt-0.5 flex items-center gap-2 text-xs">
+							{#each views as view, i}
+								{#if i > 0}
+									<span class="text-base-content/30" aria-hidden="true">•</span>
+								{/if}
+								<button
+									class="text-base-content/60 transition-colors hover:text-base-content {currentView ===
+									view.id
+										? 'font-medium !text-primary'
+										: ''}"
+									on:click={() => handleViewChange(view.id)}
+									aria-current={currentView === view.id}
+								>
+									{view.label}
+								</button>
+							{/each}
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="flex-1 overflow-y-auto" role="region" aria-label={currentView}>
+				<div class="p-4">
+					{#if xmlContent}
+						<div class="prose max-w-none">
+							<div class="whitespace-pre-wrap font-serif leading-relaxed text-base-content">
+								{xmlContent}
+							</div>
+						</div>
+					{:else}
+						<div class="py-8 text-center text-base-content/60">Loading transcription...</div>
+					{/if}
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
-<div class="my-6 w-[500px] flex-shrink-0 rounded bg-blue-300 p-4">w1</div>
+
+<style>
+	:global(.prose) {
+		max-width: none;
+	}
+	:global(.prose p) {
+		margin: 0;
+	}
+</style>

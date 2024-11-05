@@ -37,7 +37,7 @@
 							src={file.src}
 							alt={file.name}
 							class="h-full w-full rounded object-cover"
-							style="filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));"
+							style="filter: drop-shadow(rgba(0, 0, 0, 0.2) 0px 10px 14px)"
 						/>
 					</div>
 				{/each}
