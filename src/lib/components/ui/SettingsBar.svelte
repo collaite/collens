@@ -1,5 +1,11 @@
 <script lang="ts">
 	import MetricCircle from './MetricCircle.svelte';
+	import { base } from '$app/paths';
+	import { page } from '$app/stores';
+	import IcBaselineArrowBack from '~icons/ic/baseline-arrow-back';
+	import PhLinkLight from '~icons/ph/link-light';
+
+	$: isCollateX = $page.route.id === '/document/[x]';
 
 	interface WitnessData {
 		id: string;
@@ -99,30 +105,40 @@
 		{/each}
 	</div>
 
-	<div class="mt-4">
-		<h3 class="text-base font-medium mb-2">Legend</h3>
-		<div
-			class="w-full h-2 rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-red-500"
-		></div>
-	</div>
+	{#if !isCollateX}
+		<div class="mt-4">
+			<h3 class="text-base font-medium mb-2">Legend</h3>
+			<div
+				class="w-full h-2 rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-red-500"
+			></div>
+		</div>
+	{/if}
 
 	<div class="mt-auto pt-4">
-		<button class="btn btn-primary w-full gap-2">
-			<svg
-				xmlns="http://www.w3.org/2000/svg"
-				fill="none"
-				viewBox="0 0 24 24"
-				stroke-width="1.5"
-				stroke="currentColor"
-				class="w-5 h-5"
-			>
-				<path
-					stroke-linecap="round"
-					stroke-linejoin="round"
-					d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m13.35-.622l1.757-1.757a4.5 4.5 0 00-6.364-6.364l-4.5 4.5a4.5 4.5 0 001.242 7.244"
-				/>
-			</svg>
-			Collate X
-		</button>
+		<a
+			href={isCollateX
+				? `/document?id=${$page.url.searchParams.get('id')}`
+				: `/document/x/?id=${$page.url.searchParams.get('id')}`}
+		>
+			<button class="btn btn-primary w-full gap-2 mb-20" class:btn-secondary={isCollateX}>
+				{#if isCollateX}
+					<IcBaselineArrowBack />
+					Go back
+				{:else}
+					<PhLinkLight />
+					Collate X
+				{/if}
+			</button>
+		</a>
+
+		<!-- Logos -->
+		<div class="mt-4 flex items-center justify-center gap-8">
+			<a href="https://www.huygens.knaw.nl/en/" target="_blank">
+				<img class="h-6" src="{base}/images/huygens-light.png" alt="Huygens" />
+			</a>
+			<a href="https://www.esciencecenter.nl/" target="_blank">
+				<img class="h-6" src="{base}/images/escience-light.png" alt="eScience Center" />
+			</a>
+		</div>
 	</div>
 </div>

@@ -84,6 +84,9 @@ importers:
       '@iconify-json/fa6-solid':
         specifier: ^1.1.24
         version: 1.1.24
+      '@iconify-json/ic':
+        specifier: ^1.2.1
+        version: 1.2.1
       '@iconify-json/iconamoon':
         specifier: ^1.2.0
         version: 1.2.0
@@ -650,6 +653,9 @@ packages:
 
   '@iconify-json/fa6-solid@1.1.24':
     resolution: {integrity: sha512-ovO4kIW3CjoY36/QUTORg+7ZVlVpJqGSck+FUsqrvVJAr9MPeh3QN2UBnc9zyny41znxs7Kdc0Oz6aun4UUsyw==}
+
+  '@iconify-json/ic@1.2.1':
+    resolution: {integrity: sha512-UjL/bjJP/T5EV881+hTzcfTKVo0KEUjhnMiJcLtPzNgPtU2KZZmRx8BSKKR61H4CN/5FTEbyawGyG0aEt3SwGQ==}
 
   '@iconify-json/iconamoon@1.2.0':
     resolution: {integrity: sha512-kA0RX+nln1v5UnRx1+zK11QGeh6HF6c3tZCKO0TpkXHxmHCEpjmuKAgtImyRyg2xP7HGo6BuybtvqF+BVZzIVw==}
@@ -3876,6 +3882,10 @@ snapshots:
       '@iconify/types': 2.0.0
 
   '@iconify-json/fa6-solid@1.1.24':
+    dependencies:
+      '@iconify/types': 2.0.0
+
+  '@iconify-json/ic@1.2.1':
     dependencies:
       '@iconify/types': 2.0.0
 

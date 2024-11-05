@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { base } from '$app/paths';
-
 	export let selectedFolder: any;
 	export let selectedFile: any;
 	export let getImageFiles: (folder: any) => any[];
@@ -23,14 +21,5 @@
 				<span class="text-white">{index + 1}</span>
 			</button>
 		{/each}
-	</div>
-	<!-- Logos -->
-	<div class="mt-4 flex gap-4">
-		<a href="https://www.huygens.knaw.nl/en/" target="_blank">
-			<img class="h-6" src="{base}/images/huygens-light.png" alt="Huygens" />
-		</a>
-		<a href="https://www.esciencecenter.nl/" target="_blank">
-			<img class="h-6" src="{base}/images/escience-light.png" alt="eScience Center" />
-		</a>
 	</div>
 </div>
