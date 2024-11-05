@@ -49,7 +49,7 @@
 
 			{#if folder.files}
 				{@const stats = getFileStats(folder)}
-				<div class="mt-4 flex items-center gap-4 text-sm text-base-content/70">
+				<div class="mt-4 flex justify-center gap-4 text-sm text-base-content/70">
 					<p>Files: {stats.total}</p>
 					<p>Images: {stats.images}</p>
 					<p>Other: {stats.other}</p>
