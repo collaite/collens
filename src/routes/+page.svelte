@@ -8,7 +8,7 @@
 		type Folder
 	} from '$lib/stores/indexeddb-store';
 	import DragDropFolder from '$lib/components/DragDropFolder.svelte';
-	import FolderCard from '$lib/components/FolderCard.svelte';
+	import FolderCard from '../lib/components/FolderCard.svelte';
 
 	onMount(() => {
 		indexedDBStore.init();

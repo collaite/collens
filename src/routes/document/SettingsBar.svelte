@@ -1,12 +1,12 @@
 <script lang="ts">
-	import MetricCircle from './MetricCircle.svelte';
+	import MetricCircle from '../../lib/components/MetricCircle.svelte';
 	import { base } from '$app/paths';
 	import { page } from '$app/stores';
 	import IcBaselineArrowBack from '~icons/ic/baseline-arrow-back';
 	import PhLinkLight from '~icons/ph/link-light';
 	import FluentDocumentBulletListMultiple20Filled from '~icons/fluent/document-bullet-list-multiple-20-filled';
 
-	import Toggle from './Toggle.svelte';
+	import Toggle from '../../lib/components/Toggle.svelte';
 
 	$: isCollateX = $page.route.id === '/document/x';
 
@@ -51,14 +51,14 @@
 </script>
 
 <div
-	class="bg-primary/70 backdrop-blur-xl w-72 h-full flex flex-col p-4 rounded-lg text-primary-content"
+	class="flex h-full w-72 flex-col rounded-lg bg-primary/70 p-4 text-primary-content backdrop-blur-xl"
 >
-	<h2 class="text-xl font-semibold mb-4 text-content/80">Witnesses</h2>
+	<h2 class="text-content/80 mb-4 text-xl font-semibold">Witnesses</h2>
 
 	<div class="space-y-3">
 		{#each witnesses as witness}
-			<div class="bg-primary/80 p-3 rounded-lg">
-				<div class="flex justify-between items-center mb-2">
+			<div class="rounded-lg bg-primary/80 p-3">
+				<div class="mb-2 flex items-center justify-between">
 					<div class="flex items-center gap-2">
 						<span class="font-medium">{witness.id}-</span>
 						<span class="text-content/70">{witness.title}</span>
@@ -85,7 +85,7 @@
 					<!-- Internal review button -->
 					<a href={`${base}/document/internal/?id=${$page.url.searchParams.get('id')}`}>
 						<button
-							class="btn btn-ghost btn-sm px-1 tooltip tooltip-bottom"
+							class="btn btn-ghost btn-sm tooltip tooltip-bottom px-1"
 							data-tip="Open Internal review"
 						>
 							<FluentDocumentBulletListMultiple20Filled class="size-6" />
@@ -98,9 +98,9 @@
 
 	{#if !isCollateX}
 		<div class="mt-4">
-			<h3 class="text-base font-medium mb-2">Legend</h3>
+			<h3 class="mb-2 text-base font-medium">Legend</h3>
 			<div
-				class="w-full h-2 rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-red-500"
+				class="h-2 w-full rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-red-500"
 			></div>
 		</div>
 	{/if}
@@ -111,7 +111,7 @@
 				? `${base}/document?id=${$page.url.searchParams.get('id')}`
 				: `${base}/document/x/?id=${$page.url.searchParams.get('id')}`}
 		>
-			<button class="btn btn-primary w-full gap-2 mb-20" class:btn-secondary={isCollateX}>
+			<button class="btn btn-primary mb-20 w-full gap-2" class:btn-secondary={isCollateX}>
 				{#if isCollateX}
 					<IcBaselineArrowBack />
 					Go back

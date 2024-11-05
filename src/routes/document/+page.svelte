@@ -4,7 +4,7 @@
 	import { indexedDBStore, type Folder, type FileData } from '$lib/stores/indexeddb-store';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
-	import SettingsBar from '$components/SettingsBar.svelte';
+	import SettingsBar from './SettingsBar.svelte';
 	// import ImageSidebar from '$lib/components/ImageSidebar.svelte';
 	import Witness from './Witness.svelte';
 
@@ -63,22 +63,22 @@
 
 <div class="relative">
 	{#if loading}
-		<div class="flex items-center justify-center h-full">
+		<div class="flex h-full items-center justify-center">
 			<p class="text-2xl">Loading...</p>
 		</div>
 	{:else if error}
-		<div class="flex items-center justify-center h-full">
+		<div class="flex h-full items-center justify-center">
 			<p class="text-2xl text-red-500">{error}</p>
 		</div>
 	{:else if selectedFolder}
 		<!-- Content -->
-		<div class="h-full pl-[350px] flex gap-8 overflow-x-auto pr-10" on:wheel={handleWheel}>
+		<div class="flex h-full gap-8 overflow-x-auto pl-[350px] pr-10" on:wheel={handleWheel}>
 			<Witness />
 			<!-- <div class="bg-blue-400 w-[500px] my-6 rounded p-4 flex-shrink-0">w2</div>
 			<div class="bg-blue-500 w-[500px] my-6 rounded p-4 flex-shrink-0">w3</div> -->
 		</div>
 
-		<div class="absolute top-4 bottom-4 left-4 flex gap-8 overflow-x-auto pr-10">
+		<div class="absolute bottom-4 left-4 top-4 flex gap-8 overflow-x-auto pr-10">
 			<SettingsBar />
 		</div>
 	{/if}
