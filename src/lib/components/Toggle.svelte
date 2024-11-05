@@ -1,8 +1,16 @@
-<script>
+<script lang="ts">
 	export let checked = false;
+	export let label: string | undefined = undefined;
+	let className = undefined; // class is a reserved keyword in JS, with initialization
+	export { className as class };
 </script>
 
-<input type="checkbox" class="toggle" bind:checked on:change />
+<label class="flex cursor-pointer items-center gap-2">
+	{#if label}
+		<span class="text-sm">{label}</span>
+	{/if}
+	<input type="checkbox" class={'toggle ' + className} bind:checked on:change />
+</label>
 
 <style>
 	.toggle {

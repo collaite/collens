@@ -2,6 +2,16 @@
 	import { foldersStore } from '$lib/stores/documents.store';
 	import ImageSidebar from './ImageSidebar.svelte';
 	import type { Folder, FileData } from '$lib/stores/indexeddb-store';
+	import Toggle from '$lib/components/Toggle.svelte';
+	import {
+		getWitnessLabel,
+		getPageNumber,
+		loadXMLContent,
+		parseTEIXML,
+		WITNESS_VIEWS,
+		type WitnessView
+	} from '$lib/utils/witness-utils';
+
 	import MdiEyeOffOutline from '~icons/mdi/eye-off-outline';
 	import PhEyeBold from '~icons/ph/eye-bold';
 
@@ -12,60 +22,25 @@
 	$: imageFiles = selectedFolder ? getImageFiles(selectedFolder) : [];
 	$: witnessId = selectedFolder?.id?.replace('witness_', '') || '1';
 	$: witnessTitle = selectedFolder?.title || 'Witness title';
-	$: currentView = 'transcription';
+	$: currentView = 'transcription' as WitnessView;
 
 	let showMiddleColumn = true;
 	let xmlContent: string | null = null;
-
-	const views = [
-		{ id: 'transcription', label: 'Transcription' },
-		{ id: 'notes', label: 'Notes' }
-	];
-
-	async function loadXMLContent() {
-		if (!selectedFolder) return;
-
-		// Find XML file in the folder
-		const xmlFile = selectedFolder.files.find((f) => f.name.endsWith('.xml'));
-		if (!xmlFile) return;
-
-		try {
-			// Since the file content is stored as a data URL in src, we need to fetch it
-			const response = await fetch(xmlFile.src);
-			const text = await response.text();
-
-			// Extract the text content from XML
-			// For now, we'll extract content from the <body> tag
-			const bodyMatch = text.match(/<body>([\s\S]*?)<\/body>/);
-			if (bodyMatch) {
-				xmlContent = bodyMatch[1]
-					.replace(/<[^>]+>/g, '') // Remove XML tags
-					.replace(/\n\s+/g, '\n') // Clean up whitespace
-					.trim();
-			}
-		} catch (error) {
-			console.error('Error loading XML content:', error);
-		}
-	}
+	let showParsedText = true;
 
 	$: if (selectedFolder) {
-		loadXMLContent();
+		loadXMLContent(selectedFolder).then((content) => {
+			xmlContent = content;
+		});
 	}
+
+	$: parsedContent = xmlContent ? parseTEIXML(xmlContent, showParsedText) : null;
 
 	function handleImageSelect(event: CustomEvent<FileData>) {
 		selectedFile = event.detail;
 	}
 
-	function getPageNumber(file: FileData): string {
-		const match = file.name.match(/(\d+)\.png$/);
-		return match ? match[1] : '';
-	}
-
-	function getWitnessLabel(): string {
-		return `W${witnessId}`;
-	}
-
-	function handleViewChange(view: string) {
+	function handleViewChange(view: WitnessView) {
 		currentView = view;
 	}
 
@@ -79,7 +54,7 @@
 	<div
 		class="flex items-center justify-between rounded-lg bg-[#0f1419] px-3 py-1.5 text-white shadow-md"
 	>
-		<h1 class="truncate text-base font-bold">{getWitnessLabel()} - {witnessTitle}</h1>
+		<h1 class="truncate text-base font-bold">{getWitnessLabel(witnessId)} - {witnessTitle}</h1>
 		<div class="ml-2 flex items-center gap-1.5">
 			<!-- Stats -->
 			<div class="mr-4 flex gap-2">
@@ -136,12 +111,14 @@
 							draggable="false"
 							class="h-full min-w-[500px] rounded-lg object-contain object-top"
 							src={selectedFile.src}
-							alt="Page {getPageNumber(selectedFile)} of {witnessTitle}"
+							alt="Page {selectedFile ? getPageNumber(selectedFile) : ''} of {witnessTitle}"
 							style="filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));"
 						/>
 						<div class="absolute left-2 top-2 flex items-center gap-2">
 							<span class="rounded bg-[#0f1419]/80 px-2 py-0.5 text-sm font-medium text-white">
-								{getWitnessLabel()} - Page {getPageNumber(selectedFile)}
+								{getWitnessLabel(witnessId)} - Page {selectedFile
+									? getPageNumber(selectedFile)
+									: ''}
 							</span>
 						</div>
 					</div>
@@ -158,10 +135,10 @@
 				<div class="flex items-center justify-between">
 					<div>
 						<h2 class="text-base font-bold">
-							{getWitnessLabel()} - Page {getPageNumber(selectedFile)}
+							{getWitnessLabel(witnessId)} - Page {selectedFile ? getPageNumber(selectedFile) : ''}
 						</h2>
 						<div class="mt-0.5 flex items-center gap-2 text-xs">
-							{#each views as view, i}
+							{#each WITNESS_VIEWS as view, i}
 								{#if i > 0}
 									<span class="text-base-content/30" aria-hidden="true">•</span>
 								{/if}
@@ -178,14 +155,17 @@
 							{/each}
 						</div>
 					</div>
+					<div class="flex items-center gap-2">
+						<Toggle label="Parse TEI" class="scale-75" bind:checked={showParsedText} />
+					</div>
 				</div>
 			</div>
 			<div class="flex-1 overflow-y-auto" role="region" aria-label={currentView}>
 				<div class="p-4">
-					{#if xmlContent}
+					{#if parsedContent}
 						<div class="prose max-w-none">
 							<div class="whitespace-pre-wrap font-serif leading-relaxed text-base-content">
-								{xmlContent}
+								{parsedContent}
 							</div>
 						</div>
 					{:else}
