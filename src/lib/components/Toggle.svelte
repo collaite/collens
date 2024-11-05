@@ -2,7 +2,7 @@
 	export let checked = false;
 </script>
 
-<input type="checkbox" class="toggle" {checked} />
+<input type="checkbox" class="toggle" bind:checked on:change />
 
 <style>
 	.toggle {
