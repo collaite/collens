@@ -1,5 +1,5 @@
 <script>
-	import SettingsBar from '$components/ui/SettingsBar.svelte';
+	import SettingsBar from '$components/SettingsBar.svelte';
 </script>
 
 <div class="relative">

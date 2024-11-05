@@ -4,7 +4,7 @@
 	import { indexedDBStore, type Folder, type FileData } from '$lib/stores/indexeddb-store';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
-	import SettingsBar from '$components/ui/SettingsBar.svelte';
+	import SettingsBar from '$components/SettingsBar.svelte';
 	// import ImageSidebar from '$lib/components/ImageSidebar.svelte';
 	import Witness from './Witness.svelte';
 
