@@ -52,8 +52,8 @@
 		loadXMLContent();
 	}
 
-	function handleImageSelect(file: FileData) {
-		selectedFile = file;
+	function handleImageSelect(event: CustomEvent<FileData>) {
+		selectedFile = event.detail;
 	}
 
 	function getPageNumber(file: FileData): string {
@@ -123,7 +123,7 @@
 				{selectedFolder}
 				{selectedFile}
 				{getImageFiles}
-				onImageSelect={handleImageSelect}
+				on:imageSelect={handleImageSelect}
 			/>
 		</div>
 
