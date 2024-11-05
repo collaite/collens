@@ -2,6 +2,8 @@
 	import { foldersStore } from '$lib/stores/documents.store';
 	import ImageSidebar from './ImageSidebar.svelte';
 	import type { Folder, FileData } from '$lib/stores/indexeddb-store';
+	import MdiEyeOffOutline from '~icons/mdi/eye-off-outline';
+	import PhEyeBold from '~icons/ph/eye-bold';
 
 	export let selectedFile: FileData | undefined = undefined;
 	export let selectedFolder: Folder | undefined = undefined;
@@ -79,34 +81,36 @@
 	>
 		<h1 class="truncate text-base font-bold">{getWitnessLabel()} - {witnessTitle}</h1>
 		<div class="ml-2 flex items-center gap-1.5">
-			<button
-				class="h-4 w-4 rounded-full bg-error opacity-90 transition-all hover:opacity-100"
-				title="Delete witness"
-				aria-label="Delete witness"
-			/>
-			<button
-				class="h-4 w-4 rounded-full bg-info opacity-90 transition-all hover:opacity-100"
-				title="Compare witnesses"
-				aria-label="Compare witnesses"
-			/>
-			<button
-				class="h-4 w-4 rounded-full bg-success opacity-90 transition-all hover:opacity-100"
-				title="Add annotation"
-				aria-label="Add annotation"
-			/>
+			<!-- Stats -->
+			<div class="mr-4 flex gap-2">
+				<button
+					class="h-4 w-4 rounded-full bg-error opacity-90 transition-all hover:opacity-100"
+					title="Delete witness"
+					aria-label="Delete witness"
+				/>
+				<button
+					class="h-4 w-4 rounded-full bg-info opacity-90 transition-all hover:opacity-100"
+					title="Compare witnesses"
+					aria-label="Compare witnesses"
+				/>
+				<button
+					class="h-4 w-4 rounded-full bg-success opacity-90 transition-all hover:opacity-100"
+					title="Add annotation"
+					aria-label="Add annotation"
+				/>
+			</div>
+
 			<button
 				class="h-4 w-4 rounded-full bg-base-content/20 transition-all hover:bg-base-content/30"
 				title="Toggle image view"
 				aria-label="Toggle image view"
 				on:click={toggleMiddleColumn}
 			>
-				<svg viewBox="0 0 24 24" class="m-auto h-2.5 w-2.5 fill-current" aria-hidden="true">
-					<path
-						d={showMiddleColumn
-							? 'M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zM12 17c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5zm0-8c-1.66 0-3 1.34-3 3s1.34 3 3 3 3-1.34 3-3-1.34-3-3-3z'
-							: 'M12 7c2.76 0 5 2.24 5 5 0 .65-.13 1.26-.36 1.83l2.92 2.92c1.51-1.26 2.7-2.89 3.43-4.75-1.73-4.39-6-7.5-11-7.5-1.4 0-2.74.25-3.98.7l2.16 2.16C10.74 7.13 11.35 7 12 7zM2 4.27l2.28 2.28.46.46C3.08 8.3 1.78 10.02 1 12c1.73 4.39 6 7.5 11 7.5 1.55 0 3.03-.3 4.38-.84l.42.42L19.73 22 21 20.73 3.27 3 2 4.27zM7.53 9.8l1.55 1.55c-.05.21-.08.43-.08.65 0 1.66 1.34 3 3 3 .22 0 .44-.03.65-.08l1.55 1.55c-.67.33-1.41.53-2.2.53-2.76 0-5-2.24-5-5 0-.79.2-1.53.53-2.2zm4.31-.78l3.15 3.15.02-.16c0-1.66-1.34-3-3-3l-.17.01z'}
-					/>
-				</svg>
+				{#if showMiddleColumn}
+					<PhEyeBold />
+				{:else}
+					<MdiEyeOffOutline />
+				{/if}
 			</button>
 		</div>
 	</div>
