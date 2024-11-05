@@ -21,31 +21,36 @@
 	}
 </script>
 
-<div class="flex flex-col items-center justify-center">
-	<div class="mt-20 mb-6">
-		<h1 class="mb-5 text-5xl font-bold">COLLens</h1>
-		<p class="mb-5">Visualization tool for COLLaiTE.</p>
-		<DragDropFolder on:folderDropped={handleFolderDropped} />
-	</div>
-	<div class=" text-center">
-		<div class=" text-primary">
-			<div class="mt-8">
-				{#if $indexedDBStore.length === 0}
-					<p class="text-gray-600">
-						No files loaded yet. Drag and drop files or folders to get started.
-					</p>
-				{:else}
-					<div class="flex gap-20 flex-wrap justify-center">
-						{#each $indexedDBStore as folder}
-							<div class=" w-72">
-								<FolderCard {folder} onRemove={removeFolder} />
-							</div>
-						{/each}
-					</div>
-				{/if}
+<div class="flex flex-col items-center justify-center overflow-auto">
+	<div class="overflow-y-auto overflow-x-hidden">
+		<div class="mt-20 mb-6 flex flex-col items-center">
+			<h1 class="mb-5 text-5xl font-bold">COLLens</h1>
+			<p class="mb-5">Visualization tool for COLLaiTE.</p>
+		</div>
+		<div class=" text-center">
+			<div class="text-primary">
+				<div class="mt-8">
+					{#if $indexedDBStore.length === 0}
+						<p class="text-gray-600">
+							No files loaded yet. Drag and drop files or folders to get started.
+						</p>
+					{:else}
+						<div class="flex gap-20 flex-wrap justify-center">
+							{#each $indexedDBStore as folder}
+								<div class=" w-72">
+									<FolderCard {folder} onRemove={removeFolder} />
+								</div>
+							{/each}
+						</div>
+					{/if}
+				</div>
 			</div>
 		</div>
+		<div class="max-w-[350px] mx-auto mt-32">
+			<DragDropFolder on:folderDropped={handleFolderDropped} />
+		</div>
 	</div>
+
 	<div class="flex-1"></div>
 	<!-- Logos -->
 	<div class="m-4 flex gap-4">
