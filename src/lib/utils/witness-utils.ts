@@ -65,6 +65,15 @@ function processNode(node: Node): string {
       const element = child as Element;
 
       switch (element.tagName.toLowerCase()) {
+        case 'div':
+          if (element.getAttribute('type') === 'page') {
+            const pageNum = element.getAttribute('n');
+            if (pageNum) {
+              result += `\n[Page ${pageNum}]\n`;
+            }
+          }
+          result += processNode(child);
+          break;
         case 'del':
           result += `[${processNode(child)}]`;
           break;
@@ -84,7 +93,8 @@ function processNode(node: Node): string {
           result += '\n';
           break;
         case 'pb':
-          result += '\n[Page Break]\n';
+          const pageNum = element.getAttribute('n');
+          result += pageNum ? `\n[Page ${pageNum}]\n` : '\n[Page Break]\n';
           break;
         default:
           result += processNode(child);
