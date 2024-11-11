@@ -22,7 +22,7 @@
 </script>
 
 <div class="flex flex-col items-center justify-center overflow-auto">
-	<div class="overflow-y-auto overflow-x-hidden px-10">
+	<div class="w-full overflow-y-auto overflow-x-hidden px-10">
 		<div class="mb-6 mt-20 flex flex-col items-center">
 			<h1 class="mb-5 text-5xl font-bold">COLLens</h1>
 			<p class="mb-5">Visualization tool for COLLaiTE.</p>

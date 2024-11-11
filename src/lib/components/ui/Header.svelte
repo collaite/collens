@@ -1,7 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
 	import { base } from '$app/paths';
-	import { browser } from '$app/environment';
 	import Logo from '$lib/assets/icons/Logo.svelte';
 	import FeedbackButton from '$components/ui/feedback/FeedbackButton.svelte';
 	// import DaisyUIThemeSwitcher from '$lib/components/themeChamge/DaisyUIThemeSwitcher.svelte';
@@ -33,25 +31,25 @@
 </script>
 
 <nav class="bien-nav">
-	<div class="relative container mx-auto py-2">
+	<div class="relative mx-auto px-4 py-2">
 		<!--Desktop Header-->
 		<header class="flex items-center gap-3 px-2 sm:px-0">
 			<button
-				class="sm:hidden p-2 rounded-md hover:bg-base-200 transition-colors duration-200"
+				class="rounded-md p-2 transition-colors duration-200 hover:bg-base-200 sm:hidden"
 				on:click={toggleMenu}
 				aria-label="Open menu"
 			>
 				<IconamoonMenuBurgerHorizontalBold class="size-6" />
 			</button>
 			<a
-				class="flex-initial flex-shrink-0 mr-3 max-w-[140px] sm:max-w-[160px] h-auto no-drag select-none"
+				class="no-drag mr-3 h-auto max-w-[140px] flex-initial flex-shrink-0 select-none sm:max-w-[160px]"
 				href="{base}/"
 			>
 				<Logo />
 			</a>
 
 			<!-- Desktop menu -->
-			<div class="z-10 flex-1 space-x-4 lg:space-x-8 w-full justify-end hidden sm:flex">
+			<div class="z-10 hidden w-full flex-1 justify-end space-x-4 sm:flex lg:space-x-8">
 				{#each links as link}
 					<a
 						class="menu-link"
@@ -63,7 +61,7 @@
 					</a>
 				{/each}
 			</div>
-			<a class="mr-3 menu-link" href="{base}/about">About Collens</a>
+			<a class="menu-link mr-3" href="{base}/about">About Collens</a>
 			<FeedbackButton showButton={isDesktop} />
 
 			<!-- <DaisyUIThemeSwitcher class="z-50 ml-auto sm:ml-14 " /> -->
@@ -75,7 +73,7 @@
 
 <style>
 	.menu-link {
-		@apply text-base-100 text-opacity-80 hover:text-opacity-100 font-medium transition hover:text-secondary cursor-pointer;
+		@apply cursor-pointer font-medium text-base-100 text-opacity-80 transition hover:text-secondary hover:text-opacity-100;
 	}
 
 	.menu-link.active {

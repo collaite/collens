@@ -49,7 +49,7 @@
 	}
 </script>
 
-<div class="flex h-full w-full flex-col gap-1">
+<div class="flex h-full flex-shrink-0 flex-col gap-1">
 	<!-- Header -->
 	<div
 		class="flex items-center justify-between rounded-lg bg-[#0f1419] px-3 py-1.5 text-white shadow-md"
@@ -104,12 +104,12 @@
 
 		<!-- Middle section with selected image -->
 		{#if showMiddleColumn}
-			<div class="relative flex-1 transition-all duration-200">
+			<div class="relative flex-1 flex-shrink-0 transition-all duration-200">
 				{#if selectedFile}
 					<div class="relative flex h-full w-full items-start justify-center">
 						<img
 							draggable="false"
-							class="h-full min-w-[500px] rounded-lg object-contain object-top"
+							class="h-full w-[500px] min-w-[500px] rounded-lg object-contain object-top"
 							src={selectedFile.src}
 							alt="Page {selectedFile ? getPageNumber(selectedFile) : ''} of {witnessTitle}"
 							style="filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));"
@@ -128,7 +128,7 @@
 
 		<!-- Right section with text -->
 		<div
-			class="flex w-[500px] flex-shrink-0 flex-col overflow-hidden rounded-lg bg-[#E6E2CF]"
+			class="flex w-[600px] flex-shrink-0 flex-col overflow-hidden rounded-lg bg-[#E6E2CF]"
 			style="filter: drop-shadow(rgba(0, 0, 0, 0.2) 0px 10px 14px)"
 		>
 			<div class="sticky top-0 z-10 border-b border-base-300 bg-base-200 px-4 py-2">
