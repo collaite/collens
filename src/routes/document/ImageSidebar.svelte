@@ -2,6 +2,7 @@
 	import { base } from '$app/paths';
 	import type { Folder, FileData } from '$lib/stores/indexeddb-store';
 	import { createEventDispatcher } from 'svelte';
+	import { getPageNumber } from '$lib/utils/witness-utils';
 
 	const dispatch = createEventDispatcher<{
 		imageSelect: FileData;
@@ -11,7 +12,13 @@
 	export let selectedFile: FileData | undefined;
 	export let getImageFiles: (folder: Folder) => FileData[];
 
-	$: imageFiles = selectedFolder ? getImageFiles(selectedFolder) : [];
+	$: imageFiles = selectedFolder
+		? getImageFiles(selectedFolder).sort((a, b) => {
+				const pageA = parseInt(getPageNumber(a)) || 0;
+				const pageB = parseInt(getPageNumber(b)) || 0;
+				return pageA - pageB;
+			})
+		: [];
 
 	function handleImageClick(file: FileData) {
 		dispatch('imageSelect', file);

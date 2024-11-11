@@ -3,7 +3,6 @@ import { openDB, type IDBPDatabase } from 'idb';
 import { goto } from '$app/navigation';
 import { base } from '$app/paths';
 
-
 export interface FileData {
   name: string;
   size: number;
@@ -39,6 +38,12 @@ const initDB = async () => {
   });
 };
 
+// Helper function to extract witness number from folder ID
+function getWitnessNumber(folderId: string): number {
+  const match = folderId.match(/witness_(\d+)/);
+  return match ? parseInt(match[1]) : Infinity;
+}
+
 const { subscribe, set, update } = writable<Folder[]>([]);
 
 export const indexedDBStore = {
@@ -48,16 +53,18 @@ export const indexedDBStore = {
   init: async () => {
     await initDB();
     const allFolders = await db.getAll(STORE_NAME);
-    // Migrate old data structure to new one
-    const migratedFolders = allFolders.map(folder => ({
-      id: folder.id,
-      files: folder.files || folder.images?.map((img: any) => ({
-        ...img,
-        path: img.name
-      })) || [],
-      title: folder.title || 'Untitled Document',
-      description: folder.description || 'No description available'
-    }));
+    // Migrate old data structure to new one and sort by witness number
+    const migratedFolders = allFolders
+      .map(folder => ({
+        id: folder.id,
+        files: folder.files || folder.images?.map((img: any) => ({
+          ...img,
+          path: img.name
+        })) || [],
+        title: folder.title || 'Untitled Document',
+        description: folder.description || 'No description available'
+      }))
+      .sort((a, b) => getWitnessNumber(a.id) - getWitnessNumber(b.id));
     set(migratedFolders);
   },
   addFolder: async (folder: Folder) => {
@@ -86,7 +93,9 @@ export const indexedDBStore = {
     };
 
     await db.add(STORE_NAME, folderToAdd);
-    update(folders => [...folders, folderToAdd]);
+    update(folders => [...folders, folderToAdd].sort((a, b) =>
+      getWitnessNumber(a.id) - getWitnessNumber(b.id)
+    ));
   },
   removeFolder: async (id: string) => {
     await db.delete(STORE_NAME, id);

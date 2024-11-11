@@ -19,7 +19,15 @@
 	export let selectedFolder: Folder | undefined = undefined;
 	export let getImageFiles: (folder: Folder) => FileData[];
 
-	$: imageFiles = selectedFolder ? getImageFiles(selectedFolder) : [];
+	// Sort image files numerically by page number
+	$: imageFiles = selectedFolder
+		? getImageFiles(selectedFolder).sort((a, b) => {
+				const pageA = parseInt(getPageNumber(a)) || 0;
+				const pageB = parseInt(getPageNumber(b)) || 0;
+				return pageA - pageB;
+			})
+		: [];
+
 	$: witnessId = selectedFolder?.id?.replace('witness_', '') || '1';
 	$: witnessTitle = selectedFolder?.title || 'Witness title';
 	$: currentView = 'transcription' as WitnessView;
@@ -110,6 +118,12 @@
 			}
 		}
 	}
+
+	// Function to highlight page markers in the parsed content
+	$: formattedContent = parsedContent?.replace(
+		/\[Page (\d+)\]/g,
+		'<span class="bg-primary text-primary-content px-1 rounded">[Page $1]</span>'
+	);
 </script>
 
 <div class="flex h-full flex-shrink-0 flex-col gap-1">
@@ -231,10 +245,10 @@
 				on:scroll={handleScroll}
 			>
 				<div class="p-4">
-					{#if parsedContent}
+					{#if formattedContent}
 						<div class="prose max-w-none">
 							<div class="whitespace-pre-wrap font-serif leading-relaxed text-base-content">
-								{parsedContent}
+								{@html formattedContent}
 							</div>
 						</div>
 					{:else}
@@ -248,9 +262,6 @@
 
 <style>
 	:global(.prose) {
-		max-width: none;
-	}
-	:global(.prose p) {
 		margin: 0;
 	}
 </style>

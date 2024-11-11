@@ -46,25 +46,27 @@
 			}
 		});
 
-		// Create witness folders
-		return Array.from(witnessFolders.entries()).map(([witnessId, files]) => {
-			const folder: Folder = {
-				id: `witness_${witnessId}`,
-				files,
-				title: `Witness ${witnessId}`,
-				description: ''
-			};
+		// Create witness folders and sort by witness ID
+		return Array.from(witnessFolders.entries())
+			.sort(([a], [b]) => parseInt(a) - parseInt(b))
+			.map(([witnessId, files]) => {
+				const folder: Folder = {
+					id: `witness_${witnessId}`,
+					files,
+					title: `Witness ${witnessId}`,
+					description: ''
+				};
 
-			// Find first image file for initial selection
-			const imageFiles = getImageFiles(folder);
-			const selectedFile = imageFiles.length > 0 ? imageFiles[0] : undefined;
+				// Find first image file for initial selection
+				const imageFiles = getImageFiles(folder);
+				const selectedFile = imageFiles.length > 0 ? imageFiles[0] : undefined;
 
-			return {
-				folder,
-				selectedFile,
-				enabled: true
-			};
-		});
+				return {
+					folder,
+					selectedFile,
+					enabled: true
+				};
+			});
 	}
 
 	async function loadDocument(id: string) {
