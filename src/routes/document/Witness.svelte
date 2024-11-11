@@ -27,6 +27,8 @@
 	let showMiddleColumn = true;
 	let xmlContent: string | null = null;
 	let showParsedText = true;
+	let transcriptionContainer: HTMLElement;
+	let isScrolling = false; // Flag to prevent scroll handler during programmatic scrolling
 
 	$: if (selectedFolder) {
 		loadXMLContent(selectedFolder).then((content) => {
@@ -36,8 +38,40 @@
 
 	$: parsedContent = xmlContent ? parseTEIXML(xmlContent, showParsedText) : null;
 
+	// Function to scroll to a specific page in the transcription
+	function scrollToPage(pageNumber: string) {
+		if (!transcriptionContainer) return;
+
+		isScrolling = true; // Set flag to prevent scroll handler
+		const text = transcriptionContainer.innerText;
+		const pageMarker = `[Page ${pageNumber}]`;
+		const pageIndex = text.indexOf(pageMarker);
+
+		if (pageIndex !== -1) {
+			// Calculate approximate scroll position based on text position
+			const textBeforePage = text.substring(0, pageIndex);
+			const lineHeight = 24; // Approximate line height in pixels
+			const linesBeforePage = textBeforePage.split('\n').length;
+			const scrollPosition = linesBeforePage * lineHeight;
+
+			transcriptionContainer.scrollTo({
+				top: scrollPosition - 100, // Offset by 100px to show some context above
+				behavior: 'smooth'
+			});
+
+			// Reset scroll flag after animation
+			setTimeout(() => {
+				isScrolling = false;
+			}, 1000); // Adjust timeout based on scroll animation duration
+		}
+	}
+
 	function handleImageSelect(event: CustomEvent<FileData>) {
 		selectedFile = event.detail;
+		const pageNumber = getPageNumber(event.detail);
+		if (pageNumber) {
+			scrollToPage(pageNumber);
+		}
 	}
 
 	function handleViewChange(view: WitnessView) {
@@ -46,6 +80,35 @@
 
 	function toggleMiddleColumn() {
 		showMiddleColumn = !showMiddleColumn;
+	}
+
+	// Function to find the current visible page number based on scroll position
+	function handleScroll(event: Event) {
+		if (!transcriptionContainer || !imageFiles.length || isScrolling) return;
+
+		const text = transcriptionContainer.innerText;
+		const scrollTop = transcriptionContainer.scrollTop;
+		const scrollHeight = transcriptionContainer.scrollHeight;
+		const clientHeight = transcriptionContainer.clientHeight;
+		const scrollPercentage = scrollTop / (scrollHeight - clientHeight);
+
+		// Find all page markers in the text
+		const pageMarkers = text.match(/\[Page (\d+)\]/g);
+		if (!pageMarkers) return;
+
+		// Calculate approximate visible page based on scroll percentage
+		const totalPages = pageMarkers.length;
+		const visiblePageIndex = Math.floor(scrollPercentage * totalPages);
+		const pageMatch = pageMarkers[visiblePageIndex]?.match(/\[Page (\d+)\]/);
+
+		if (pageMatch) {
+			const pageNumber = pageMatch[1];
+			// Find the corresponding image file
+			const imageFile = imageFiles.find((file) => getPageNumber(file) === pageNumber);
+			if (imageFile && imageFile !== selectedFile) {
+				selectedFile = imageFile;
+			}
+		}
 	}
 </script>
 
@@ -160,7 +223,13 @@
 					</div>
 				</div>
 			</div>
-			<div class="flex-1 overflow-y-auto" role="region" aria-label={currentView}>
+			<div
+				class="flex-1 overflow-y-auto"
+				role="region"
+				aria-label={currentView}
+				bind:this={transcriptionContainer}
+				on:scroll={handleScroll}
+			>
 				<div class="p-4">
 					{#if parsedContent}
 						<div class="prose max-w-none">
