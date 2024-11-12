@@ -156,7 +156,7 @@
 						</div>
 					</div>
 					<div class="flex items-center gap-2">
-						<Toggle label="Parse TEI" class="scale-75" bind:checked={showParsedText} />
+						<Toggle label="Show TEI" class="scale-75" bind:checked={showParsedText} />
 					</div>
 				</div>
 			</div>
