@@ -1,5 +1,6 @@
 <script lang="ts">
 	import SettingsBar from '../SettingsBar.svelte';
+	import VariantGraph from '$lib/components/VariantGraph.svelte';
 	import { onMount } from 'svelte';
 
 	let xmlString = '';
@@ -20,7 +21,7 @@
 				},
 				{
 					id: '3',
-					content: 'The black and green cats'
+					content: 'The black and green cat'
 				},
 				{
 					id: '4',
@@ -122,12 +123,18 @@
 						</tbody>
 					</table>
 				</div>
-			{/if}
 
-			<div class="rounded-lg bg-base-200 p-4">
-				<h3 class="mb-2 text-lg font-medium">Raw JSON Response:</h3>
-				<pre class="whitespace-pre-wrap rounded bg-base-300 p-4 font-mono text-sm">{jsonData}</pre>
-			</div>
+				<div class="mt-8">
+					<h3 class="mb-4 text-lg font-medium">Variant Graph</h3>
+					<VariantGraph {alignmentData} />
+				</div>
+
+				<div class="rounded-lg bg-base-200 p-4">
+					<h3 class="mb-2 text-lg font-medium">Raw JSON Response:</h3>
+					<pre
+						class="whitespace-pre-wrap rounded bg-base-300 p-4 font-mono text-sm">{jsonData}</pre>
+				</div>
+			{/if}
 		</div>
 	</div>
 
@@ -135,15 +142,3 @@
 		<SettingsBar />
 	</div>
 </div>
-
-<style>
-	.variant {
-		background-color: rgba(255, 0, 0, 0.1);
-	}
-	.invariant {
-		background-color: rgba(0, 255, 0, 0.1);
-	}
-	.gap {
-		background-color: rgba(128, 128, 128, 0.1);
-	}
-</style>
