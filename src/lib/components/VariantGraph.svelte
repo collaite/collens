@@ -12,6 +12,10 @@
 		outgoing: Map<string, string[]>;
 	}
 
+	const baseY = 200;
+	const rowSpacing = 70;
+	const colSpacing = 200;
+
 	let nodes: Node[] = [];
 
 	$: if (alignmentData) {
@@ -19,10 +23,7 @@
 		const witnesses = alignmentData.witnesses;
 		nodes = [];
 
-		const baseY = 150;
-		const rowSpacing = 50;
-		const colSpacing = 180;
-		let currentX = 50;
+		let currentX = 100;
 
 		// Create start node
 		const startNode: Node = {
@@ -192,29 +193,25 @@
 	function createPath(from: Node, to: Node) {
 		const dx = to.x - from.x;
 		const dy = to.y - from.y;
-		const columnDiff = to.column - from.column;
+		const midX = from.x + dx / 2;
 
-		// Adjust curve height based on path length and row positions
-		const curveHeight = Math.abs(from.row - to.row) * 30;
-		const midX = from.x + dx * 0.5;
+		// Determine if we should route above or below based on relative positions
+		const shouldRouteAbove = from.row > to.row || (from.row === to.row && from.column < to.column);
+		const curveHeight = shouldRouteAbove ? -40 : 40;
 
-		if (columnDiff > 1 || Math.abs(dy) > 50) {
-			// Long paths or significant vertical difference - use curved path
-			const cp1x = from.x + dx * 0.25;
-			const cp2x = from.x + dx * 0.75;
-			const cp1y = from.y + (dy < 0 ? -curveHeight : curveHeight);
-			const cp2y = to.y + (dy < 0 ? curveHeight : -curveHeight);
-			return `M ${from.x + 40} ${from.y} C ${cp1x} ${cp1y}, ${cp2x} ${cp2y}, ${to.x - 40} ${to.y}`;
-		} else {
-			// Short paths - use simple curve
-			const cpY = from.y + dy / 2;
-			return `M ${from.x + 40} ${from.y} Q ${midX} ${cpY} ${to.x - 40} ${to.y}`;
+		// For nodes in the same row, use a straight line
+		if (from.row === to.row && Math.abs(dx) < colSpacing * 1.5) {
+			return `M ${from.x + 40} ${from.y} L ${to.x - 40} ${to.y}`;
 		}
+
+		// For nodes in different rows or far apart, use a curved path
+		const controlY = from.y + curveHeight;
+		return `M ${from.x + 40} ${from.y} Q ${midX} ${controlY} ${to.x - 40} ${to.y}`;
 	}
 </script>
 
 <div class="w-full overflow-x-auto">
-	<svg width={1000} height="400" class="font-sans">
+	<svg width={1200} height={500} class="font-sans">
 		<!-- Edges -->
 		{#each nodes as from}
 			{#each Array.from(from.outgoing.entries()) as [toId, witnesses]}
@@ -230,7 +227,7 @@
 					{#if witnesses.length > 0 && from.id !== 'start' && to.id !== 'end'}
 						<text
 							x={(from.x + to.x) / 2}
-							y={(from.y + to.y) / 2 - 15}
+							y={(from.y + (to.y > from.y ? 25 : -15))}
 							text-anchor="middle"
 							class="fill-gray-600 text-xs"
 						>
