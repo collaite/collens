@@ -107,7 +107,8 @@ function processNode(node: Node): string {
 
 export const WITNESS_VIEWS = [
   { id: 'transcription', label: 'Transcription' },
-  { id: 'notes', label: 'Notes' }
+  { id: 'notes', label: 'Notes' },
+  { id: 'xml', label: 'XML Source' }
 ] as const;
 
 export type WitnessView = typeof WITNESS_VIEWS[number]['id'];

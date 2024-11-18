@@ -3,6 +3,7 @@
 	import ImageSidebar from './ImageSidebar.svelte';
 	import type { Folder, FileData } from '$lib/stores/indexeddb-store';
 	import Toggle from '$lib/components/Toggle.svelte';
+	import CodeHighlight from '$lib/components/ui/CodeHighlight.svelte';
 	import {
 		getWitnessLabel,
 		getPageNumber,
@@ -30,8 +31,8 @@
 
 	$: witnessId = selectedFolder?.id?.replace('witness_', '') || '1';
 	$: witnessTitle = selectedFolder?.title || 'Witness title';
-	$: currentView = 'transcription' as WitnessView;
 
+	let currentView: WitnessView = 'transcription';
 	let showMiddleColumn = true;
 	let xmlContent: string | null = null;
 	let showParsedText = true;
@@ -136,20 +137,26 @@
 			<!-- Stats -->
 			<div class="mr-4 flex gap-2">
 				<button
-					class="h-4 w-4 rounded-full bg-error opacity-90 transition-all hover:opacity-100"
+					class="size-5 rounded-full bg-error opacity-90 transition-all hover:opacity-100"
 					title="Delete witness"
 					aria-label="Delete witness"
-				/>
+				>
+					<!-- 2 -->
+				</button>
 				<button
-					class="h-4 w-4 rounded-full bg-info opacity-90 transition-all hover:opacity-100"
+					class="size-5 rounded-full bg-info opacity-90 transition-all hover:opacity-100"
 					title="Compare witnesses"
 					aria-label="Compare witnesses"
-				/>
+				>
+					<!-- 2 -->
+				</button>
 				<button
-					class="h-4 w-4 rounded-full bg-success opacity-90 transition-all hover:opacity-100"
+					class="size-5 rounded-full bg-success opacity-90 transition-all hover:opacity-100"
 					title="Add annotation"
 					aria-label="Add annotation"
-				/>
+				>
+					<!-- 2 -->
+				</button>
 			</div>
 
 			<button
@@ -205,7 +212,7 @@
 
 		<!-- Right section with text -->
 		<div
-			class="flex w-[600px] flex-shrink-0 flex-col overflow-hidden rounded-lg bg-[#E6E2CF]"
+			class="flex w-[650px] flex-shrink-0 flex-col overflow-hidden rounded-lg bg-[#E6E2CF]"
 			style="filter: drop-shadow(rgba(0, 0, 0, 0.2) 0px 10px 14px)"
 		>
 			<div class="sticky top-0 z-10 border-b border-base-300 bg-base-200 px-4 py-2">
@@ -233,7 +240,7 @@
 						</div>
 					</div>
 					<div class="flex items-center gap-2">
-						<Toggle label="Parse TEI" class="scale-75" bind:checked={showParsedText} />
+						<Toggle label="Show TEI" class="scale-75" bind:checked={showParsedText} />
 					</div>
 				</div>
 			</div>
@@ -245,7 +252,15 @@
 				on:scroll={handleScroll}
 			>
 				<div class="p-4">
-					{#if formattedContent}
+					{#if currentView === 'xml'}
+						{#if xmlContent}
+							<CodeHighlight code={xmlContent} language="xml" />
+						{:else}
+							<div class="py-8 text-center text-base-content/60">Loading XML content...</div>
+						{/if}
+					{:else if xmlContent && !showParsedText}
+						<CodeHighlight code={xmlContent} language="xml" />
+					{:else if parsedContent}
 						<div class="prose max-w-none">
 							<div class="whitespace-pre-wrap font-serif leading-relaxed text-base-content">
 								{@html formattedContent}
