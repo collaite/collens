@@ -12,6 +12,9 @@
 	export let selectedFile: FileData | undefined;
 	export let getImageFiles: (folder: Folder) => FileData[];
 
+	let imagesContainer: HTMLElement;
+	let thumbnailElements: Record<string, HTMLElement> = {};
+
 	$: imageFiles = selectedFolder
 		? getImageFiles(selectedFolder).sort((a, b) => {
 				const pageA = parseInt(getPageNumber(a)) || 0;
@@ -19,6 +22,11 @@
 				return pageA - pageB;
 			})
 		: [];
+
+	$: if (selectedFile && thumbnailElements[selectedFile.name]) {
+		const thumbnailElement = thumbnailElements[selectedFile.name];
+		thumbnailElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+	}
 
 	function handleImageClick(file: FileData) {
 		dispatch('imageSelect', file);
@@ -28,9 +36,10 @@
 <div class="flex h-full flex-col rounded-lg bg-base-200">
 	<!-- Pages -->
 	{#if selectedFolder && imageFiles.length > 0}
-		<div class="flex-1 space-y-1 overflow-y-auto p-1">
+		<div class="flex-1 space-y-1 overflow-y-auto p-1" bind:this={imagesContainer}>
 			{#each imageFiles as file, index}
 				<button
+					bind:this={thumbnailElements[file.name]}
 					class="group relative aspect-[4/5] w-full"
 					on:click={() => handleImageClick(file)}
 					aria-label="Select image {index + 1}"
