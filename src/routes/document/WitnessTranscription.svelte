@@ -21,12 +21,13 @@
 
 	let currentView: WitnessView = 'transcription';
 	let transcriptionContainer: HTMLElement;
+	let contentContainer: HTMLElement;
 	let isScrolling = false;
 
 	// Function to highlight page markers in the parsed content
 	$: formattedContent = parsedContent?.replace(
 		/\[Page (\d+)\]/g,
-		'<span class="bg-primary text-primary-content px-1 rounded">[Page $1]</span>'
+		'<span class="page-marker bg-primary text-primary-content px-1 rounded" data-page="$1">[Page $1]</span>'
 	);
 
 	function handleViewChange(view: WitnessView) {
@@ -34,21 +35,19 @@
 	}
 
 	export function scrollToPage(pageNumber: string) {
-		if (!transcriptionContainer) return;
+		if (!contentContainer) return;
 
 		isScrolling = true;
-		const text = transcriptionContainer.innerText;
-		const pageMarker = `[Page ${pageNumber}]`;
-		const pageIndex = text.indexOf(pageMarker);
+		const pageMarker = contentContainer.querySelector(`[data-page="${pageNumber}"]`);
 
-		if (pageIndex !== -1) {
-			const textBeforePage = text.substring(0, pageIndex);
-			const lineHeight = 24;
-			const linesBeforePage = textBeforePage.split('\n').length;
-			const scrollPosition = linesBeforePage * lineHeight;
+		if (pageMarker) {
+			const markerTop = pageMarker.getBoundingClientRect().top;
+			const containerTop = contentContainer.getBoundingClientRect().top;
+			const currentScroll = contentContainer.scrollTop;
+			const targetScroll = currentScroll + (markerTop - containerTop) - 100;
 
-			transcriptionContainer.scrollTo({
-				top: scrollPosition - 100,
+			contentContainer.scrollTo({
+				top: targetScroll,
 				behavior: 'smooth'
 			});
 
@@ -59,24 +58,34 @@
 	}
 
 	function handleScroll(event: Event) {
-		if (!transcriptionContainer || isScrolling) return;
+		if (!contentContainer || isScrolling) return;
 
-		const text = transcriptionContainer.innerText;
-		const scrollTop = transcriptionContainer.scrollTop;
-		const scrollHeight = transcriptionContainer.scrollHeight;
-		const clientHeight = transcriptionContainer.clientHeight;
-		const scrollPercentage = scrollTop / (scrollHeight - clientHeight);
+		const pageMarkers = Array.from(contentContainer.querySelectorAll('.page-marker'));
+		const containerTop = contentContainer.getBoundingClientRect().top;
+		const containerHeight = contentContainer.clientHeight;
+		const containerBottom = containerTop + containerHeight;
 
-		const pageMarkers = text.match(/\[Page (\d+)\]/g);
-		if (!pageMarkers) return;
+		// Find the first visible page marker
+		const visibleMarker = pageMarkers.find((marker) => {
+			const rect = marker.getBoundingClientRect();
+			const markerMiddle = rect.top + rect.height / 2;
+			return markerMiddle >= containerTop && markerMiddle <= containerBottom;
+		});
 
-		const totalPages = pageMarkers.length;
-		const visiblePageIndex = Math.floor(scrollPercentage * totalPages);
-		const pageMatch = pageMarkers[visiblePageIndex]?.match(/\[Page (\d+)\]/);
-
-		if (pageMatch) {
-			const pageNumber = pageMatch[1];
-			dispatch('pageScroll', { pageNumber });
+		if (visibleMarker) {
+			const pageNumber = (visibleMarker as HTMLElement).dataset.page;
+			if (pageNumber) {
+				dispatch('pageScroll', { pageNumber });
+			}
+		} else if (contentContainer.scrollTop + containerHeight >= contentContainer.scrollHeight) {
+			// If we're at the bottom, dispatch the last page
+			const lastMarker = pageMarkers[pageMarkers.length - 1] as HTMLElement;
+			if (lastMarker) {
+				const pageNumber = lastMarker.dataset.page;
+				if (pageNumber) {
+					dispatch('pageScroll', { pageNumber });
+				}
+			}
 		}
 	}
 </script>
@@ -118,9 +127,12 @@
 		role="region"
 		aria-label={currentView}
 		bind:this={transcriptionContainer}
-		on:scroll={handleScroll}
 	>
-		<div class="scrollbar-thin h-full overflow-y-auto overflow-x-scroll p-4">
+		<div
+			class="scrollbar-thin h-full overflow-y-auto overflow-x-scroll p-4"
+			bind:this={contentContainer}
+			on:scroll={handleScroll}
+		>
 			{#if currentView === 'xml'}
 				{#if xmlContent}
 					<CodeHighlight code={xmlContent} language="xml" />
