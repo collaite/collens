@@ -39,7 +39,11 @@
 
 	<div class="space-y-3">
 		{#each witnesses as witness}
-			<div class="rounded-lg bg-primary/80 p-3">
+			<div
+				class="rounded-lg bg-primary/80 p-3 filter"
+				class:opacity-60={!witness.enabled}
+				class:grayscale={!witness.enabled}
+			>
 				<div class="mb-2 flex items-center justify-between">
 					<div class="flex items-center gap-2">
 						<span class="font-medium">{witness.id}-</span>
