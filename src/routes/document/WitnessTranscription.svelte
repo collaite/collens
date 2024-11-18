@@ -114,13 +114,13 @@
 		</div>
 	</div>
 	<div
-		class="flex-1 overflow-y-auto"
+		class="flex-1 overflow-hidden"
 		role="region"
 		aria-label={currentView}
 		bind:this={transcriptionContainer}
 		on:scroll={handleScroll}
 	>
-		<div class="p-4">
+		<div class="scrollbar-thin h-full overflow-y-auto overflow-x-scroll p-4">
 			{#if currentView === 'xml'}
 				{#if xmlContent}
 					<CodeHighlight code={xmlContent} language="xml" />
@@ -157,5 +157,24 @@
 <style>
 	:global(.prose) {
 		margin: 0;
+	}
+
+	.scrollbar-thin {
+		scrollbar-width: auto;
+		scrollbar-color: rgba(0, 0, 0, 0.2) transparent;
+	}
+
+	.scrollbar-thin::-webkit-scrollbar {
+		width: 8px;
+		height: 8px;
+	}
+
+	.scrollbar-thin::-webkit-scrollbar-track {
+		background: transparent;
+	}
+
+	.scrollbar-thin::-webkit-scrollbar-thumb {
+		background-color: rgba(0, 0, 0, 0.2);
+		border-radius: 4px;
 	}
 </style>

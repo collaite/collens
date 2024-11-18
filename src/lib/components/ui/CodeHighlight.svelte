@@ -37,8 +37,6 @@
 		margin: 1rem 0;
 		padding: 1rem;
 		border-radius: 0.5rem;
-
-		/* background: #faf8f5; */
 		color: brown;
 		font-size: 12px;
 	}
@@ -46,7 +44,6 @@
 	pre {
 		margin: 0;
 		padding: 0;
-		overflow-x: auto;
 		background: transparent;
 		font-family: Consolas, Menlo, Monaco, 'Andale Mono WT', 'Andale Mono', 'Lucida Console',
 			'Lucida Sans Typewriter', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Liberation Mono',
@@ -60,7 +57,7 @@
 		font-size: inherit;
 		line-height: inherit;
 		background: transparent;
-		white-space: pre-wrap;
+		white-space: pre;
 		font-size: 13px !important;
 		line-height: 13px !important;
 	}
