@@ -8,11 +8,9 @@
 		class?: any;
 	}
 
-	let {
-		checked = $bindable(false),
-		label = undefined,
-		class: className = undefined
-	}: Props = $props();
+	export let checked = false;
+	export let label = undefined;
+	export let className = undefined;
 
 	function handleChange(event: Event) {
 		const target = event.target as HTMLInputElement;
@@ -25,7 +23,7 @@
 	{#if label}
 		<span class="text-sm">{label}</span>
 	{/if}
-	<input type="checkbox" class={'toggle ' + className} bind:checked on:change={handleChange} />
+	<input type="checkbox" class={'toggle ' + className} {checked} on:change={handleChange} />
 </label>
 
 <style>

@@ -1,37 +1,56 @@
 <script lang="ts">
 	import SettingsBar from '../SettingsBar.svelte';
-	import VariantGraph from '$lib/components/VariantGraph.svelte';
+	import VariantGraph from './VariantGraph.svelte';
 	import { onMount } from 'svelte';
 
 	let xmlString = '';
 	let jsonData = '';
 	let alignmentData: any = null;
 
+	// Define witnesses data structure
+	let witnesses = [
+		{
+			id: '1',
+			title: 'Witness 1',
+			enabled: true,
+			metrics: { red: 5, blue: 7, green: 10, yellow: 8 }
+		},
+		{
+			id: '2',
+			title: 'Witness 2',
+			enabled: true,
+			metrics: { red: 6, blue: 8, green: 9, yellow: 7 }
+		},
+		{
+			id: '3',
+			title: 'Witness 3',
+			enabled: true,
+			metrics: { red: 4, blue: 6, green: 11, yellow: 9 }
+		},
+		{
+			id: '4',
+			title: 'Witness 4',
+			enabled: true,
+			metrics: { red: 7, blue: 5, green: 8, yellow: 10 }
+		},
+		{
+			id: '5',
+			title: 'Witness 5',
+			enabled: true,
+			metrics: { red: 5, blue: 7, green: 12, yellow: 6 }
+		}
+	];
+
 	async function fetchCollation() {
+		// Only include enabled witnesses in the payload
+		const enabledWitnesses = witnesses.filter((w) => w.enabled);
+
 		const payload = {
 			algorithm: 'dekker',
-			witnesses: [
-				{
-					id: '1',
-					content: 'The black cat'
-				},
-				{
-					id: '2',
-					content: 'The black and white cat'
-				},
-				{
-					id: '3',
-					content: 'The black and green cat'
-				},
-				{
-					id: '4',
-					content: 'The black very special cat'
-				},
-				{
-					id: '5',
-					content: 'The black not very special cat'
-				}
-			]
+			witnesses: enabledWitnesses.map((w) => ({
+				id: w.id,
+				content: getWitnessContent(w.id) // Helper function to get content based on ID
+			}))
 		};
 
 		try {
@@ -63,9 +82,37 @@
 				});
 			}
 
-			alignmentData = jsonResult;
+			// Update alignmentData with only the enabled witness IDs
+			alignmentData = {
+				...jsonResult,
+				witnesses: enabledWitnesses.map((w) => w.id)
+			};
 		} catch (error) {
 			console.error('Error fetching collation:', error);
+		}
+	}
+
+	// Helper function to get witness content based on ID
+	function getWitnessContent(id: string): string {
+		const contents: { [key: string]: string } = {
+			'1': 'The black cat',
+			'2': 'The black and white cat',
+			'3': 'The black and green cat',
+			'4': 'The black very special cat',
+			'5': 'The black not very special cat'
+		};
+		return contents[id] || '';
+	}
+
+	// Handle witness toggle event
+	function handleWitnessToggle(event: CustomEvent) {
+		const { id } = event.detail;
+		const witness = witnesses.find((w) => w.id === id);
+		if (witness) {
+			// Trigger reactivity by reassigning the witnesses array
+			witnesses = witnesses;
+			// Refetch collation when witness visibility changes
+			fetchCollation();
 		}
 	}
 
@@ -87,13 +134,14 @@
 	}
 </script>
 
-<div class="relative">
+<div class="relative overflow-hidden">
 	<!-- Content -->
-	<div class="flex h-full gap-8 overflow-x-auto pl-[350px] pr-10">
-		<div class="mt-20 text-xl">collaite x</div>
+	<div class="grid h-full gap-8 overflow-x-auto pl-[350px] pr-10">
+		<div class="mt-4 text-xl">Collaite X integration</div>
 
 		<div class="flex flex-col gap-8">
 			{#if alignmentData}
+				<h3 class="mb-4 text-lg font-medium">Alignment Data</h3>
 				<div class="overflow-x-auto">
 					<table class="border-separate border-spacing-[2px]">
 						<tbody>
@@ -124,21 +172,22 @@
 					</table>
 				</div>
 
-				<div class="mt-8">
+				<div class="mt-8 w-full overflow-x-scroll rounded-lg bg-gray-200/50 p-4">
 					<h3 class="mb-4 text-lg font-medium">Variant Graph</h3>
 					<VariantGraph {alignmentData} />
 				</div>
 
-				<div class="rounded-lg bg-base-200 p-4">
+				<div class=" rounded-lg bg-gray-200/50 p-4">
 					<h3 class="mb-2 text-lg font-medium">Raw JSON Response:</h3>
-					<pre
-						class="whitespace-pre-wrap rounded bg-base-300 p-4 font-mono text-sm">{jsonData}</pre>
+					<pre class="h-[300px] overflow-auto whitespace-pre-wrap rounded p-4 font-mono text-sm">
+						{jsonData}
+					</pre>
 				</div>
 			{/if}
 		</div>
 	</div>
 
 	<div class="absolute bottom-4 left-4 top-4 flex gap-8 overflow-x-auto pr-10">
-		<SettingsBar />
+		<SettingsBar {witnesses} on:toggleWitness={handleWitnessToggle} />
 	</div>
 </div>
