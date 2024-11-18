@@ -221,6 +221,26 @@
 						<h2 class="text-base font-bold">
 							{getWitnessLabel(witnessId)} - Page {selectedFile ? getPageNumber(selectedFile) : ''}
 						</h2>
+						<!-- <div class="mt-0.5 flex items-center gap-2 text-xs">
+							{#each WITNESS_VIEWS as view, i}
+								{#if i > 0}
+									<span class="text-base-content/30" aria-hidden="true">•</span>
+								{/if}
+								<button
+									class="text-base-content/60 transition-colors hover:text-base-content {currentView ===
+									view.id
+										? 'font-medium !text-primary'
+										: ''}"
+									on:click={() => handleViewChange(view.id)}
+									aria-current={currentView === view.id}
+								>
+									{view.label}
+								</button>
+							{/each}
+						</div> -->
+					</div>
+					<div class="flex items-center gap-2">
+						<!-- <Toggle label="Show TEI" class="scale-75" bind:checked={showParsedText} /> -->
 						<div class="mt-0.5 flex items-center gap-2 text-xs">
 							{#each WITNESS_VIEWS as view, i}
 								{#if i > 0}
@@ -238,9 +258,6 @@
 								</button>
 							{/each}
 						</div>
-					</div>
-					<div class="flex items-center gap-2">
-						<Toggle label="Show TEI" class="scale-75" bind:checked={showParsedText} />
 					</div>
 				</div>
 			</div>
