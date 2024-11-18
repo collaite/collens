@@ -4,11 +4,13 @@
 	import type { Folder, FileData } from '$lib/stores/indexeddb-store';
 	import Toggle from '$lib/components/Toggle.svelte';
 	import CodeHighlight from '$lib/components/ui/CodeHighlight.svelte';
+	import HeaderEntry from './HeaderEntry.svelte';
 	import {
 		getWitnessLabel,
 		getPageNumber,
 		loadXMLContent,
 		parseTEIXML,
+		parseTEIHeader,
 		WITNESS_VIEWS,
 		type WitnessView
 	} from '$lib/utils/witness-utils';
@@ -46,6 +48,7 @@
 	}
 
 	$: parsedContent = xmlContent ? parseTEIXML(xmlContent, showParsedText) : null;
+	$: headerEntries = xmlContent ? parseTEIHeader(xmlContent) : [];
 
 	// Function to scroll to a specific page in the transcription
 	function scrollToPage(pageNumber: string) {
@@ -221,26 +224,8 @@
 						<h2 class="text-base font-bold">
 							{getWitnessLabel(witnessId)} - Page {selectedFile ? getPageNumber(selectedFile) : ''}
 						</h2>
-						<!-- <div class="mt-0.5 flex items-center gap-2 text-xs">
-							{#each WITNESS_VIEWS as view, i}
-								{#if i > 0}
-									<span class="text-base-content/30" aria-hidden="true">•</span>
-								{/if}
-								<button
-									class="text-base-content/60 transition-colors hover:text-base-content {currentView ===
-									view.id
-										? 'font-medium !text-primary'
-										: ''}"
-									on:click={() => handleViewChange(view.id)}
-									aria-current={currentView === view.id}
-								>
-									{view.label}
-								</button>
-							{/each}
-						</div> -->
 					</div>
 					<div class="flex items-center gap-2">
-						<!-- <Toggle label="Show TEI" class="scale-75" bind:checked={showParsedText} /> -->
 						<div class="mt-0.5 flex items-center gap-2 text-xs">
 							{#each WITNESS_VIEWS as view, i}
 								{#if i > 0}
@@ -274,6 +259,18 @@
 							<CodeHighlight code={xmlContent} language="xml" />
 						{:else}
 							<div class="py-8 text-center text-base-content/60">Loading XML content...</div>
+						{/if}
+					{:else if currentView === 'notes'}
+						{#if headerEntries.length}
+							<div class="prose max-w-none">
+								<div class="font-serif leading-relaxed">
+									{#each headerEntries as entry}
+										<HeaderEntry {entry} level={0} />
+									{/each}
+								</div>
+							</div>
+						{:else}
+							<div class="py-8 text-center text-base-content/60">Loading notes...</div>
 						{/if}
 					{:else if xmlContent && !showParsedText}
 						<CodeHighlight code={xmlContent} language="xml" />
