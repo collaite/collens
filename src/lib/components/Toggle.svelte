@@ -1,4 +1,7 @@
 <script lang="ts">
+	import { createEventDispatcher } from 'svelte';
+	const dispatch = createEventDispatcher();
+
 	interface Props {
 		checked?: boolean;
 		label?: string | undefined;
@@ -10,13 +13,19 @@
 		label = undefined,
 		class: className = undefined
 	}: Props = $props();
+
+	function handleChange(event: Event) {
+		const target = event.target as HTMLInputElement;
+		checked = target.checked;
+		dispatch('change', { checked });
+	}
 </script>
 
 <label class="flex cursor-pointer items-center gap-2">
 	{#if label}
 		<span class="text-sm">{label}</span>
 	{/if}
-	<input type="checkbox" class={'toggle ' + className} bind:checked />
+	<input type="checkbox" class={'toggle ' + className} bind:checked on:change={handleChange} />
 </label>
 
 <style>

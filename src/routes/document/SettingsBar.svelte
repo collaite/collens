@@ -26,7 +26,8 @@
 
 	export let witnesses: WitnessData[] = [];
 
-	function handleToggle(witness: WitnessData) {
+	function handleToggle(witness: WitnessData, event: CustomEvent<{ checked: boolean }>) {
+		witness.enabled = event.detail.checked;
 		dispatch('toggleWitness', { id: witness.id });
 	}
 </script>
@@ -45,7 +46,7 @@
 						<span class="text-content/70">{witness.title}</span>
 					</div>
 
-					<Toggle checked={witness.enabled} on:change={() => handleToggle(witness)} />
+					<Toggle checked={witness.enabled} on:change={(e) => handleToggle(witness, e)} />
 				</div>
 
 				<div class="flex items-center justify-between">

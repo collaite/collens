@@ -123,7 +123,8 @@
 		}
 	}
 
-	function handleWitnessToggle(witnessId: string) {
+	function handleWitnessToggle(event: CustomEvent<{ id: string }>) {
+		const witnessId = `witness_${event.detail.id}`;
 		const witness = witnesses.find((w) => w.folder.id === witnessId);
 		if (witness) {
 			witness.enabled = !witness.enabled;
@@ -132,7 +133,7 @@
 	}
 
 	$: settingsWitnesses = witnesses.map((w) => ({
-		id: w.folder.id.replace('witness_', 'W'),
+		id: w.folder.id.split('_')[1], // Just use the number part
 		title: w.folder.title || '',
 		enabled: w.enabled,
 		metrics: {
@@ -176,10 +177,7 @@
 		</div>
 
 		<div class="absolute bottom-4 left-4 top-4 flex gap-8 overflow-x-auto pr-10">
-			<SettingsBar
-				witnesses={settingsWitnesses}
-				on:toggleWitness={(e) => handleWitnessToggle(e.detail.id.replace('W', 'witness_'))}
-			/>
+			<SettingsBar witnesses={settingsWitnesses} on:toggleWitness={handleWitnessToggle} />
 		</div>
 	{/if}
 </div>
