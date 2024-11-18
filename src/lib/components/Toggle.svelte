@@ -1,15 +1,22 @@
 <script lang="ts">
-	export let checked = false;
-	export let label: string | undefined = undefined;
-	let className = undefined; // class is a reserved keyword in JS, with initialization
-	export { className as class };
+	interface Props {
+		checked?: boolean;
+		label?: string | undefined;
+		class?: any;
+	}
+
+	let {
+		checked = $bindable(false),
+		label = undefined,
+		class: className = undefined
+	}: Props = $props();
 </script>
 
 <label class="flex cursor-pointer items-center gap-2">
 	{#if label}
 		<span class="text-sm">{label}</span>
 	{/if}
-	<input type="checkbox" class={'toggle ' + className} bind:checked on:change />
+	<input type="checkbox" class={'toggle ' + className} bind:checked />
 </label>
 
 <style>
