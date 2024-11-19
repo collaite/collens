@@ -5,7 +5,12 @@
 	import WitnessHeader from './WitnessHeader.svelte';
 	import WitnessImageViewer from './WitnessImageViewer.svelte';
 	import WitnessTranscription from './WitnessTranscription.svelte';
-	import { getPageNumber, loadXMLContent, parseTEIXML, parseTEIHeader } from '$lib/utils/witness-utils';
+	import {
+		getPageNumber,
+		loadXMLContent,
+		parseTEIXML,
+		parseTEIHeader
+	} from '$lib/utils/witness-utils';
 
 	export let selectedFile: FileData | undefined = undefined;
 	export let selectedFolder: Folder | undefined = undefined;
@@ -34,7 +39,8 @@
 		});
 	}
 
-	$: parsedContent = xmlContent ? parseTEIXML(xmlContent, showParsedText) : null;
+	// Parse XML content with default witness type ('1c')
+	$: parsedContent = xmlContent ? parseTEIXML(xmlContent) : null;
 	$: headerEntries = xmlContent ? parseTEIHeader(xmlContent) : [];
 
 	function handleImageSelect(event: CustomEvent<FileData>) {

@@ -6,7 +6,8 @@
 		getWitnessLabel,
 		getPageNumber,
 		WITNESS_VIEWS,
-		type WitnessView
+		type WitnessView,
+		parseTEIXML
 	} from '$lib/utils/witness-utils';
 	import { createEventDispatcher } from 'svelte';
 
@@ -23,6 +24,7 @@
 	let transcriptionContainer: HTMLElement;
 	let contentContainer: HTMLElement;
 	let isScrolling = false;
+	let witnessType: '1a' | '1b' | '1c' = '1c';
 
 	// Function to highlight page markers in the parsed content
 	$: formattedContent = parsedContent?.replace(
@@ -30,8 +32,20 @@
 		'<span class="page-marker bg-primary text-primary-content px-1 rounded" data-page="$1">[Page $1]</span>'
 	);
 
+	// Parse XML content when witness type changes
+	$: if (xmlContent && showParsedText) {
+		parsedContent = parseTEIXML(xmlContent, witnessType);
+	}
+
 	function handleViewChange(view: WitnessView) {
 		currentView = view;
+	}
+
+	function handleWitnessTypeChange(type: '1a' | '1b' | '1c') {
+		witnessType = type;
+		if (xmlContent) {
+			parsedContent = parseTEIXML(xmlContent, type);
+		}
 	}
 
 	export function scrollToPage(pageNumber: string) {
@@ -101,7 +115,40 @@
 					{getWitnessLabel(witnessId)} - Page {selectedFile ? getPageNumber(selectedFile) : ''}
 				</h2>
 			</div>
-			<div class="flex items-center gap-2">
+			<div class="flex items-center gap-4">
+				{#if currentView === 'transcription'}
+					<div class="flex items-center gap-2 text-xs">
+						<button
+							class="text-base-content/60 transition-colors hover:text-base-content {witnessType ===
+							'1a'
+								? 'font-medium !text-primary'
+								: ''}"
+							on:click={() => handleWitnessTypeChange('1a')}
+						>
+							Original
+						</button>
+						<span class="text-base-content/30" aria-hidden="true">•</span>
+						<button
+							class="text-base-content/60 transition-colors hover:text-base-content {witnessType ===
+							'1b'
+								? 'font-medium !text-primary'
+								: ''}"
+							on:click={() => handleWitnessTypeChange('1b')}
+						>
+							Intermediate
+						</button>
+						<span class="text-base-content/30" aria-hidden="true">•</span>
+						<button
+							class="text-base-content/60 transition-colors hover:text-base-content {witnessType ===
+							'1c'
+								? 'font-medium !text-primary'
+								: ''}"
+							on:click={() => handleWitnessTypeChange('1c')}
+						>
+							Final
+						</button>
+					</div>
+				{/if}
 				<div class="mt-0.5 flex items-center gap-2 text-xs">
 					{#each WITNESS_VIEWS as view, i}
 						{#if i > 0}
