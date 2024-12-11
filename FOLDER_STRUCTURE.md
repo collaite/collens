@@ -57,15 +57,6 @@ Each witness directory must contain:
      - Descriptive name (e.g., `ms-aladin-simplified.xml`, `Sheherazade-tsfolio.xml`)
    - See [XML Parser Documentation](./PARSER_DOCUMENTATION.md) for XML structure details
 
-2. **Derived Text Files**
-   - Generated from XML source with different processing rules
-   - Required files:
-     - `*_1a.txt`: Original text version
-     - `*_1b.txt`: Intermediate version
-   - Names should match the base XML filename
-     - Example: If XML is `ms-aladin-simplified.xml`:
-       - `ms-aladin-simplified_1a.txt`
-       - `ms-aladin-simplified_1b.txt`
 
 ## Example Projects
 
@@ -77,15 +68,11 @@ example1/
 │   ├── 1.png
 │   ├── 2.png
 │   ├── 3.png
-│   ├── ms-aladin-simplified_1a.txt
-│   ├── ms-aladin-simplified_1b.txt
 │   └── ms-aladin-simplified.xml
 └── witness_2/
     ├── 1.png
     ├── 2.png
     ├── 3.png
-    ├── ts-aladin-simplified_1a.txt
-    ├── ts-aladin-simplified_1b.txt
     └── ts-aladin-simplified.xml
 ```
 
@@ -125,7 +112,6 @@ sheherazade/
 2. **File Requirements**
    - Each witness must have at least one image
    - Each witness must have an XML transcription file
-   - Derived text files (1a, 1b) should be generated from the XML
 
 3. **Image Formats**
    - Supported formats: PNG, JPG
