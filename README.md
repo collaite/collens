@@ -7,6 +7,7 @@
 
 - [XML Parser Documentation](./PARSER_DOCUMENTATION.md) - Detailed documentation of the XML parser functionality and usage
 - [Folder Structure Documentation](./FOLDER_STRUCTURE.md) - Required folder organization and file naming conventions
+- [Parser Improvements Proposal](./PARSER_IMPROVEMENTS.md) - Proposed enhancements and optimizations for the XML parser
 
 ## Local development
 Be sure you have installed node and pnpm on your computer before running the application locally.
