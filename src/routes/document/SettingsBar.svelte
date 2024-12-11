@@ -1,12 +1,14 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
-	import MetricCircle from '../../lib/components/MetricCircle.svelte';
 	import { base } from '$app/paths';
 	import { page } from '$app/stores';
+	import Toggle from '../../lib/components/Toggle.svelte';
+	import { createEventDispatcher } from 'svelte';
+
+	import MetricCircle from '../../lib/components/MetricCircle.svelte';
+
 	import IcBaselineArrowBack from '~icons/ic/baseline-arrow-back';
 	import PhLinkLight from '~icons/ph/link-light';
 	import FluentDocumentBulletListMultiple20Filled from '~icons/fluent/document-bullet-list-multiple-20-filled';
-	import Toggle from '../../lib/components/Toggle.svelte';
 
 	const dispatch = createEventDispatcher();
 

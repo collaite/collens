@@ -1,59 +1,50 @@
 <script lang="ts">
+	import { indexedDBStore } from '$lib/stores/indexeddb-store';
+	import { witnessesStore } from '$lib/stores/witnesses.store';
+	import { loadXMLContent, parseTEIXML } from '$lib/utils/witness-utils';
 	import SettingsBar from '../SettingsBar.svelte';
 	import VariantGraph from './VariantGraph.svelte';
 	import { onMount } from 'svelte';
+	import { page } from '$app/stores';
 
 	let xmlString = '';
 	let jsonData = '';
 	let alignmentData: any = null;
-
-	// Define witnesses data structure
-	let witnesses = [
-		{
-			id: '1',
-			title: 'Witness 1',
-			enabled: true,
-			metrics: { red: 5, blue: 7, green: 10, yellow: 8 }
-		},
-		{
-			id: '2',
-			title: 'Witness 2',
-			enabled: true,
-			metrics: { red: 6, blue: 8, green: 9, yellow: 7 }
-		},
-		{
-			id: '3',
-			title: 'Witness 3',
-			enabled: true,
-			metrics: { red: 4, blue: 6, green: 11, yellow: 9 }
-		},
-		{
-			id: '4',
-			title: 'Witness 4',
-			enabled: true,
-			metrics: { red: 7, blue: 5, green: 8, yellow: 10 }
-		},
-		{
-			id: '5',
-			title: 'Witness 5',
-			enabled: true,
-			metrics: { red: 5, blue: 7, green: 12, yellow: 6 }
-		}
-	];
+	let loading = true;
+	let error = '';
 
 	async function fetchCollation() {
 		// Only include enabled witnesses in the payload
-		const enabledWitnesses = witnesses.filter((w) => w.enabled);
-
-		const payload = {
-			algorithm: 'dekker',
-			witnesses: enabledWitnesses.map((w) => ({
-				id: w.id,
-				content: getWitnessContent(w.id) // Helper function to get content based on ID
-			}))
-		};
+		const enabledWitnesses = $witnessesStore.filter((w) => w.enabled);
 
 		try {
+			// Get transcriptions for each witness
+			const witnessTranscriptions = await Promise.all(
+				enabledWitnesses.map(async (w) => {
+					const xmlContent = await loadXMLContent(w.folder);
+					if (!xmlContent) {
+						console.error(`No XML content found for witness ${w.folder.id}`);
+						return null;
+					}
+					// Parse the XML to get the final transcription
+					const transcription = parseTEIXML(xmlContent, '1c'); // Using 1c to get final version
+					return {
+						id: w.folder.id.split('_')[1], // Extract the number from witness_X
+						content: transcription
+					};
+				})
+			);
+
+			// Filter out any witnesses that failed to load
+			const validWitnesses = witnessTranscriptions.filter(
+				(w): w is { id: string; content: string } => w !== null
+			);
+
+			const payload = {
+				algorithm: 'dekker',
+				witnesses: validWitnesses
+			};
+
 			const jsonResponse = await fetch('https://collatex.net/demo/collate', {
 				method: 'POST',
 				headers: {
@@ -85,54 +76,82 @@
 			// Update alignmentData with only the enabled witness IDs
 			alignmentData = {
 				...jsonResult,
-				witnesses: enabledWitnesses.map((w) => w.id)
+				witnesses: validWitnesses.map((w) => w.id)
 			};
 		} catch (error) {
 			console.error('Error fetching collation:', error);
 		}
 	}
 
-	// Helper function to get witness content based on ID
-	function getWitnessContent(id: string): string {
-		const contents: { [key: string]: string } = {
-			'1': 'The black cat',
-			'2': 'The black and white cat',
-			'3': 'The black and green cat',
-			'4': 'The black very special cat',
-			'5': 'The black not very special cat'
-		};
-		return contents[id] || '';
+	// Handle witness toggle event
+	function handleWitnessToggle(event: CustomEvent<{ id: string }>) {
+		witnessesStore.toggleWitness(event.detail.id);
+		// Refetch collation when witness visibility changes
+		fetchCollation();
 	}
 
-	// Handle witness toggle event
-	function handleWitnessToggle(event: CustomEvent) {
-		const { id } = event.detail;
-		const witness = witnesses.find((w) => w.id === id);
-		if (witness) {
-			// Trigger reactivity by reassigning the witnesses array
-			witnesses = witnesses;
-			// Refetch collation when witness visibility changes
-			fetchCollation();
+	async function loadDocument(id: string) {
+		try {
+			await indexedDBStore.init();
+			const selectedDocument = $indexedDBStore.find((folder) => folder.id === id);
+
+			if (selectedDocument) {
+				witnessesStore.getWitnessesFromDocument(selectedDocument);
+				fetchCollation();
+			} else {
+				error = 'Document not found.';
+			}
+		} catch (e) {
+			console.error('Error loading document:', e);
+			error = 'An error occurred while loading the document.';
+		} finally {
+			loading = false;
 		}
 	}
 
 	onMount(() => {
-		fetchCollation();
+		const documentId = $page.url.searchParams.get('id');
+		if (documentId) {
+			loadDocument(documentId);
+		}
 	});
 
+	// React to URL changes
+	$: {
+		const documentId = $page.url.searchParams.get('id');
+		if (documentId) {
+			loadDocument(documentId);
+		}
+	}
+
 	// This function determines if a column contains identical text across all witnesses
-	// Returns true if all non-empty values in the column are the same
-	// For example:
-	// - ["The", "The", "The", "The", "The"] returns true (all identical)
-	// - ["black", "black", "striped", "black"] returns false (has different values)
-	// - ["cat", "cat", "cat", "", "cat"] returns true (all non-empty values are identical)
 	function isInvariant(column: string[]): boolean {
 		// Filter out empty values
 		const nonEmptyValues = column.filter((v) => v.length > 0);
 		// Check if we have any values and if all values are the same
 		return nonEmptyValues.length > 0 && new Set(nonEmptyValues).size === 1;
 	}
+
+	$: settingsWitnesses = $witnessesStore.map((w) => ({
+		id: w.folder.id.split('_')[1], // Just use the number part
+		title: w.folder.title || '',
+		enabled: w.enabled,
+		metrics: {
+			red: 5, // Placeholder metrics
+			blue: 2, // These will be filled correctly later
+			green: 12,
+			yellow: 0
+		}
+	}));
 </script>
+
+<!-- <div class="h-[400px] overflow-auto whitespace-pre-wrap rounded p-4 font-mono text-sm">
+	<pre>{JSON.stringify(
+			$indexedDBStore,
+			(key, value) => (key === 'src' ? undefined : value),
+			2
+		)}</pre>
+</div> -->
 
 <div class="relative overflow-hidden">
 	<!-- Content -->
@@ -188,6 +207,6 @@
 	</div>
 
 	<div class="absolute bottom-4 left-4 top-4 flex gap-8 overflow-x-auto pr-10">
-		<SettingsBar {witnesses} on:toggleWitness={handleWitnessToggle} />
+		<SettingsBar witnesses={settingsWitnesses} on:toggleWitness={handleWitnessToggle} />
 	</div>
 </div>

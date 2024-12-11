@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { base } from '$app/paths';
 	import { indexedDBStore, type Folder, type FileData } from '$lib/stores/indexeddb-store';
+	import { witnessesStore } from '$lib/stores/witnesses.store';
 	import { page } from '$app/stores';
 	import { goto } from '$app/navigation';
 	import SettingsBar from './SettingsBar.svelte';
@@ -9,18 +10,9 @@
 	import DragDropFolder from '$lib/components/DragDropFolder.svelte';
 
 	let selectedDocument: Folder | undefined;
-	let witnesses: { folder: Folder; selectedFile: FileData | undefined; enabled: boolean }[] = [];
+	let witnesses = [];
 	let loading = true;
 	let error = '';
-
-	function isImageFile(file: FileData): boolean {
-		const imageTypes = ['image/png', 'image/jpeg', 'image/webp', 'image/tiff', 'image/avif'];
-		return imageTypes.includes(file.type);
-	}
-
-	function getImageFiles(folder: Folder): FileData[] {
-		return (folder.files || []).filter(isImageFile);
-	}
 
 	// Function to handle wheel event and transform vertical scroll to horizontal
 	function handleWheel(event: WheelEvent) {
@@ -29,53 +21,13 @@
 		container.scrollLeft += event.deltaY;
 	}
 
-	function getWitnessesFromDocument(
-		document: Folder
-	): { folder: Folder; selectedFile: FileData | undefined; enabled: boolean }[] {
-		// Group files by witness
-		const witnessFolders = new Map<string, FileData[]>();
-
-		document.files.forEach((file) => {
-			const witnessMatch = file.path.match(/witness_(\d+)/);
-			if (witnessMatch) {
-				const witnessId = witnessMatch[1];
-				if (!witnessFolders.has(witnessId)) {
-					witnessFolders.set(witnessId, []);
-				}
-				witnessFolders.get(witnessId)?.push(file);
-			}
-		});
-
-		// Create witness folders and sort by witness ID
-		return Array.from(witnessFolders.entries())
-			.sort(([a], [b]) => parseInt(a) - parseInt(b))
-			.map(([witnessId, files]) => {
-				const folder: Folder = {
-					id: `witness_${witnessId}`,
-					files,
-					title: `Witness ${witnessId}`,
-					description: ''
-				};
-
-				// Find first image file for initial selection
-				const imageFiles = getImageFiles(folder);
-				const selectedFile = imageFiles.length > 0 ? imageFiles[0] : undefined;
-
-				return {
-					folder,
-					selectedFile,
-					enabled: true
-				};
-			});
-	}
-
 	async function loadDocument(id: string) {
 		try {
 			await indexedDBStore.init();
 			selectedDocument = $indexedDBStore.find((folder) => folder.id === id);
 
 			if (selectedDocument) {
-				witnesses = getWitnessesFromDocument(selectedDocument);
+				witnesses = witnessesStore.getWitnessesFromDocument(selectedDocument);
 			} else {
 				error = 'Document not found.';
 			}
@@ -116,23 +68,14 @@
 	}
 
 	function handleFileSelect(witnessId: string, file: FileData) {
-		const witness = witnesses.find((w) => w.folder.id === witnessId);
-		if (witness) {
-			witness.selectedFile = file;
-			witnesses = witnesses; // Trigger reactivity
-		}
+		witnessesStore.updateWitnessFile(witnessId, file);
 	}
 
 	function handleWitnessToggle(event: CustomEvent<{ id: string }>) {
-		const witnessId = `witness_${event.detail.id}`;
-		const witness = witnesses.find((w) => w.folder.id === witnessId);
-		if (witness) {
-			witness.enabled = !witness.enabled;
-			witnesses = witnesses; // Trigger reactivity
-		}
+		witnessesStore.toggleWitness(event.detail.id);
 	}
 
-	$: settingsWitnesses = witnesses.map((w) => ({
+	$: settingsWitnesses = $witnessesStore.map((w) => ({
 		id: w.folder.id.split('_')[1], // Just use the number part
 		title: w.folder.title || '',
 		enabled: w.enabled,
@@ -158,7 +101,7 @@
 		<div class="flex h-full items-center justify-center">
 			<DragDropFolder on:folderDropped={handleFolderDropped} />
 		</div>
-	{:else if witnesses.length === 0}
+	{:else if $witnessesStore.length === 0}
 		<div class="flex h-full items-center justify-center">
 			<p class="text-2xl text-red-500">No witnesses found in this document.</p>
 		</div>
@@ -166,11 +109,11 @@
 		<!-- Content -->
 		<div class="flex gap-8 overflow-x-auto py-4 pl-[340px] pr-10" style="height:calc(100vh - 63px)">
 			<!-- on:wheel={handleWheel} -->
-			{#each witnesses.filter((w) => w.enabled) as { folder, selectedFile }, index (folder.id)}
+			{#each $witnessesStore.filter((w) => w.enabled) as { folder, selectedFile }, index (folder.id)}
 				<Witness
 					selectedFolder={folder}
 					{selectedFile}
-					{getImageFiles}
+					getImageFiles={witnessesStore.getImageFiles}
 					on:fileSelect={(e) => handleFileSelect(folder.id, e.detail)}
 				/>
 			{/each}
