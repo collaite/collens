@@ -9,6 +9,7 @@
 	} from '$lib/stores/indexeddb-store';
 	import DragDropFolder from '$lib/components/DragDropFolder.svelte';
 	import FolderCard from '../lib/components/FolderCard.svelte';
+	import PhGithubLogo from '~icons/ph/github-logo';
 
 	onMount(() => {
 		indexedDBStore.init();
@@ -25,7 +26,15 @@
 	<div class="w-full overflow-y-auto overflow-x-hidden px-10">
 		<div class="mb-6 mt-20 flex flex-col items-center">
 			<h1 class="mb-5 text-5xl font-bold">COLLens</h1>
-			<p class="mb-5">Visualization tool for COLLaiTE.</p>
+			<p class="mb-5">
+				Visualization tool for COLLaiTE. <a
+					href="https://github.com/collaite/collens"
+					target="_blank"
+					class="inline-block text-gray-800"
+				>
+					<PhGithubLogo class="size-6" />
+				</a>
+			</p>
 		</div>
 		<div class=" text-center">
 			<div class="text-primary">

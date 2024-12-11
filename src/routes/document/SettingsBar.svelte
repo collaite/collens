@@ -9,6 +9,7 @@
 	import IcBaselineArrowBack from '~icons/ic/baseline-arrow-back';
 	import PhLinkLight from '~icons/ph/link-light';
 	import FluentDocumentBulletListMultiple20Filled from '~icons/fluent/document-bullet-list-multiple-20-filled';
+	import PhGithubLogo from '~icons/ph/github-logo';
 
 	const dispatch = createEventDispatcher();
 
@@ -117,6 +118,9 @@
 			</a>
 			<a href="https://www.esciencecenter.nl/" target="_blank">
 				<img class="h-6" src="{base}/images/escience-light.png" alt="eScience Center" />
+			</a>
+			<a href="https://github.com/collaite/collens" target="_blank" class="text-white">
+				<PhGithubLogo class="h-6 w-6" />
 			</a>
 		</div>
 	</div>
