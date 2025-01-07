@@ -1,0 +1,22 @@
+{
+	"folders": [
+		{
+			"name": "collens",
+			"path": "../../.."
+		}
+	],
+	"settings": {
+		"window.title": "📜 COLLaiTE Collens - ${activeEditorShort}",
+		"eslint.workingDirectories": [
+			{
+				"mode": "auto"
+			}
+		],
+		"editor.codeActionsOnSave": {
+			"source.fixAll.eslint": "explicit"
+		},
+		"eslint.validate": [
+			"javascript"
+		]
+	}
+}

@@ -269,7 +269,7 @@ function processNode(node: Node): string {
 
 export const WITNESS_VIEWS = [
   { id: 'transcription', label: 'Transcription' },
-  { id: 'notes', label: 'Notes' },
+  { id: 'notes', label: 'Metadata' },
   { id: 'xml', label: 'XML Source' }
 ] as const;
 
