@@ -22,3 +22,4 @@ The changes in the `main` branch will be automatically deployed to github pages.
 Build the application for production:
 ```bash
 bun build
+```
