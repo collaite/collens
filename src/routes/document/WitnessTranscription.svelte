@@ -3,7 +3,6 @@
 	import CodeHighlight from '$lib/components/ui/CodeHighlight.svelte';
 	import HeaderEntry from './HeaderEntry.svelte';
 	import MdiDocumentEditOutline from '~icons/mdi/edit';
-	import MdiFileDocumentEditOutline from '~icons/mdi/file-document-edit-outline';
 	import IcOutlineCenterFocusStrong from '~icons/ic/outline-center-focus-strong';
 	import MdiFileCheckOutline from '~icons/mdi/file-check-outline';
 	import IcBaselineArrowDropDown from '~icons/ic/baseline-arrow-drop-down';
@@ -121,7 +120,7 @@
 					{getWitnessLabel(witnessId)} - Page {selectedFile ? getPageNumber(selectedFile) : ''}
 				</h2>
 			</div>
-			<div class="flex items-center gap-2 text-xs">
+			<div class="flex items-center gap-2 text-sm">
 				{#each WITNESS_VIEWS as view, i}
 					{#if i > 0}
 						<span class="text-base-content/30" aria-hidden="true">•</span>
@@ -130,21 +129,25 @@
 						<div class="dropdown dropdown-end">
 							<button
 								tabindex="0"
-								class="flex items-center gap-1 text-base-content/60 transition-colors hover:text-base-content {currentView ===
+								class="btn btn-sm flex h-auto min-h-0 items-center gap-1 bg-base-200/50 px-3 py-1.5 text-sm font-normal text-base-content/60 hover:bg-base-200 hover:text-base-content {currentView ===
 								view.id
-									? 'font-medium !text-primary'
+									? '!bg-primary/10 font-medium !text-primary hover:!bg-primary/20'
 									: ''}"
 								aria-current={currentView === view.id}
 								on:click={() => handleViewChange(view.id)}
 							>
-								{view.label}
 								{#if view.id === 'transcription'}
-									<span class="ml-1.5">
-										({witnessType === '1a'
-											? 'Original'
-											: witnessType === '1b'
-												? 'Intermediate'
-												: 'Final'})
+									<span class="inline-flex items-center gap-1">
+										{#if witnessType === '1a'}
+											<MdiDocumentEditOutline class="h-3.5 w-3.5" />
+											<span>Original Transcription</span>
+										{:else if witnessType === '1b'}
+											<IcOutlineCenterFocusStrong class="h-3.5 w-3.5" />
+											<span>Intermediate Transcription</span>
+										{:else}
+											<MdiFileCheckOutline class="h-3.5 w-3.5" />
+											<span>Final Transcription</span>
+										{/if}
 									</span>
 									<IcBaselineArrowDropDown class="size-6" />
 								{/if}
@@ -152,12 +155,13 @@
 							{#if view.id === 'transcription' && currentView === 'transcription'}
 								<ul
 									tabindex="0"
-									class="menu dropdown-content z-[1] w-40 rounded-lg bg-base-200 p-1 shadow-lg"
+									class="menu dropdown-content z-[1] w-44 gap-1 rounded-lg bg-base-200 p-1.5 shadow-lg"
 								>
 									<li>
 										<button
-											class="flex items-center gap-2 text-left {witnessType === '1a'
-												? 'active'
+											class="btn btn-sm flex h-auto min-h-0 w-full items-center justify-start gap-2 bg-base-200/50 px-3 py-2 text-left text-sm font-normal text-base-content/60 hover:bg-base-200 hover:text-base-content {witnessType ===
+											'1a'
+												? '!bg-primary/10 font-medium !text-primary hover:!bg-primary/20'
 												: ''}"
 											on:click={() => handleWitnessTypeChange('1a')}
 										>
@@ -167,8 +171,9 @@
 									</li>
 									<li>
 										<button
-											class="flex items-center gap-2 text-left {witnessType === '1b'
-												? 'active'
+											class="btn btn-sm flex h-auto min-h-0 w-full items-center justify-start gap-2 bg-base-200/50 px-3 py-2 text-left text-sm font-normal text-base-content/60 hover:bg-base-200 hover:text-base-content {witnessType ===
+											'1b'
+												? '!bg-primary/10 font-medium !text-primary hover:!bg-primary/20'
 												: ''}"
 											on:click={() => handleWitnessTypeChange('1b')}
 										>
@@ -178,8 +183,9 @@
 									</li>
 									<li>
 										<button
-											class="flex items-center gap-2 text-left {witnessType === '1c'
-												? 'active'
+											class="btn btn-sm flex h-auto min-h-0 w-full items-center justify-start gap-2 bg-base-200/50 px-3 py-2 text-left text-sm font-normal text-base-content/60 hover:bg-base-200 hover:text-base-content {witnessType ===
+											'1c'
+												? '!bg-primary/10 font-medium !text-primary hover:!bg-primary/20'
 												: ''}"
 											on:click={() => handleWitnessTypeChange('1c')}
 										>
@@ -192,9 +198,9 @@
 						</div>
 					{:else}
 						<button
-							class="text-base-content/60 transition-colors hover:text-base-content {currentView ===
+							class="btn btn-sm h-auto min-h-0 bg-base-200/50 px-3 py-1.5 text-sm font-normal text-base-content/60 hover:bg-base-200 hover:text-base-content {currentView ===
 							view.id
-								? 'font-medium !text-primary'
+								? '!bg-primary/10 font-medium !text-primary hover:!bg-primary/20'
 								: ''}"
 							on:click={() => handleViewChange(view.id)}
 							aria-current={currentView === view.id}
