@@ -68,7 +68,9 @@
 				{selectedFolder}
 				{selectedFile}
 				{getImageFiles}
+				{showMiddleColumn}
 				on:imageSelect={handleImageSelect}
+				on:toggleView={() => (showMiddleColumn = !showMiddleColumn)}
 			/>
 		</div>
 

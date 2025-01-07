@@ -3,14 +3,18 @@
 	import type { Folder, FileData } from '$lib/stores/indexeddb-store';
 	import { createEventDispatcher } from 'svelte';
 	import { getPageNumber } from '$lib/utils/witness-utils';
+	import PhEyeBold from '~icons/ph/eye-bold';
+	import MdiEyeOffOutline from '~icons/mdi/eye-off-outline';
 
 	const dispatch = createEventDispatcher<{
 		imageSelect: FileData;
+		toggleView: void;
 	}>();
 
 	export let selectedFolder: Folder | undefined;
 	export let selectedFile: FileData | undefined;
 	export let getImageFiles: (folder: Folder) => FileData[];
+	export let showMiddleColumn: boolean;
 
 	let imagesContainer: HTMLElement;
 	let thumbnailElements: Record<string, HTMLElement> = {};
@@ -31,6 +35,10 @@
 	function handleImageClick(file: FileData) {
 		dispatch('imageSelect', file);
 	}
+
+	function toggleMiddleColumn() {
+		dispatch('toggleView');
+	}
 </script>
 
 <div class="flex h-full flex-col rounded-lg bg-base-200">
@@ -38,27 +46,47 @@
 	{#if selectedFolder && imageFiles.length > 0}
 		<div class="flex-1 space-y-1 overflow-y-auto p-1" bind:this={imagesContainer}>
 			{#each imageFiles as file, index}
-				<button
-					bind:this={thumbnailElements[file.name]}
-					class="group relative aspect-[4/5] w-full"
-					on:click={() => handleImageClick(file)}
-					aria-label="Select image {index + 1}"
-				>
-					<img
-						draggable="false"
-						class="h-full w-full rounded border-2 object-contain transition-all duration-200 {selectedFile ===
-						file
-							? 'border-primary shadow-lg'
-							: 'border-transparent hover:border-primary/50'}"
-						src={file.src}
-						alt={file.name}
-					/>
+				<div bind:this={thumbnailElements[file.name]} class="group relative aspect-[4/5] w-full">
 					<div
-						class="absolute left-0 top-0 flex h-5 w-5 items-center justify-center rounded-br bg-base-300/90 text-xs font-medium"
+						class="h-full w-full cursor-pointer"
+						on:click={() => handleImageClick(file)}
+						on:keydown={(e) => e.key === 'Enter' && handleImageClick(file)}
+						role="button"
+						tabindex="0"
+						aria-label="Select image {index + 1}"
 					>
-						{index + 1}
+						<img
+							draggable="false"
+							class="h-full w-full rounded border-2 object-contain transition-all duration-200 {selectedFile ===
+							file
+								? 'border-primary shadow-lg'
+								: 'border-transparent hover:border-primary/50'}"
+							src={file.src}
+							alt={file.name}
+						/>
 					</div>
-				</button>
+					<div class="absolute left-0 top-0">
+						<div
+							class="flex h-5 w-5 items-center justify-center rounded-br bg-base-300/90 text-xs font-medium"
+						>
+							{index + 1}
+						</div>
+					</div>
+					<div class="absolute bottom-0 right-0">
+						<button
+							class="mb-1 mr-1 flex size-9 items-center justify-center rounded rounded-tl bg-base-300/60 transition-all hover:bg-base-300"
+							title="Toggle image view"
+							aria-label="Toggle image view"
+							on:click={toggleMiddleColumn}
+						>
+							{#if showMiddleColumn}
+								<PhEyeBold class="size-5" />
+							{:else}
+								<MdiEyeOffOutline class="size-5" />
+							{/if}
+						</button>
+					</div>
+				</div>
 			{/each}
 		</div>
 	{:else}
