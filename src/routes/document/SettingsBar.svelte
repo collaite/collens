@@ -15,19 +15,21 @@
 
 	$: isCollateX = $page.route.id === '/document/x';
 
+	import type { WitnessStats } from '$lib/utils/witness-utils';
+
 	interface WitnessData {
 		id: string;
 		title: string;
 		enabled: boolean;
-		metrics: {
-			red: number;
-			blue: number;
-			green: number;
-			yellow: number;
-		};
+		metrics: WitnessStats;
 	}
 
 	export let witnesses: WitnessData[] = [];
+
+	// Calculate total changes for each witness
+	function getTotalChanges(metrics: WitnessStats): number {
+		return metrics.deletions + metrics.additions + metrics.highlights + metrics.lineBreaks;
+	}
 
 	function handleToggle(witness: WitnessData, event: CustomEvent<{ checked: boolean }>) {
 		witness.enabled = event.detail.checked;
@@ -58,28 +60,44 @@
 
 				<div class="flex items-center justify-between">
 					<div class="flex gap-2">
-						<!-- Red metric -->
-						<MetricCircle value={witness.metrics.red} maxValue={10} color="rgb(239, 68, 68)" />
+						<!-- Deletions (Red) -->
+						<MetricCircle
+							value={witness.metrics.deletions}
+							maxValue={getTotalChanges(witness.metrics) || 1}
+							color="rgb(239, 68, 68)"
+							tooltip="Deletions in text"
+						/>
 
-						<!-- Blue metric -->
-						<MetricCircle value={witness.metrics.blue} maxValue={10} color="rgb(59, 130, 246)" />
+						<!-- Additions (Green) -->
+						<MetricCircle
+							value={witness.metrics.additions}
+							maxValue={getTotalChanges(witness.metrics) || 1}
+							color="rgb(34, 197, 94)"
+							tooltip="Additions to text"
+						/>
 
-						<!-- Green metric -->
-						<MetricCircle value={witness.metrics.green} maxValue={15} color="rgb(34, 197, 94)" />
+						<!-- Highlights (Blue) -->
+						<MetricCircle
+							value={witness.metrics.highlights}
+							maxValue={getTotalChanges(witness.metrics) || 1}
+							color="rgb(59, 130, 246)"
+							tooltip="Highlighted sections"
+						/>
 
-						<!-- Yellow metric -->
-						<MetricCircle value={witness.metrics.yellow} maxValue={15} color="rgb(238, 197, 94)" />
+						<!-- Line Breaks (Yellow) -->
+						<MetricCircle
+							value={witness.metrics.lineBreaks}
+							maxValue={getTotalChanges(witness.metrics) || 1}
+							color="rgb(238, 197, 94)"
+							tooltip="Line breaks"
+						/>
 					</div>
 
-					<!-- Internal review button -->
-					<a href={`${base}/document/internal/?id=${$page.url.searchParams.get('id')}`}>
-						<button
-							class="btn btn-ghost btn-sm tooltip tooltip-bottom px-1"
-							data-tip="Open Internal review"
-						>
-							<FluentDocumentBulletListMultiple20Filled class="size-6" />
-						</button>
-					</a>
+					<!-- Total changes -->
+					<div class="tooltip tooltip-bottom" data-tip="Total changes">
+						<span class="text-sm">Total:</span>
+						<span class="text-sm font-medium">{getTotalChanges(witness.metrics)}</span>
+					</div>
 				</div>
 			</div>
 		{/each}

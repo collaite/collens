@@ -27,7 +27,7 @@
 			selectedDocument = $indexedDBStore.find((folder) => folder.id === id);
 
 			if (selectedDocument) {
-				witnesses = witnessesStore.getWitnessesFromDocument(selectedDocument);
+				witnesses = await witnessesStore.getWitnessesFromDocument(selectedDocument);
 			} else {
 				error = 'Document not found.';
 			}
@@ -75,16 +75,20 @@
 		witnessesStore.toggleWitness(event.detail.id);
 	}
 
+	import type { WitnessStats } from '$lib/utils/witness-utils';
+
+	interface WitnessData {
+		id: string;
+		title: string;
+		enabled: boolean;
+		metrics: WitnessStats;
+	}
+
 	$: settingsWitnesses = $witnessesStore.map((w) => ({
 		id: w.folder.id.split('_')[1], // Just use the number part
 		title: w.folder.title || '',
 		enabled: w.enabled,
-		metrics: {
-			red: 5, // Placeholder metrics
-			blue: 2, // These will be filled correctly later
-			green: 12,
-			yellow: 0
-		}
+		metrics: w.metrics
 	}));
 </script>
 

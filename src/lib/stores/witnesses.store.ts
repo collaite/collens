@@ -1,10 +1,12 @@
 import { writable } from 'svelte/store';
 import type { Folder, FileData } from './indexeddb-store';
+import { loadXMLContent, getWitnessStats, type WitnessStats } from '$lib/utils/witness-utils';
 
 export interface Witness {
   folder: Folder;
   selectedFile: FileData | undefined;
   enabled: boolean;
+  metrics: WitnessStats;
 }
 
 function createWitnessesStore() {
@@ -19,7 +21,7 @@ function createWitnessesStore() {
     return (folder.files || []).filter(isImageFile);
   }
 
-  function getWitnessesFromDocument(document: Folder): Witness[] {
+  async function getWitnessesFromDocument(document: Folder): Promise<Witness[]> {
     // Group files by witness
     const witnessFolders = new Map<string, FileData[]>();
 
@@ -35,26 +37,38 @@ function createWitnessesStore() {
     });
 
     // Create witness folders and sort by witness ID
-    const witnesses = Array.from(witnessFolders.entries())
-      .sort(([a], [b]) => parseInt(a) - parseInt(b))
-      .map(([witnessId, files]) => {
-        const folder: Folder = {
-          id: `witness_${witnessId}`,
-          files,
-          title: `Witness ${witnessId}`,
-          description: ''
-        };
+    const witnesses = await Promise.all(
+      Array.from(witnessFolders.entries())
+        .sort(([a], [b]) => parseInt(a) - parseInt(b))
+        .map(async ([witnessId, files]) => {
+          const folder: Folder = {
+            id: `witness_${witnessId}`,
+            files,
+            title: `Witness ${witnessId}`,
+            description: ''
+          };
 
-        // Find first image file for initial selection
-        const imageFiles = getImageFiles(folder);
-        const selectedFile = imageFiles.length > 0 ? imageFiles[0] : undefined;
+          // Find first image file for initial selection
+          const imageFiles = getImageFiles(folder);
+          const selectedFile = imageFiles.length > 0 ? imageFiles[0] : undefined;
 
-        return {
-          folder,
-          selectedFile,
-          enabled: true
-        };
-      });
+          // Load XML content and calculate metrics
+          const xmlContent = await loadXMLContent(folder);
+          const metrics = xmlContent ? getWitnessStats(xmlContent) : {
+            additions: 0,
+            deletions: 0,
+            highlights: 0,
+            lineBreaks: 0
+          };
+
+          return {
+            folder,
+            selectedFile,
+            enabled: true,
+            metrics
+          };
+        })
+    );
 
     set(witnesses);
     return witnesses;

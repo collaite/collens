@@ -113,6 +113,44 @@ function filterChildEdits(edits: Element[]): Element[] {
   );
 }
 
+export interface WitnessStats {
+  additions: number;
+  deletions: number;
+  highlights: number;
+  lineBreaks: number;
+}
+
+export function getWitnessStats(xmlText: string): WitnessStats {
+  if (!xmlText) return { additions: 0, deletions: 0, highlights: 0, lineBreaks: 0 };
+
+  try {
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(xmlText, 'text/xml');
+
+    const parserError = xmlDoc.querySelector('parsererror');
+    if (parserError) {
+      console.error('XML parsing error:', parserError.textContent);
+      return { additions: 0, deletions: 0, highlights: 0, lineBreaks: 0 };
+    }
+
+    // Count elements
+    const additions = xmlDoc.getElementsByTagName('add').length;
+    const deletions = xmlDoc.getElementsByTagName('del').length;
+    const highlights = xmlDoc.getElementsByTagName('hi').length;
+    const lineBreaks = xmlDoc.getElementsByTagName('lb').length;
+
+    return {
+      additions,
+      deletions,
+      highlights,
+      lineBreaks
+    };
+  } catch (error) {
+    console.error('Error parsing XML:', error);
+    return { additions: 0, deletions: 0, highlights: 0, lineBreaks: 0 };
+  }
+}
+
 export function parseTEIXML(xmlText: string, witnessType: '1a' | '1b' | '1c' = '1c'): string {
   if (!xmlText) return '';
 
