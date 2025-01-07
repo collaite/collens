@@ -2,6 +2,12 @@
 	import type { FileData } from '$lib/stores/indexeddb-store';
 	import CodeHighlight from '$lib/components/ui/CodeHighlight.svelte';
 	import HeaderEntry from './HeaderEntry.svelte';
+	import MdiDocumentEditOutline from '~icons/mdi/edit';
+	import MdiFileDocumentEditOutline from '~icons/mdi/file-document-edit-outline';
+	import IcOutlineCenterFocusStrong from '~icons/ic/outline-center-focus-strong';
+	import MdiFileCheckOutline from '~icons/mdi/file-check-outline';
+	import IcBaselineArrowDropDown from '~icons/ic/baseline-arrow-drop-down';
+
 	import {
 		getWitnessLabel,
 		getPageNumber,
@@ -115,45 +121,76 @@
 					{getWitnessLabel(witnessId)} - Page {selectedFile ? getPageNumber(selectedFile) : ''}
 				</h2>
 			</div>
-			<div class="flex items-center gap-4">
-				{#if currentView === 'transcription'}
-					<div class="flex items-center gap-2 text-xs">
-						<button
-							class="text-base-content/60 transition-colors hover:text-base-content {witnessType ===
-							'1a'
-								? 'font-medium !text-primary'
-								: ''}"
-							on:click={() => handleWitnessTypeChange('1a')}
-						>
-							Original
-						</button>
+			<div class="flex items-center gap-2 text-xs">
+				{#each WITNESS_VIEWS as view, i}
+					{#if i > 0}
 						<span class="text-base-content/30" aria-hidden="true">•</span>
-						<button
-							class="text-base-content/60 transition-colors hover:text-base-content {witnessType ===
-							'1b'
-								? 'font-medium !text-primary'
-								: ''}"
-							on:click={() => handleWitnessTypeChange('1b')}
-						>
-							Intermediate
-						</button>
-						<span class="text-base-content/30" aria-hidden="true">•</span>
-						<button
-							class="text-base-content/60 transition-colors hover:text-base-content {witnessType ===
-							'1c'
-								? 'font-medium !text-primary'
-								: ''}"
-							on:click={() => handleWitnessTypeChange('1c')}
-						>
-							Final
-						</button>
-					</div>
-				{/if}
-				<div class="mt-0.5 flex items-center gap-2 text-xs">
-					{#each WITNESS_VIEWS as view, i}
-						{#if i > 0}
-							<span class="text-base-content/30" aria-hidden="true">•</span>
-						{/if}
+					{/if}
+					{#if view.id === 'transcription'}
+						<div class="dropdown dropdown-end">
+							<button
+								tabindex="0"
+								class="flex items-center gap-1 text-base-content/60 transition-colors hover:text-base-content {currentView ===
+								view.id
+									? 'font-medium !text-primary'
+									: ''}"
+								aria-current={currentView === view.id}
+								on:click={() => handleViewChange(view.id)}
+							>
+								{view.label}
+								{#if view.id === 'transcription'}
+									<span class="ml-1.5">
+										({witnessType === '1a'
+											? 'Original'
+											: witnessType === '1b'
+												? 'Intermediate'
+												: 'Final'})
+									</span>
+									<IcBaselineArrowDropDown class="size-6" />
+								{/if}
+							</button>
+							{#if view.id === 'transcription' && currentView === 'transcription'}
+								<ul
+									tabindex="0"
+									class="menu dropdown-content z-[1] w-40 rounded-lg bg-base-200 p-1 shadow-lg"
+								>
+									<li>
+										<button
+											class="flex items-center gap-2 text-left {witnessType === '1a'
+												? 'active'
+												: ''}"
+											on:click={() => handleWitnessTypeChange('1a')}
+										>
+											<MdiDocumentEditOutline class="h-4 w-4" />
+											Original
+										</button>
+									</li>
+									<li>
+										<button
+											class="flex items-center gap-2 text-left {witnessType === '1b'
+												? 'active'
+												: ''}"
+											on:click={() => handleWitnessTypeChange('1b')}
+										>
+											<IcOutlineCenterFocusStrong class="h-4 w-4" />
+											Intermediate
+										</button>
+									</li>
+									<li>
+										<button
+											class="flex items-center gap-2 text-left {witnessType === '1c'
+												? 'active'
+												: ''}"
+											on:click={() => handleWitnessTypeChange('1c')}
+										>
+											<MdiFileCheckOutline class="h-4 w-4" />
+											Final
+										</button>
+									</li>
+								</ul>
+							{/if}
+						</div>
+					{:else}
 						<button
 							class="text-base-content/60 transition-colors hover:text-base-content {currentView ===
 							view.id
@@ -164,8 +201,8 @@
 						>
 							{view.label}
 						</button>
-					{/each}
-				</div>
+					{/if}
+				{/each}
 			</div>
 		</div>
 	</div>
