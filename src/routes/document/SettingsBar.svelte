@@ -3,7 +3,7 @@
 	import { page } from '$app/stores';
 	import Toggle from '../../lib/components/Toggle.svelte';
 	import { createEventDispatcher } from 'svelte';
-
+	import { witnessesStore } from '$lib/stores/witnesses.store';
 	import MetricCircle from '../../lib/components/MetricCircle.svelte';
 
 	import IcBaselineArrowBack from '~icons/ic/baseline-arrow-back';
@@ -17,23 +17,16 @@
 
 	import type { WitnessStats } from '$lib/utils/witness-utils';
 
-	interface WitnessData {
-		id: string;
-		title: string;
-		enabled: boolean;
-		metrics: WitnessStats;
-	}
-
-	export let witnesses: WitnessData[] = [];
+	// Subscribe to the witnesses store
+	$: witnesses = $witnessesStore;
 
 	// Calculate total changes for each witness
 	function getTotalChanges(metrics: WitnessStats): number {
 		return metrics.deletions + metrics.additions + metrics.highlights + metrics.lineBreaks;
 	}
 
-	function handleToggle(witness: WitnessData, event: CustomEvent<{ checked: boolean }>) {
-		witness.enabled = event.detail.checked;
-		dispatch('toggleWitness', { id: witness.id });
+	function handleToggle(witness: any, event: CustomEvent<{ checked: boolean }>) {
+		witnessesStore.toggleWitness(witness.folder.id);
 	}
 </script>
 
@@ -51,8 +44,8 @@
 			>
 				<div class="mb-2 flex items-center justify-between">
 					<div class="flex items-center gap-2">
-						<span class="font-medium">{witness.id}-</span>
-						<span class="text-content/70">{witness.title}</span>
+						<!-- <span class="font-medium">{witness.folder.id}-</span> -->
+						<span class="text-content/70">{witness.folder.title}</span>
 					</div>
 
 					<Toggle checked={witness.enabled} on:change={(e) => handleToggle(witness, e)} />

@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="editem-general.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0">
+   <teiHeader>
+      <fileDesc>
+         <titleStmt>
+            <title>Sheherazade of Literatuur als Losprijs</title>
+         </titleStmt>
+         <publicationStmt>
+            <p>Unpublished authorial typescript</p>
+         </publicationStmt>
+         <sourceDesc>
+            <p>Collection Letterenhuis Antwerpen. Transcription created within the eScience Center
+               project COLLaiTE.</p>
+         </sourceDesc>
+      </fileDesc>
+   </teiHeader>
+   <facsimile>
+      <surface n="1r" xml:id="s1r">
+         <graphic url="xxx"/>
+         <!-- point to image -->
+      </surface>
+      <surface n="2r" xml:id="s2r">
+         <graphic url="xxx"/>
+      </surface>
+      <surface n="3r" xml:id="s3r">
+         <graphic url="xxx"/>
+      </surface>
+      <surface n="4r" xml:id="s4r">
+         <graphic url="xxx"/>
+      </surface>
+      <surface n="5r" xml:id="s5r">
+         <graphic url="xxx"/>
+      </surface>
+   </facsimile>
+
+   <text>
+      <body>
+         <div type="original" xml:lang="nl">
+            <pb n="1" facs="#s1r"/>
+            <p><lb/>SHEHERAZADE <lb/>of <lb/>"Literatuur als Lospri<subst>
+                  <del>a</del>
+                  <add>j</add>
+               </subst>s" <lb/>Wat is Liefde zonder verleiding?</p>
+            <p><lb/>Een geenszins benijdenswaardig lot, dat helaas <lb/>Shiriar, sultan van Arabië
+               beschoren is...</p>
+            <p><lb/>De te streng doorgedreven rationalisatie van zijn <lb/>prinsenjeugd had dit
+                  <del>met zich</del> meegebracht. Zooals alle <lb/>Staten die "aan het
+               moderniseeren slaan" had Arabië weten<lb/>schappelijke methoden toeg<add>e</add>past
+               op een gebied waar deze <lb/>weinig van pas komen <subst>
+                  <del>,</del>
+                  <add>:</add>
+               </subst>
+               <del>zoo, o.m. in de sexueele opvoeding <lb/>van den troo<subst>
+                     <del>p</del>
+                     <add>n</add>
+                  </subst>o<add>p</add>volger...</del> Shiriar, vijftien jaar oud geworden, <lb/>had
+               vreemd opgekeken, toen Fatima, eene leerares die <lb/>niets meer bezat van de
+               bekoring die de jeugd verleent, met <lb/>den leergang van geslachtelijke
+               voortplanting op een pedante <lb/>en plechtige wij<subst>
+                  <del instant="true">x</del>
+                  <add instant="true">z</add>
+               </subst>e begonnen was. Aan de hand van wandplaten <lb/>die de verschillende
+               ontwikkelingsstadia van het kuikentje, <lb/>het de kikvorschlarve en <subst>
+                  <del>het</del>
+                  <add>den</add>
+               </subst> menschelijke<add>n</add> foetus verbeelden, <lb/>werd prins Shiriar in de
+               intiemste geheimen der Natuur ingewijd. </p>
+            <pb n="2" facs="#s2r"/>
+            <p>Daar de uitslag dezer lessen bevredigend was, <lb/>werd Shiriar, op het einde van het
+               schooljaar door den Staat <lb/>uitgehuwd aan Zobeïde, eene prinses van een naburig
+               land, <lb/><del instant="true">ten eind</del> om de onderhandelingen over een handelstractaat te
+               <lb/>bevorderen en de clausule der "meest begunstigde natie" te <lb/>kunnen
+               verkrijgen. Shiriars gemalin was niet leelijk, ook <lb/>niet mooi. Maar toen hij
+               Sultan geworden was, ergerde het <lb/>hem dat zij, die bij alle plechtigheden hem
+               terzijde stond, <lb/>door het contrast van haar zwaarlijvige, statige gestalte
+               <lb/>zijn bedeesde schraalheid nog <del>meer</del> potsierlijk<add>er</add> deed
+               uit<lb/>komen. Daarbij had Zobeïde een pretentie van alle duivels! <lb/>Onder het
+               voorwendsel <del instant="true">h</del>van "het prestige der dynastie <lb/>hoog te houden" was de
+               vorstin er steeds op uit herrie te <lb/>schoppen à propos van protocolregels die zij
+               alleen tot in <lb/>de puntjes kende. <del>Eens had ze
+                        v<subst><del>l</del><add>r</add></subst>langd dat in al de scholen <lb/>van
+                  Arabië, nevens het pleisteren borstbeeld van den regee<lb/>rende vorst, ook dit
+                  van de sultane zou geplaatst worden. <lb/>Daar de vizier van Onderwijs aan dit
+                  verlangen, hetwelk<del instant="true">e</del>
+                  <lb/>- naar hij beweerde - "ongrondwettelijk" was, geen gevolgd <lb/>wilde geven,
+                  ging Zobeïde maandenlang mokken tegen haar <lb/>echtgenoot, omdat hij niet stante
+                  pede het portefeuille <lb/>van den onwilligen vizier teruggeischt had...</del></p>
+            <p> Aanvankelijk had Shiriar voor <subst><del>al deze</del><add>zijn</add></subst>
+               echtelijke <lb/>ergernissen wat troost en afleiding gevonden bij de
+               har<add>e</add>m<lb/>meisjes die hem, voor rekening van het budget van</p>
+            <pb n="3" facs="#s3r"/><p><lb/>het keizerlijk huis geleverd werden.</p>
+            <p>In den namiddag, wanneer de felste hitte voorbij <lb/>was,
+                     <subst><del instant="true">g</del><add instant="true">k</add></subst>wam door<del>heen</del> de luistille
+               gangen van het paleis de <lb/>uitverkorene, klopte bescheiden op de deur van de kamer
+               <lb/>waar de sultan <subst><del>zijn</del><add>van</add></subst> verveling geeuwde.
+               Zooals de mannequin <lb/>in een Parijsch modehuis den naam van het door haar
+               <lb/>gedragen toilet aan den klant opgeeft: "Afternoon Tea",
+                     <lb/>"<subst><del instant="true">b</del><add instant="true">B</add></subst>lue Girl ", " Un Caprice", of iets
+               dergelijks, zoo <lb/>zegde ze met in de stem de lichte beving der actrice die <lb/>in
+               de rats zit <subst><del>,</del><add>:</add></subst>
+                     "Ro<subst><del instant="true">x</del><add instant="true">z</add></subst>e Verrassing",
+               "Blo<add>e</add>sembot" of <lb/>"Voor uw genoegen" - natuurlijk in het
+                  Ara<del>a</del>b<add>i</add>sch. <metamark>?</metamark>
+               <note>There is a circle around the second 'a' of 'Araabisch' and a question mark in
+                  the left margin, probably because Brulez wasn't sure whether the word is written
+                  with one or two 'a's.</note></p>
+            <p>Menigvuldig en soms wel van een frissche fantasie getui<lb/>gend
+                     <subst><del instant="true">j</del><add instant="true">w</add></subst>aren de benamingen die het "Keizerlijk
+               College <lb/>der Wellustcommissarissen " <add>uitvond</add>. Doch wat ze aankondigden
+               <lb/>kwam in den grond toch steeds op hetzelfde neer. Aldus <lb/>was Shiriar
+               mettertijd ook dit officieel geregeld minne<lb/>spel beu geworden.</p>
+            <metamark place="left margin">₰</metamark>
+            <note>In the left margin is a metamark resembling the 'deleatur' deletion symbol. The
+               metamark probably indicates that the crossed out sections need to be deleted.</note>
+            <del><p>Inderdaad<add>,</add> wat is Liefde die niet voorafgegaan is <lb/>door
+                  verleiding ? Helaas hij, Shir<add instant="true">i</add>ar, Afstammeling der
+                     <lb/>Profeten<add>,</add> krijgt den wellust voorgeschoteld als een
+                  dage<lb/>lijkschen kost, waarvoor hij dan nog geen arbeid verricht <lb/>heeft. Hoe
+                  zoet moet nochtans zijn dit <subst><del>werven om</del>
+                     <add>trachten naar</add></subst> een vrouw ! Die dagen van nerveuze verwachting
+                  vóór de liefelijke toestemming.</p></del>
+            <del><p>Shiriar denkt aan de proletenvrijagies in de <lb/>steegjes <transpose>van
+                        Bagda<del>g</del><redo>d</redo></transpose>
+                  <transpose>en op de hellingen der wallen</transpose>. En <lb/>dan die herinnering
+                  aan verleden zomer, toen hij in</p></del>
+            <pb n="4" facs="#s4r"/><metamark place="left margin">₰</metamark>
+            <note>In the left margin is a metamark resembling the 'deleatur' deletion symbol. The
+               metamark probably indicates that the crossed out section needs to be deleted.</note>
+            <del><p><lb/>gezelschap van den vizier van Landbouw een inspectietocht <lb/>deed in de
+                  streek van den Euphrates. Een ambtenaar-<del instant="true">grx</del><lb/>agronoom
+                  leerde hem juist <del instant="true">het verschil onderscheiden</del> tarwe
+                  onderscheiden van rogge en haver als ze plots een <lb/>jonge boer en boerin <del
+                     instant="true">in het</del> ontdekten die zich in het ko<lb/>ren liefkoosden.
+                  Als een opgeschrokken koppel patrijzen <lb/>waren ze voor de statige heeren op de
+                  vlucht gesla<subst><del>an.</del><add>gen.</add></subst>
+                  <lb/>De sultan had nog net gezien hoe, al loope<del instant="true">e</del>nd<add>e</add>, de
+                  blozende <lb/>deerne de zware naakte <del>blanke</del> borsten weer in haar jak
+                  wegstopte.</p></del>
+            <p><lb/>Waarachtig die har<transpose>m</transpose><transpose>e</transpose>liefde in deze
+               kamer van <lb/>kussens en boeken kon den vorst <subst><del>min en min</del><add>hoe
+                     langer hoe minder</add></subst> bekoren en, <lb/>als een kind dat zijn
+               zoetigheid verwend is, begon hij <lb/>de odalisken onverrichter zake terug te sturen.
+               De aldus <lb/>geaffronteerde meisjes
+                  <subst><del>slaakten</del><add>kloegen</add></subst> bitter<del>e</del>
+               <del>klachten</del> en het <lb/><del instant-="true">Keizerlijk</del> College der
+                  <del>Wellust</del>commissar<del>r</del>issen vroeg zich <lb/>af hoe ze den sultan
+               weer op het pad der traditionneele <lb/>keizerlijke
+                     <subst><del>erotiek</del><add>lusten</add></subst> zouden brengen.</p>
+            <p><lb/>Zij lieten exotische vrouwen komen : Spaansche <lb/><subst><del>meisjes uit
+                     cigarettenfabrieken</del><add>cigaretteras'</add></subst> waarvan de huid
+               okerblond <lb/>is als de tabak die ze verwerken, Noorsche Walkürengestal<lb/>ten,
+               schoon en koel als marmerbeelden, Geishas uit <add>de</add> Yoshi<lb/>wara die een
+               heele documentatie van technische voortref<lb/>f <subst><del instant="true"
+                     >l</del><add>e</add></subst>lijk erotische
+                  hou<subst><del>d</del><add>t</add></subst>sneden meebrachten. Het kon al niet
+               <lb/>veel baten.</p>
+            <p>De <del>wellust</del>commissarissen noodigden de jongste <lb/>"Miss Universe" uit.
+               Doch daar ze vooreerst nog de </p><pb n="5" facs="#s5r"/>
+            <p/><p><lb/>voornaamste steden van Noord- en Zuidamerika moest <lb/>bezoeken was ze
+               verslenst toen ze t e Ba <subst><del instant="true">d</del><add>g</add></subst>dad
+               aankwam.</p>
+            <note>There is a long pencil line in the left margin.</note>
+            <p><lb/>Ze bestelden speciale films in Buenos-Aires, <lb/>lieten
+               XVIIIde<add>-</add>eeuwsche erotische toneelstukjes opvoe<lb/>ren, zorgvuldig <del
+                  instant="true">gexinsex</del> ge<subst><del>ï</del><add>e</add></subst>nsceneerd
+               naar ontwerpen van <lb/>Fragonard en Boucher. De laatste music-hall<del>s</del>-
+               sensaties <lb/> van Bro<add>a</add>dway, Folies-Bergères en Wint<del>h</del>ergarten
+               werden <lb/><subst><del>opgevoerd</del><add>aangekocht</add></subst>. Aldus traden
+               naakte meisjes die gansch <lb/>verguld of verzilverd waren Shiriars kamer binnen.
+               <lb/>De <subst><del>vorst</del><add>sultan</add></subst> deed ze
+                  recht<add>s</add>omkeer<add>t</add> maken met de opmerking <lb/>dat hij geen
+               schouwgarnituren van doen had.</p>
+            <del><p><lb/><metamark>₰</metamark><note> In the left margin is a metamark resembling
+                     the 'deleatur' deletion symbol. The metamark probably indicates that the
+                     crossed out section needs to be deleted.</note> En ten einde raad deed men, op
+                  uitdrukkelijk <lb/>bevel van den Grootvizier, een beroemden sexuoloog komen
+                  <lb/>van het "Instituut für Sexualwissenschaften" uit Weenen. <lb/>De professor
+                     onderzoch<add>t</add> nauwkeurig den sultan. De uit<lb/>slagen der
+                  physiologische analysen waren normaal. Er <lb/>was dus geen organisch letsel met
+                  de lusteloosheid van <lb/> Shiriar gemoeid.</p>
+               <p><lb/>"Nu zou ik nog een volledig relaas van de laat<lb/>ste droomen van zijne
+                  Majesteit willen hebben." verlangde <lb/>de professor. "Bij middel der
+                  psychoanalytische methode <lb/>zullen we wellicht het geval kunnen
+                  ophelderen."</p>
+               <p><lb/>Maar zie : Shiriar droomde nooit! Zijn slaap <lb/>bleef steeds zwart en
+                  ledig: onbeschreven weerkant van <lb/>zijn levenslei! En bijgevolg <subst><del
+                        instant="true">g</del><add instant="true">k</add></subst>reeg hij in
+                     h<transpose>t</transpose><transpose>e</transpose> Paleis den <lb/>bijnaam van
+                  "de man zonder droomen".</p></del> 
+            </div>
+         <figure>
+            <graphic url="http://www.tei-c.org/logos/TEI-glow.png"/>
+         </figure>
+      </body>
+   </text>
+</TEI>

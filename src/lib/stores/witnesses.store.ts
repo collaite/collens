@@ -25,26 +25,32 @@ function createWitnessesStore() {
     // Group files by witness
     const witnessFolders = new Map<string, FileData[]>();
 
+    // Group files by their first directory name, ignoring root level files
     document.files.forEach((file) => {
-      const witnessMatch = file.path.match(/witness_(\d+)/);
-      if (witnessMatch) {
-        const witnessId = witnessMatch[1];
-        if (!witnessFolders.has(witnessId)) {
-          witnessFolders.set(witnessId, []);
+      // Only process files that are inside directories (contain a forward slash)
+      if (file.path.includes('/')) {
+        // Get the first directory name from the path
+        const dirName = file.path.split('/')[0];
+        if (!witnessFolders.has(dirName)) {
+          witnessFolders.set(dirName, []);
         }
-        witnessFolders.get(witnessId)?.push(file);
+        witnessFolders.get(dirName)?.push(file);
       }
     });
 
-    // Create witness folders and sort by witness ID
+    // Create witness folders using actual directory names
     const witnesses = await Promise.all(
       Array.from(witnessFolders.entries())
-        .sort(([a], [b]) => parseInt(a) - parseInt(b))
-        .map(async ([witnessId, files]) => {
+        .sort(([a], [b]) => a.localeCompare(b))
+        .map(async ([dirName, files]) => {
+          // Determine witness type from files
+          const witnessType = files.some(file => file.path.includes('ms-')) ? 'MS' :
+            files.some(file => file.path.includes('ts-')) ? 'TS' : '';
+
           const folder: Folder = {
-            id: `witness_${witnessId}`,
+            id: dirName,
             files,
-            title: `Witness ${witnessId}`,
+            title: witnessType ? `${witnessType} Version` : dirName,
             description: ''
           };
 
@@ -85,9 +91,8 @@ function createWitnessesStore() {
   }
 
   function toggleWitness(id: string) {
-    const witnessId = `witness_${id}`;
     update(witnesses => {
-      const witness = witnesses.find(w => w.folder.id === witnessId);
+      const witness = witnesses.find(w => w.folder.id === id);
       if (witness) {
         witness.enabled = !witness.enabled;
       }

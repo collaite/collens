@@ -9,7 +9,8 @@
 		getPageNumber,
 		loadXMLContent,
 		parseTEIXML,
-		parseTEIHeader
+		parseTEIHeader,
+		getWitnessType
 	} from '$lib/utils/witness-utils';
 
 	export let selectedFile: FileData | undefined = undefined;
@@ -25,8 +26,7 @@
 			})
 		: [];
 
-	$: witnessId = selectedFolder?.id?.replace('witness_', '') || '1';
-	$: witnessTitle = selectedFolder?.title || 'Witness title';
+	$: witnessId = selectedFolder?.id || '1';
 
 	let showMiddleColumn = true;
 	let xmlContent: string | null = null;
@@ -60,7 +60,7 @@
 </script>
 
 <div class="flex h-full flex-shrink-0 flex-col gap-1">
-	<WitnessHeader {witnessId} {witnessTitle} bind:showMiddleColumn />
+	<WitnessHeader {witnessId} bind:showMiddleColumn />
 
 	<div class="flex min-h-0 flex-1 gap-2">
 		<div class="w-[160px] flex-shrink-0">
@@ -75,7 +75,7 @@
 		</div>
 
 		{#if showMiddleColumn}
-			<WitnessImageViewer {selectedFile} {witnessId} {witnessTitle} />
+			<WitnessImageViewer {selectedFile} {witnessId} />
 		{/if}
 
 		<WitnessTranscription
