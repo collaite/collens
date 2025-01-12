@@ -1,35 +1,88 @@
 <script>
 	import { onMount } from 'svelte';
-	import Prism from 'prismjs';
+	import { basicSetup, EditorView } from 'codemirror';
+	import { xml } from '@codemirror/lang-xml';
 
 	/** @type {string} */
 	export let code = '';
 	/** @type {string} */
 	export let language = 'xml';
 
-	/** @type {string} */
-	let highlighted = '';
-
-	function updateHighlight() {
-		if (typeof window !== 'undefined' && code) {
-			// Add XML language support
-			Prism.languages.xml = Prism.languages.extend('markup', {});
-			highlighted = Prism.highlight(code, Prism.languages.xml, 'xml');
-		}
-	}
-
-	$: if (code) {
-		updateHighlight();
-	}
+	/** @type {EditorView | null} */
+	let view = null;
+	/** @type {HTMLElement} */
+	let element;
 
 	onMount(() => {
-		updateHighlight();
+		view = new EditorView({
+			doc: code,
+			parent: element,
+			extensions: [
+				basicSetup,
+				xml(),
+				EditorView.editable.of(false),
+				EditorView.theme({
+					'&': {
+						fontSize: '13px',
+						height: '100%',
+						backgroundColor: 'transparent'
+					},
+					'.cm-content': {
+						fontFamily: 'Consolas, Menlo, Monaco, monospace',
+						color: '#063289'
+					},
+					'.cm-gutters': {
+						backgroundColor: 'transparent',
+						border: 'none',
+						borderRight: '1px solid rgba(0, 0, 0, 0.1)'
+					},
+					'.cm-foldGutter': {
+						color: 'var(--primary)'
+					},
+					'.cm-foldGutter .cm-gutterElement': {
+						cursor: 'pointer'
+					},
+					'.cm-line': {
+						padding: '0 4px'
+					},
+					'.cm-activeLineGutter': {
+						backgroundColor: 'transparent'
+					},
+					'.cm-selectionBackground': {
+						backgroundColor: 'rgba(0, 0, 0, 0.1)'
+					},
+					'&.cm-focused': {
+						outline: 'none'
+					},
+					'.cm-xml-tagname': {
+						color: '#063289'
+					},
+					'.cm-xml-attribute': {
+						color: '#896724'
+					},
+					'.cm-xml-string': {
+						color: '#728fcb'
+					}
+				})
+			]
+		});
+
+		return () => {
+			if (view) {
+				view.destroy();
+			}
+		};
 	});
+
+	$: if (view && code) {
+		const transaction = view.state.update({
+			changes: { from: 0, to: view.state.doc.length, insert: code }
+		});
+		view.dispatch(transaction);
+	}
 </script>
 
-<div class="code-block">
-	<pre><code>{@html highlighted}</code></pre>
-</div>
+<div class="code-block !m-0 !p-0" bind:this={element} />
 
 <style>
 	.code-block {
@@ -37,85 +90,25 @@
 		margin: 1rem 0;
 		padding: 1rem;
 		border-radius: 0.5rem;
-		color: brown;
-		font-size: 12px;
+		min-height: 400px;
+		overflow: hidden;
+		background-color: #e6e2cf;
 	}
 
-	pre {
-		margin: 0;
-		padding: 0;
-		background: transparent;
-		font-family: Consolas, Menlo, Monaco, 'Andale Mono WT', 'Andale Mono', 'Lucida Console',
-			'Lucida Sans Typewriter', 'DejaVu Sans Mono', 'Bitstream Vera Sans Mono', 'Liberation Mono',
-			'Nimbus Mono L', 'Courier New', Courier, monospace;
-		font-size: 12px;
-		line-height: 1.375;
+	:global(.cm-editor) {
+		height: 100%;
+		min-height: 400px;
 	}
 
-	code {
-		font-family: inherit;
-		font-size: inherit;
-		line-height: inherit;
-		background: transparent;
-		white-space: pre;
-		font-size: 13px !important;
-		line-height: 13px !important;
+	:global(.cm-scroller) {
+		overflow: auto;
+	}
+	:global(.cm-gutters) {
+		@apply !bg-base-300;
+		user-select: none;
 	}
 
-	:global(.token.comment),
-	:global(.token.prolog),
-	:global(.token.doctype),
-	:global(.token.cdata) {
-		color: #b6ad9a;
-	}
-
-	:global(.token.punctuation) {
-		color: #b6ad9a;
-	}
-
-	:global(.token.tag),
-	:global(.token.operator),
-	:global(.token.number) {
-		color: #063289;
-	}
-
-	:global(.token.property),
-	:global(.token.function) {
-		color: #b29762;
-	}
-
-	:global(.token.attr-name) {
-		color: #896724;
-	}
-
-	:global(.token.attr-value),
-	:global(.token.string) {
-		color: #728fcb;
-	}
-
-	:global(.token.entity),
-	:global(.token.url),
-	:global(.token.keyword),
-	:global(.token.control),
-	:global(.token.directive),
-	:global(.token.unit),
-	:global(.token.statement),
-	:global(.token.regex),
-	:global(.token.atrule) {
-		color: #728fcb;
-	}
-
-	:global(.token.placeholder),
-	:global(.token.variable) {
-		color: #93abdc;
-	}
-
-	:global(.token.important) {
-		color: #896724;
-		font-weight: bold;
-	}
-
-	:global(.token.entity) {
-		cursor: help;
+	:global(.cm-focused) {
+		outline: none !important;
 	}
 </style>

@@ -225,7 +225,9 @@
 		>
 			{#if currentView === 'xml'}
 				{#if xmlContent}
-					<CodeHighlight code={xmlContent} language="xml" />
+					<div class="m-[-1rem]">
+						<CodeHighlight code={xmlContent} language="xml" />
+					</div>
 				{:else}
 					<div class="py-8 text-center text-base-content/60">Loading XML content...</div>
 				{/if}
