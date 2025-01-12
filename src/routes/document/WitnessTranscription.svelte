@@ -117,7 +117,7 @@
 		<div class="flex items-center justify-between">
 			<div>
 				<h2 class="text-base font-bold">
-					{getWitnessLabel(witnessId)} - Page {selectedFile ? getPageNumber(selectedFile) : ''}
+					Page {selectedFile ? getPageNumber(selectedFile) : ''}
 				</h2>
 			</div>
 			<div class="flex items-center gap-2 text-sm">
