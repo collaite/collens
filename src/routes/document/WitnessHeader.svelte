@@ -1,6 +1,5 @@
 <script lang="ts">
 	export let witnessId: string;
-	export let showMiddleColumn: boolean;
 </script>
 
 <div

@@ -60,7 +60,7 @@
 </script>
 
 <div class="flex h-full flex-shrink-0 flex-col gap-1">
-	<WitnessHeader {witnessId} bind:showMiddleColumn />
+	<WitnessHeader {witnessId} />
 
 	<div class="flex min-h-0 flex-1 gap-2">
 		<div class="w-[160px] flex-shrink-0">
