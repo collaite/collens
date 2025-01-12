@@ -4,13 +4,13 @@
 
 	interface Props {
 		checked?: boolean;
-		label?: string | undefined;
-		class?: any;
+		label?: string;
+		className?: string | undefined;
 	}
 
 	export let checked = false;
-	export let label = undefined;
-	export let className = undefined;
+	export let label: string | undefined = undefined;
+	export let className: string | undefined = undefined;
 
 	function handleChange(event: Event) {
 		const target = event.target as HTMLInputElement;

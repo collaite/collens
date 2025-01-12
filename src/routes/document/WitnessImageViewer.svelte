@@ -37,7 +37,7 @@
 				<ZoomInIcon class="h-4 w-4" />
 				<span class="min-w-[3ch] text-sm">{Math.round(zoomLevel * 100)}%</span>
 			</div>
-			<button class="btn btn-circle btn-ghost" on:click={handleModalClose}>
+			<button class="btn btn-circle btn-ghost" on:click={handleModalClose} aria-label="Close">
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
 					class="h-6 w-6"
