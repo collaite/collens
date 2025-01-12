@@ -245,7 +245,7 @@
 				<CodeHighlight code={xmlContent} language="xml" />
 			{:else if parsedContent}
 				<div class="prose max-w-none">
-					<div class="whitespace-pre-wrap font-serif leading-relaxed text-base-content">
+					<div class="whitespace-pre-line font-serif leading-relaxed text-base-content">
 						{@html formattedContent}
 					</div>
 				</div>

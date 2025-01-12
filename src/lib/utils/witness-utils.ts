@@ -269,7 +269,9 @@ function processNode(node: Node): string {
 
   node.childNodes.forEach((child) => {
     if (child.nodeType === Node.TEXT_NODE) {
-      result += child.textContent;
+      // Preserve the text content but normalize whitespace
+      const text = child.textContent?.replace(/\s+/g, ' ') || '';
+      result += text;
     } else if (child.nodeType === Node.ELEMENT_NODE) {
       const element = child as Element;
 
@@ -278,7 +280,7 @@ function processNode(node: Node): string {
           if (element.getAttribute('type') === 'page') {
             const pageNum = element.getAttribute('n');
             if (pageNum) {
-              result += `\n[Page ${pageNum}]\n`;
+              result += pageNum === '1' ? `[Page ${pageNum}]\n` : `\n\n[Page ${pageNum}]\n`;
             }
           }
           result += processNode(child);
@@ -299,11 +301,12 @@ function processNode(node: Node): string {
           result += `(*${processNode(child)}*)`;
           break;
         case 'lb':
+          // Only add line breaks for explicit <lb> tags
           result += '\n';
           break;
         case 'pb':
           const pageNum = element.getAttribute('n');
-          result += pageNum ? `\n[Page ${pageNum}]\n` : '\n[Page Break]\n';
+          result += pageNum ? (pageNum === '1' ? `[Page ${pageNum}]\n` : `\n\n[Page ${pageNum}]\n`) : '\n[Page Break]\n';
           break;
         default:
           result += processNode(child);
