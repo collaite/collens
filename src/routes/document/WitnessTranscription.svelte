@@ -31,11 +31,37 @@
 	let isScrolling = false;
 	let witnessType: '1a' | '1b' | '1c' = '1c';
 
-	// Function to highlight page markers in the parsed content
-	$: formattedContent = parsedContent?.replace(
-		/\[Page (\d+)\]/g,
-		'<span class="page-marker bg-primary text-primary-content px-1 rounded" data-page="$1">[Page $1]</span>'
-	);
+	// Function to format special markup patterns in the parsed content
+	$: formattedContent = parsedContent
+		?.replace(
+			/\[Page (\d+)\]/g,
+			'<span class="page-marker bg-primary text-primary-content px-1 rounded" data-page="$1">[Page $1]</span>'
+		)
+		?.replace(
+			witnessType === '1b' ? /\[(?!Page \d+])([^\]]+)\]/g : /\[(?!Page \d+])([^\]]+)\]/g,
+			witnessType === '1b' ? '<span class="deletion line-through opacity-60">$1</span>' : '[$1]'
+		)
+		?.replace(
+			/\{([^}]+)\}/g,
+			witnessType === '1b' ? '<span class="addition italic text-green-600">$1</span>' : '{$1}'
+		)
+		?.replace(
+			/⟨([^⟩]+)⟩/g,
+			witnessType === '1b' ? '<span class="unclear italic text-amber-600">$1</span>' : '⟨$1⟩'
+		)
+		?.replace(
+			/\(([^()]+)\)/g,
+			witnessType === '1b' ? '<span class="supplied text-blue-600">$1</span>' : '($1)'
+		)
+		?.replace(
+			/\(\(([^)]+)\)\)/g,
+			witnessType === '1b' ? '<span class="note text-gray-600 text-[0.9em]">$1</span>' : '(($1))'
+		)
+		?.replace(/\(\)/g, '<br/>')
+		?.replace(
+			/\[\]/g,
+			witnessType === '1b' ? '<hr class="my-4 border-t-2 border-dashed border-base-300"/>' : '[]'
+		);
 
 	// Parse XML content when witness type changes
 	$: if (xmlContent && showParsedText) {
@@ -280,5 +306,23 @@
 	.scrollbar-thin::-webkit-scrollbar-thumb {
 		background-color: rgba(0, 0, 0, 0.2);
 		border-radius: 4px;
+	}
+
+	/* Special markup styles */
+	:global(.deletion) {
+		text-decoration-thickness: 1px;
+	}
+
+	:global(.addition) {
+		font-style: italic;
+	}
+
+	:global(.unclear) {
+		font-style: italic;
+	}
+
+	:global(.note) {
+		display: inline-block;
+		margin: 0 0.25em;
 	}
 </style>
