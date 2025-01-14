@@ -308,6 +308,9 @@ function processNode(node: Node): string {
           const pageNum = element.getAttribute('n');
           result += pageNum ? (pageNum === '1' ? `[Page ${pageNum}]\n` : `\n\n[Page ${pageNum}]\n`) : '\n[Page Break]\n';
           break;
+        case 'p':
+          result += `<p>${processNode(child)}</p>`;
+          break;
         default:
           result += processNode(child);
       }

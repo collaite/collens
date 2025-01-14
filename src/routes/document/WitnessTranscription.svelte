@@ -37,6 +37,7 @@
 			/\[Page (\d+)\]/g,
 			'<span class="page-marker bg-primary text-primary-content px-1 rounded" data-page="$1">[Page $1]</span>'
 		)
+		?.replace(/<p>/g, witnessType === '1b' ? '<p class="mb-6 indent-8">' : '<p>')
 		?.replace(
 			witnessType === '1b' ? /\[(?!Page \d+])([^\]]+)\]/g : /\[(?!Page \d+])([^\]]+)\]/g,
 			witnessType === '1b' ? '<span class="deletion line-through opacity-60">$1</span>' : '[$1]'
@@ -57,7 +58,7 @@
 			/\(\(([^)]+)\)\)/g,
 			witnessType === '1b' ? '<span class="note text-gray-600 text-[0.9em]">$1</span>' : '(($1))'
 		)
-		?.replace(/\(\)/g, '<br/>')
+		?.replace(/\(\)/g, witnessType === '1b' ? '<p class="mb-6 indent-8"></p>' : '<br/>')
 		?.replace(
 			/\[\]/g,
 			witnessType === '1b' ? '<hr class="my-4 border-t-2 border-dashed border-base-300"/>' : '[]'
@@ -287,6 +288,10 @@
 <style>
 	:global(.prose) {
 		margin: 0;
+	}
+
+	:global(.prose p) {
+		/* margin: 0; */
 	}
 
 	.scrollbar-thin {
