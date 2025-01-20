@@ -192,7 +192,7 @@
 											on:click={() => handleWitnessTypeChange('1a')}
 										>
 											<MdiDocumentEditOutline class="h-4 w-4" />
-											Original
+											First
 										</button>
 									</li>
 									<!-- <li>
