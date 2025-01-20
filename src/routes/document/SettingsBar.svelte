@@ -93,14 +93,15 @@
 		{/each}
 	</div>
 
-	{#if !isCollateX}
+	<!-- TODO: Add legend when we have a proper heatmap -->
+	<!-- {#if !isCollateX}
 		<div class="mt-4">
 			<h3 class="mb-2 text-base font-medium">Legend</h3>
 			<div
 				class="h-2 w-full rounded-full bg-gradient-to-r from-blue-500 via-purple-500 to-red-500"
 			></div>
 		</div>
-	{/if}
+	{/if} -->
 
 	<div class="mt-auto pt-4">
 		<a
