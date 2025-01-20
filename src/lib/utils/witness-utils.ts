@@ -125,12 +125,12 @@ function filterChildEdits(edits: Element[]): Element[] {
 export interface WitnessStats {
   additions: number;
   deletions: number;
-  highlights: number;
-  lineBreaks: number;
+  substitutions: number;
+  transpositions: number;
 }
 
 export function getWitnessStats(xmlText: string): WitnessStats {
-  if (!xmlText) return { additions: 0, deletions: 0, highlights: 0, lineBreaks: 0 };
+  if (!xmlText) return { additions: 0, deletions: 0, substitutions: 0, transpositions: 0 };
 
   try {
     const parser = new DOMParser();
@@ -139,24 +139,24 @@ export function getWitnessStats(xmlText: string): WitnessStats {
     const parserError = xmlDoc.querySelector('parsererror');
     if (parserError) {
       console.error('XML parsing error:', parserError.textContent);
-      return { additions: 0, deletions: 0, highlights: 0, lineBreaks: 0 };
+      return { additions: 0, deletions: 0, substitutions: 0, transpositions: 0 };
     }
 
     // Count elements
     const additions = xmlDoc.getElementsByTagName('add').length;
     const deletions = xmlDoc.getElementsByTagName('del').length;
-    const highlights = xmlDoc.getElementsByTagName('hi').length;
-    const lineBreaks = xmlDoc.getElementsByTagName('lb').length;
+    const substitutions = xmlDoc.getElementsByTagName('subst').length;
+    const transpositions = xmlDoc.getElementsByTagName('transpose').length;
 
     return {
       additions,
       deletions,
-      highlights,
-      lineBreaks
+      substitutions,
+      transpositions
     };
   } catch (error) {
     console.error('Error parsing XML:', error);
-    return { additions: 0, deletions: 0, highlights: 0, lineBreaks: 0 };
+    return { additions: 0, deletions: 0, substitutions: 0, transpositions: 0 };
   }
 }
 

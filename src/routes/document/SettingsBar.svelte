@@ -17,7 +17,7 @@
 
 	// Calculate total changes for each witness
 	function getTotalChanges(metrics: WitnessStats): number {
-		return metrics.deletions + metrics.additions + metrics.highlights + metrics.lineBreaks;
+		return metrics.deletions + metrics.additions + metrics.substitutions + metrics.transpositions;
 	}
 
 	function handleToggle(witness: any, event: CustomEvent<{ checked: boolean }>) {
@@ -66,20 +66,20 @@
 							tooltip="Additions to text"
 						/>
 
-						<!-- Highlights (Blue) -->
+						<!-- Substitutions (Purple) -->
 						<MetricCircle
-							value={witness.metrics.highlights}
+							value={witness.metrics.substitutions}
 							maxValue={getTotalChanges(witness.metrics) || 1}
-							color="rgb(59, 130, 246)"
-							tooltip="Highlighted sections"
+							color="rgb(147, 51, 234)"
+							tooltip="Substitutions in text"
 						/>
 
-						<!-- Line Breaks (Yellow) -->
+						<!-- Transpositions (Orange) -->
 						<MetricCircle
-							value={witness.metrics.lineBreaks}
+							value={witness.metrics.transpositions}
 							maxValue={getTotalChanges(witness.metrics) || 1}
-							color="rgb(238, 197, 94)"
-							tooltip="Line breaks"
+							color="rgb(249, 115, 22)"
+							tooltip="Transpositions in text"
 						/>
 					</div>
 
