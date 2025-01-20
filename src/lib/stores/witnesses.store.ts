@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
 import type { Folder, FileData } from './indexeddb-store';
-import { loadXMLContent, getWitnessStats, type WitnessStats } from '$lib/utils/witness-utils';
+import { loadXMLContent, getWitnessStats, type WitnessStats } from '$lib/utils/witness';
 
 export interface Witness {
   folder: Folder;
@@ -63,8 +63,8 @@ function createWitnessesStore() {
           const metrics = xmlContent ? getWitnessStats(xmlContent) : {
             additions: 0,
             deletions: 0,
-            highlights: 0,
-            lineBreaks: 0
+            substitutions: 0,
+            transpositions: 0
           };
 
           return {

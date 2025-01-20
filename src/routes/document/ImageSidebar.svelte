@@ -2,7 +2,7 @@
 	import { base } from '$app/paths';
 	import type { Folder, FileData } from '$lib/stores/indexeddb-store';
 	import { createEventDispatcher } from 'svelte';
-	import { getPageNumber } from '$lib/utils/witness-utils';
+	import { getPageNumber } from '$lib/utils/witness';
 	import PhEyeBold from '~icons/ph/eye-bold';
 	import MdiEyeOffOutline from '~icons/mdi/eye-off-outline';
 

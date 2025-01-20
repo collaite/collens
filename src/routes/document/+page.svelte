@@ -75,7 +75,7 @@
 		witnessesStore.toggleWitness(event.detail.id);
 	}
 
-	import type { WitnessStats } from '$lib/utils/witness-utils';
+	import type { WitnessStats } from '$lib/utils/witness';
 
 	interface WitnessData {
 		id: string;

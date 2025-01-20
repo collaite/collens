@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { FileData } from '$lib/stores/indexeddb-store';
-	import { getPageNumber } from '$lib/utils/witness-utils';
+	import { getPageNumber } from '$lib/utils/witness';
 	import MaximizeIcon from '~icons/lucide/maximize-2';
 	import ZoomInIcon from '~icons/lucide/zoom-in';
 	import ZoomOutIcon from '~icons/lucide/zoom-out';

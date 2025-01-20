@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { indexedDBStore } from '$lib/stores/indexeddb-store';
 	import { witnessesStore } from '$lib/stores/witnesses.store';
-	import { loadXMLContent, parseTEIXML } from '$lib/utils/witness-utils';
+	import { loadXMLContent, parseTEIXML } from '$lib/utils/witness';
 	import SettingsBar from '../SettingsBar.svelte';
 	import VariantGraph from './VariantGraph.svelte';
 	import CollateXActions from './CollateXActions.svelte';

@@ -11,7 +11,7 @@
 		parseTEIXML,
 		parseTEIHeader,
 		getWitnessType
-	} from '$lib/utils/witness-utils';
+	} from '$lib/utils/witness';
 
 	export let selectedFile: FileData | undefined = undefined;
 	export let selectedFolder: Folder | undefined = undefined;

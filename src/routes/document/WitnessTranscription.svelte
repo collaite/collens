@@ -13,7 +13,7 @@
 		WITNESS_VIEWS,
 		type WitnessView,
 		parseTEIXML
-	} from '$lib/utils/witness-utils';
+	} from '$lib/utils/witness';
 	import { createEventDispatcher } from 'svelte';
 
 	const dispatch = createEventDispatcher();

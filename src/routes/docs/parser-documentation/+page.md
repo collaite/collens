@@ -91,7 +91,7 @@ The parser includes functionality to process TEI headers:
 
 ### Basic Parser Usage
 ```typescript
-import { parseTEIXML } from './witness-utils';
+import { parseTEIXML } from '$lib/utils/witness';
 
 // Parse XML with default witness type (1c)
 const result = parseTEIXML(xmlContent);
@@ -104,14 +104,14 @@ const witness1c = parseTEIXML(xmlContent, '1c');
 
 ### Loading XML Content
 ```typescript
-import { loadXMLContent } from './witness-utils';
+import { loadXMLContent } from '$lib/utils/witness';
 
 const xmlContent = await loadXMLContent(folder);
 ```
 
 ### Processing TEI Headers
 ```typescript
-import { parseTEIHeader } from './witness-utils';
+import { parseTEIHeader } from '$lib/utils/witness';
 
 const headerEntries = parseTEIHeader(xmlContent);
 ```

@@ -10,7 +10,7 @@
 
 	$: isCollateX = $page.route.id === '/document/x';
 
-	import type { WitnessStats } from '$lib/utils/witness-utils';
+	import type { WitnessStats } from '$lib/utils/witness';
 
 	// Subscribe to the witnesses store
 	$: witnesses = $witnessesStore;
