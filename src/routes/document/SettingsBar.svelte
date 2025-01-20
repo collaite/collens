@@ -55,7 +55,7 @@
 							value={witness.metrics.deletions}
 							maxValue={getTotalChanges(witness.metrics) || 1}
 							color="rgb(239, 68, 68)"
-							tooltip="Deletions in text"
+							tooltip="Deletions"
 						/>
 
 						<!-- Additions (Green) -->
@@ -63,7 +63,7 @@
 							value={witness.metrics.additions}
 							maxValue={getTotalChanges(witness.metrics) || 1}
 							color="rgb(34, 197, 94)"
-							tooltip="Additions to text"
+							tooltip="Additions"
 						/>
 
 						<!-- Substitutions (Purple) -->
@@ -71,7 +71,7 @@
 							value={witness.metrics.substitutions}
 							maxValue={getTotalChanges(witness.metrics) || 1}
 							color="rgb(147, 51, 234)"
-							tooltip="Substitutions in text"
+							tooltip="Substitutions"
 						/>
 
 						<!-- Transpositions (Orange) -->
@@ -79,7 +79,7 @@
 							value={witness.metrics.transpositions}
 							maxValue={getTotalChanges(witness.metrics) || 1}
 							color="rgb(249, 115, 22)"
-							tooltip="Transpositions in text"
+							tooltip="Transpositions"
 						/>
 					</div>
 
