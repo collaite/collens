@@ -54,10 +54,9 @@
 			/\(([^()]+)\)/g,
 			witnessType === '1b' ? '<span class="supplied text-blue-600">$1</span>' : '($1)'
 		)
-		?.replace(
-			/\(\(([^)]+)\)\)/g,
-			witnessType === '1b' ? '<span class="note text-gray-600 text-[0.9em]">$1</span>' : '(($1))'
-		)
+		?.replace(/\(\(([^)]+)\)\)/g, (match: string, content: string) => {
+			return `<span class="note bg-primary text-primary-content px-1 rounded">${content}</span>`;
+		})
 		?.replace(/\(\)/g, witnessType === '1b' ? '<p class="mb-6 indent-8"></p>' : '<br/>')
 		?.replace(
 			/\[\]/g,
@@ -329,5 +328,6 @@
 	:global(.note) {
 		display: inline-block;
 		margin: 0 0.25em;
+		font-size: 0.9em;
 	}
 </style>

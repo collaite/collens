@@ -312,7 +312,14 @@ function processNode(node: Node): string {
           result += `<${processNode(child)}>`;
           break;
         case 'note':
-          result += `(*${processNode(child)}*)`;
+          // Check if the previous sibling is a metamark with ₰
+          const prevSibling = element.previousElementSibling;
+          const isMetamarkNote = prevSibling?.tagName.toLowerCase() === 'metamark' &&
+            prevSibling.textContent?.includes('₰');
+
+          // Include the metamark symbol if it exists
+          const metamarkSymbol = isMetamarkNote ? '₰ ' : '';
+          result += `((${metamarkSymbol}${processNode(child)}))`;
           break;
         case 'lb':
           // Only add line breaks for explicit <lb> tags
