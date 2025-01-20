@@ -36,7 +36,7 @@
 
 <div class="flex gap-2">
 	<button
-		class="btn btn-primary gap-2"
+		class="btn btn-sm gap-2"
 		on:click={copyToClipboard}
 		title="Copy CollateX output to clipboard"
 	>
@@ -44,11 +44,7 @@
 		Copy Output
 	</button>
 
-	<button
-		class="btn btn-primary gap-2"
-		on:click={downloadJson}
-		title="Download CollateX output as JSON"
-	>
+	<button class="btn btn-sm gap-2" on:click={downloadJson} title="Download CollateX output as JSON">
 		<LucideDownload />
 		Download JSON
 	</button>
