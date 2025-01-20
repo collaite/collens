@@ -207,15 +207,23 @@ export function parseTEIXML(xmlText: string, witnessType: '1a' | '1b' | '1c' = '
 
       // Process edits based on witness type
       if (witnessType === '1a') {
-        // Undo all edits
+        // Keep instant revisions, undo all other edits
         allEdits.forEach(edit => {
-          if (edit.tagName === 'add') {
-            edit.parentNode?.removeChild(edit);
-          } else if (edit.tagName === 'del') {
-            while (edit.firstChild) {
-              edit.parentNode?.insertBefore(edit.firstChild, edit);
+          const isInstant = edit.getAttribute('instant') === 'true';
+
+          if (isInstant) {
+            // Keep instant revisions but mark them for special formatting
+            edit.setAttribute('data-instant', 'true');
+          } else {
+            // Handle non-instant edits as before
+            if (edit.tagName === 'add') {
+              edit.parentNode?.removeChild(edit);
+            } else if (edit.tagName === 'del') {
+              while (edit.firstChild) {
+                edit.parentNode?.insertBefore(edit.firstChild, edit);
+              }
+              edit.parentNode?.removeChild(edit);
             }
-            edit.parentNode?.removeChild(edit);
           }
         });
       } else if (witnessType === '1b') {
@@ -300,10 +308,12 @@ function processNode(node: Node): string {
           result += processNode(child);
           break;
         case 'del':
-          result += `[${processNode(child)}]`;
+          const delInstant = (child as Element).getAttribute('data-instant') === 'true';
+          result += delInstant ? `<del-instant>${processNode(child)}</del-instant>` : `[${processNode(child)}]`;
           break;
         case 'add':
-          result += `{${processNode(child)}}`;
+          const addInstant = (child as Element).getAttribute('data-instant') === 'true';
+          result += addInstant ? `<add-instant>${processNode(child)}</add-instant>` : `{${processNode(child)}}`;
           break;
         case 'unclear':
           result += `⟨${processNode(child)}⟩`;

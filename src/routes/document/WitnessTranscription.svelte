@@ -38,6 +38,8 @@
 			'<span class="page-marker bg-primary text-primary-content px-1 rounded" data-page="$1">[Page $1]</span>'
 		)
 		?.replace(/<p>/g, witnessType === '1b' ? '<p class="mb-6 indent-8">' : '<p>')
+		?.replace(/<del-instant>([^<]+)<\/del-instant>/g, '<span class="instant-deletion">$1</span>')
+		?.replace(/<add-instant>([^<]+)<\/add-instant>/g, '<span class="instant-addition">$1</span>')
 		?.replace(
 			witnessType === '1b' ? /\[(?!Page \d+])([^\]]+)\]/g : /\[(?!Page \d+])([^\]]+)\]/g,
 			witnessType === '1b' ? '<span class="deletion line-through opacity-60">$1</span>' : '[$1]'
@@ -329,5 +331,18 @@
 		display: inline-block;
 		margin: 0 0.25em;
 		font-size: 0.9em;
+	}
+
+	:global(.instant-deletion) {
+		text-decoration: line-through;
+		text-decoration-thickness: 1px;
+		opacity: 0.8;
+		background: #bab9b9;
+	}
+
+	:global(.instant-addition) {
+		vertical-align: super;
+		font-size: 0.85em;
+		color: var(--tw-prose-body);
 	}
 </style>
