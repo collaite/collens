@@ -14,8 +14,22 @@ export function getWitnessType(files: FileData[]): string {
 }
 
 export function getPageNumber(file: FileData): string {
-  const match = file.name.match(/(\d+)\.png$/);
-  return match ? match[1] : '';
+  // Try to match different number patterns in filenames
+  const patterns = [
+    /(\d+)\.(?:png|jpg|jpeg|webp|tiff|avif)$/i,  // Simple numbered files like "1.png"
+    /-(\d+)r?\./i,  // Files like "something-01r.jpg" or "something-1.jpg"
+    /(\d+)/  // Fallback: just get the first number in the filename
+  ];
+
+  for (const pattern of patterns) {
+    const match = file.name.match(pattern);
+    if (match) {
+      // Pad single digit numbers with leading zero for correct string sorting
+      const num = match[1];
+      return num.length === 1 ? '0' + num : num;
+    }
+  }
+  return '';
 }
 
 export async function loadXMLContent(folder: Folder): Promise<string | null> {
