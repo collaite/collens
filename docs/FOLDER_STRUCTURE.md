@@ -10,13 +10,9 @@ project_name/
 ├── project_details.json
 ├── [witness_folder_1]/      # Can be "witness_1" or custom name like "Author 1"
 │   ├── images (*.png, *.jpg)
-│   ├── [prefix]_1a.txt     # Text version of transcription
-│   ├── [prefix]_1b.txt     # Text version of transcription
 │   └── [prefix].xml        # XML transcription file
 └── [witness_folder_2]/      # Can be "witness_2" or custom name like "Review 2"
     ├── images (*.png, *.jpg)
-    ├── [prefix]_1a.txt
-    ├── [prefix]_1b.txt
     └── [prefix].xml
 ```
 
@@ -58,11 +54,6 @@ Each witness directory must contain:
      - Descriptive name with .xml extension (e.g., `ms-aladin-simplified.xml`, `Sheherazade-tsfolio.xml`)
    - See [XML Parser Documentation](./PARSER_DOCUMENTATION.md) for XML structure details
 
-2. **Text Transcription Files**
-   - Two complementary text files are required:
-     - `[prefix]_1a.txt`: First part of the text transcription
-     - `[prefix]_1b.txt`: Second part of the text transcription
-   - The prefix should match the XML filename (e.g., `ms-aladin-simplified_1a.txt`)
 
 ## Example Projects
 
@@ -74,15 +65,11 @@ example1/
 │   ├── 1.png
 │   ├── 2.png
 │   ├── 3.png
-│   ├── ms-aladin-simplified_1a.txt
-│   ├── ms-aladin-simplified_1b.txt
 │   └── ms-aladin-simplified.xml
 └── witness_2/
     ├── 1.png
     ├── 2.png
     ├── 3.png
-    ├── ts-aladin-simplified_1a.txt
-    ├── ts-aladin-simplified_1b.txt
     └── ts-aladin-simplified.xml
 ```
 
@@ -93,14 +80,10 @@ sheherazade2/
 ├── Author 1/
 │   ├── Sheherazade-tsfolio-01r.jpg
 │   ├── Sheherazade-tsfolio-02r.jpg
-│   ├── Sheherazade-tsfolio_1a.txt
-│   ├── Sheherazade-tsfolio_1b.txt
 │   └── Sheherazade-tsfolio.xml
 └── Review 2/
     ├── Sheherazade-tsq-01r.jpg
     ├── Sheherazade-tsq-02r.jpg
-    ├── Sheherazade-tsq_1a.txt
-    ├── Sheherazade-tsq_1b.txt
     └── Sheherazade-tsq.xml
 ```
 
@@ -114,8 +97,6 @@ sheherazade2/
 2. **File Requirements**
    - Each witness must have at least one image
    - Each witness must have an XML transcription file
-   - Each witness must have corresponding _1a.txt and _1b.txt files
-   - All text files must use the same prefix as the XML file
 
 3. **Image Formats**
    - Supported formats: PNG, JPG
