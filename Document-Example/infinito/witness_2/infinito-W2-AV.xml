@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_all.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_all.rng" type="application/xml"
+	schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0">
+   <teiHeader>
+      <fileDesc>
+         <titleStmt>
+            <title>L'Infinito</title>
+         </titleStmt>
+         <publicationStmt>
+            <p>Authograph manuscript part of the Autografi Vissani.</p>
+         </publicationStmt>
+         <sourceDesc>
+            <p>Information about the source</p>
+         </sourceDesc>
+      </fileDesc>
+   </teiHeader>
+   <facsimile>
+      <surface n="1r" xml:id="s1r">
+         <graphic url="xxx"/>
+         <!-- point to image -->
+      </surface>
+      <surface n="2r" xml:id="s2r">
+         <graphic url="xxx"/>
+      </surface>
+   </facsimile>
+   <text>
+      <body>
+         <div type="original" xml:lang="it">
+            <pb n="1" facs="#s1r"/>
+            <head>L'Infinito<lb/> Idillio I</head>
+            <l>Sempre caro mi fu quest’ermo colle,</l>
+            <l>E questa siepe, che da tanta parte</l>
+            <l>De l'ultimo orizzonte il guardo esclude.</l>
+            <l>Ma sedendo e mirando, interminato</l>
+            <l>Spazio di là da quella, e sovrumani</l>
+            <l>Silenzi, e profondissima quiete</l>
+            <l>Io nel pensier mi fingo, ove per poco</l>
+            <l>Il cor non si spaura. E come il vento</l>
+            <l> Odo stormir tra queste piante, io quello</l>
+            <l>Infinito silenzio a questa voce</l>
+            <l>Vo comparando: e mi sovvien l’eterno,</l>
+            <l>E le morte stagioni, e la presente </l>
+            <l>E viva, e 'l suon di lei. Così tra questa</l>
+            <l><subst><del>Immensità</del><add>Infinità</add></subst> s'annega il pensier mio:</l> <!-- check if instant true -->
+            <l>E ’l naufragar m’è dolce in questo mare.</l>
+         </div>
+      </body>
+   </text>
+</TEI>
