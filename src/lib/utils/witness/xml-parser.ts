@@ -1,4 +1,22 @@
-// Calculate nesting depth of an element
+/**
+ * XML Parser Module
+ * This module is responsible for parsing and processing TEI XML documents containing witness transcriptions.
+ * It handles various text features including page breaks, additions, deletions, and other textual phenomena
+ * commonly found in manuscript transcriptions.
+ */
+
+/**
+ * Calculates the nesting depth of an XML element by recursively traversing its children.
+ * This is crucial for handling nested editorial interventions in the text, particularly
+ * for witness type '1b' which applies edits only up to a certain nesting level.
+ *
+ * @param node - The XML element to analyze
+ * @returns The maximum nesting depth of the element and its children
+ *
+ * Example:
+ * <add>text<del>nested</del></add> - depth of 2
+ * <add>simple text</add> - depth of 1
+ */
 function getNestingDepth(node: Element): number {
   if (!node.children || node.children.length === 0) {
     return 1;
@@ -7,7 +25,18 @@ function getNestingDepth(node: Element): number {
   return Math.max(...depths);
 }
 
-// Filter out edits that are children of other edits
+/**
+ * Filters out edit elements that are nested within other edit elements.
+ * This prevents double-processing of nested edits and ensures correct application
+ * of editorial changes based on the witness type.
+ *
+ * @param edits - Array of edit elements (<add> or <del>)
+ * @returns Array of top-level edit elements only
+ *
+ * Example:
+ * For XML like: <add>text<del>nested</del></add>
+ * Only the outer <add> element will be included in the result
+ */
 function filterChildEdits(edits: Element[]): Element[] {
   return edits.filter(edit =>
     !edits.some(otherEdit =>
@@ -16,6 +45,25 @@ function filterChildEdits(edits: Element[]): Element[] {
   );
 }
 
+/**
+ * Processes a single XML node and its children, converting them to a formatted text representation.
+ * This is the core function for transforming XML elements into human-readable text while preserving
+ * editorial markup and structural information.
+ *
+ * Handles special elements with specific formatting:
+ * - <div type="page">: Page divisions with numbers
+ * - <del>: Deletions marked with []
+ * - <add>: Additions marked with {}
+ * - <unclear>: Unclear text marked with ⟨⟩
+ * - <supplied>: Supplied text marked with <>
+ * - <note>: Editorial notes marked with (())
+ * - <lb>: Line breaks
+ * - <pb>: Page breaks
+ * - <p>: Paragraphs
+ *
+ * @param node - The XML node to process
+ * @returns Formatted text representation of the node and its children
+ */
 function processNode(node: Node): string {
   let result = '';
 
@@ -81,6 +129,36 @@ function processNode(node: Node): string {
   return result;
 }
 
+/**
+ * Main function for parsing TEI XML content. Processes the entire document according to
+ * the specified witness type, applying or reverting editorial changes as needed.
+ *
+ * Witness Types:
+ * - '1a': Original text (removes additions, preserves deletions)
+ *         Shows the text as it appeared before any editorial interventions
+ *
+ * - '1b': Intermediate state
+ *         Applies instant edits and edits up to nesting level 2
+ *         Useful for showing progressive stages of editing
+ *
+ * - '1c': Final text (applies additions, removes deletions)
+ *         Shows the text with all editorial changes applied
+ *
+ * Processing Steps:
+ * 1. Parses the XML using DOMParser
+ * 2. Handles <subst> elements by unwrapping them
+ * 3. Processes edits based on witness type
+ * 4. Converts the processed XML to formatted text
+ *
+ * Error Handling:
+ * - Validates XML parsing
+ * - Checks for required elements
+ * - Returns original text if processing fails
+ *
+ * @param xmlText - The TEI XML content to parse
+ * @param witnessType - The type of witness to generate ('1a', '1b', or '1c')
+ * @returns Formatted text representation of the witness
+ */
 export function parseTEIXML(xmlText: string, witnessType: '1a' | '1b' | '1c' = '1c'): string {
   if (!xmlText) return '';
 
