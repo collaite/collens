@@ -4,6 +4,7 @@
 	import { loadXMLContent, parseTEIXML } from '$lib/utils/witness-utils';
 	import SettingsBar from '../SettingsBar.svelte';
 	import VariantGraph from './VariantGraph.svelte';
+	import CollateXActions from './CollateXActions.svelte';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
 	import Toggle from '$lib/components/Toggle.svelte';
@@ -157,12 +158,13 @@
 					Loading witness alignment...
 				</div>
 			{:else if alignmentData}
-				<div class="mb-4 flex items-center">
+				<div class="mb-4 flex items-center justify-between">
 					<Toggle
 						label="Vertical orientation"
 						checked={isVerticalOrientation}
 						on:change={({ detail }) => (isVerticalOrientation = detail.checked)}
 					/>
+					<CollateXActions {jsonData} />
 				</div>
 				<div class="overflow-x-auto">
 					<table class="border-separate border-spacing-[2px]">
@@ -229,13 +231,6 @@
 					<h3 class="mb-4 text-lg font-medium">Variant Graph</h3>
 					<VariantGraph {alignmentData} />
 				</div>
-
-				<!-- <div class=" rounded-lg bg-gray-200/50 p-4">
-					<h3 class="mb-2 text-lg font-medium">Raw JSON Response:</h3>
-					<pre class="h-[300px] overflow-auto whitespace-pre-wrap rounded p-4 font-mono text-sm">
-						{jsonData}
-					</pre>
-				</div> -->
 			{/if}
 		</div>
 	</div>
