@@ -1,5 +1,5 @@
 <div class="overflow-scroll pb-20 pt-5">
-	<div class="cointainer prose m-auto max-w-2xl">
+	<div class="cointainer prose m-auto max-w-3xl">
 		<slot />
 	</div>
 </div>
