@@ -52,7 +52,7 @@ Each witness directory must contain:
    - Contains the TEI-encoded transcription
    - Naming options:
      - Descriptive name with .xml extension (e.g., `ms-aladin-simplified.xml`, `Sheherazade-tsfolio.xml`)
-   - See [XML Parser Documentation](./PARSER_DOCUMENTATION.md) for XML structure details
+   - See [XML Parser Documentation](/docs/parser-documentation) for XML structure details
 
 
 ## Example Projects
@@ -111,3 +111,8 @@ sheherazade2/
    - While custom witness folder names are supported, they should be meaningful and consistent
    - Custom names should reflect the nature or source of the witness (e.g., "Author 1", "Review 2")
    - If using sequential naming, start with "witness_1"
+
+<script>
+	import EditOnGithub from '$lib/components/EditOnGithub.svelte';
+</script>
+<EditOnGithub />

@@ -1,7 +1,13 @@
-<!-- DEFAULT Layout 🩻🩻🩻🩻🩻🩻 -->
-
-<div class="overflow-auto bg-primary py-10">
-	<div class="mx-auto prose sm:prose-lg px-3 break-words">
+<div class="overflow-scroll pb-20 pt-5">
+	<div class="cointainer prose m-auto max-w-2xl">
 		<slot />
 	</div>
 </div>
+
+<style>
+	:global(.prose pre) {
+		padding: 1.25rem;
+		border-radius: 0.5rem;
+		margin: 1.5rem 0;
+	}
+</style>

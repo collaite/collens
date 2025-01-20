@@ -242,3 +242,10 @@ interface ParserEvents {
    - Add cross-references
    - Implement streaming
    - Add advanced validation
+
+
+
+<script>
+	import EditOnGithub from '$lib/components/EditOnGithub.svelte';
+</script>
+<EditOnGithub />

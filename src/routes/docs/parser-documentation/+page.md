@@ -142,3 +142,8 @@ The parser is implemented in TypeScript and uses the browser's native `DOMParser
 - `parseTEIHeader()`: Processes TEI header information
 - `parseTEIXML()`: Main parsing function for TEI XML content
 - `processNode()`: Recursive function for processing XML nodes
+
+<script>
+	import EditOnGithub from '$lib/components/EditOnGithub.svelte';
+</script>
+<EditOnGithub />

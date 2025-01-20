@@ -1,11 +1,16 @@
 <script lang="ts">
 	import { base } from '$app/paths';
 	import Logo from '$lib/assets/icons/Logo.svelte';
-	import FeedbackButton from '$components/ui/feedback/FeedbackButton.svelte';
-	// import DaisyUIThemeSwitcher from '$lib/components/themeChamge/DaisyUIThemeSwitcher.svelte';
 	import { onMount } from 'svelte';
 	import { toggleMenu } from '$lib/stores/menu.store';
 	import IconamoonMenuBurgerHorizontalBold from '~icons/iconamoon/menu-burger-horizontal-bold';
+	import IconGithub from '~icons/lucide/github';
+
+	interface MenuItem {
+		title: string;
+		displayTitle: string;
+		path: string;
+	}
 
 	let activeCategory = '';
 	let isDesktop = true;
@@ -25,7 +30,7 @@
 		};
 	});
 
-	const links = [
+	const links: MenuItem[] = [
 		// Add your menu items here
 	];
 </script>
@@ -53,7 +58,7 @@
 				{#each links as link}
 					<a
 						class="menu-link"
-						on:click={() => (active = link.title)}
+						on:click={() => (activeCategory = link.title)}
 						class:active={activeCategory === link.title}
 						href={link.path}
 					>
@@ -61,10 +66,17 @@
 					</a>
 				{/each}
 			</div>
+			<a class="menu-link mr-3" href="{base}/docs">Documentation</a>
 			<a class="menu-link mr-3" href="{base}/about">About Collens</a>
-			<FeedbackButton showButton={isDesktop} />
-
-			<!-- <DaisyUIThemeSwitcher class="z-50 ml-auto sm:ml-14 " /> -->
+			<a
+				href="https://github.com/collaite/collens"
+				target="_blank"
+				rel="noopener noreferrer"
+				class="menu-link flex items-center gap-2"
+				aria-label="View on GitHub"
+			>
+				<IconGithub class="h-5 w-5" />
+			</a>
 
 			<!-- <Login /> -->
 		</header>

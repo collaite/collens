@@ -5,10 +5,12 @@
 
 ## Documentation
 
-- [XML Parser Documentation](docs/PARSER_DOCUMENTATION.md) - Detailed documentation of the XML parser functionality and usage
-- [Folder Structure Documentation](docs/FOLDER_STRUCTURE.md) - Required folder organization and file naming conventions
-- [Parser Improvements Proposal](docs/PARSER_IMPROVEMENTS.md) - Proposed enhancements and optimizations for the XML parser
-- [Transcription Documentation](docs/TRANSCRIPTION.md) - Detailed documentation of the transcription and XML parsing process
+- [XML Parser Documentation](https://github.com/collaite/collens/blob/main/src/routes/docs/parser-documentation/+page.md) - Detailed documentation of the XML parser functionality and usage
+- [Folder Structure Documentation](https://github.com/collaite/collens/blob/main/src/routes/docs/folder-structure/+page.md) - Required folder organization and file naming conventions
+- [Parser Improvements Proposal](https://github.com/collaite/collens/blob/main/src/routes/docs/parser-improvements/+page.md) - Proposed enhancements and optimizations for the XML parser
+- [Transcription Documentation](https://github.com/collaite/collens/blob/main/src/routes/docs/transcription/+page.md) - Detailed documentation of the transcription and XML parsing process
+
+You can also access the documentation through the website after running the application locally.
 
 ## Local development
 Be sure you have installed [bun](https://bun.sh) on your computer before running the application locally.

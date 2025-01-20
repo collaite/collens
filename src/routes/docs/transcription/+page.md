@@ -198,3 +198,10 @@ function filterChildEdits(edits: Element[]): Element[] {
 3. **Performance**
    - Problem: Large XML documents can be slow to process
    - Solution: Process edits in batches and show loading states
+
+
+
+<script>
+	import EditOnGithub from '$lib/components/EditOnGithub.svelte';
+</script>
+<EditOnGithub />
