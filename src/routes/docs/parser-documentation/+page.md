@@ -34,7 +34,7 @@ The parser supports three different witness types (`1a`, `1b`, `1c`), each handl
   - Removes all additions (`<add>`)
   - Preserves content of deletions (`<del>`)
 
-- **1b**: Intermediate state
+- **1b**: Intermediate state (not displayed in the application.)
   - Applies "instant" edits
   - Applies edits up to nesting level 2
   - Reverts deeper nested edits

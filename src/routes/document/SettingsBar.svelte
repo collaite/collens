@@ -117,7 +117,7 @@
 					Go back
 				{:else}
 					<PhLinkLight />
-					Collate X
+					CollateX
 				{/if}
 			</button>
 		</a>

@@ -167,13 +167,13 @@
 									<span class="inline-flex items-center gap-1">
 										{#if witnessType === '1a'}
 											<MdiDocumentEditOutline class="h-3.5 w-3.5" />
-											<span>Original Transcription</span>
-										{:else if witnessType === '1b'}
+											<span>First version</span>
+											<!-- {:else if witnessType === '1b'}
 											<IcOutlineCenterFocusStrong class="h-3.5 w-3.5" />
-											<span>Intermediate Transcription</span>
+											<span>Intermediate Transcription</span> -->
 										{:else}
 											<MdiFileCheckOutline class="h-3.5 w-3.5" />
-											<span>Final Transcription</span>
+											<span>Final version</span>
 										{/if}
 									</span>
 									<IcBaselineArrowDropDown class="size-6" />
@@ -196,7 +196,7 @@
 											Original
 										</button>
 									</li>
-									<li>
+									<!-- <li>
 										<button
 											class="btn btn-sm flex h-auto min-h-0 w-full items-center justify-start gap-2 bg-base-200/50 px-3 py-2 text-left text-sm font-normal text-base-content/60 hover:bg-base-200 hover:text-base-content {witnessType ===
 											'1b'
@@ -207,7 +207,7 @@
 											<IcOutlineCenterFocusStrong class="h-4 w-4" />
 											Intermediate
 										</button>
-									</li>
+									</li> -->
 									<li>
 										<button
 											class="btn btn-sm flex h-auto min-h-0 w-full items-center justify-start gap-2 bg-base-200/50 px-3 py-2 text-left text-sm font-normal text-base-content/60 hover:bg-base-200 hover:text-base-content {witnessType ===

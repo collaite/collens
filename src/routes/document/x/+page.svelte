@@ -149,12 +149,12 @@
 <div class="relative overflow-hidden">
 	<!-- Content -->
 	<div class="grid h-full gap-8 overflow-x-auto pl-[350px] pr-10">
-		<h2 class="mt-4 text-xl font-medium">Alignment Data - Collaite X integration</h2>
+		<h2 class="mt-4 text-xl font-medium">Witness alignment - CollateX integration</h2>
 		<div class="flex flex-col gap-8">
 			{#if !alignmentData}
 				<div class="flex h-[200px] items-center justify-center">
 					<span class="loading loading-spinner loading-lg mr-3 text-primary"></span>
-					Loading alignment data...
+					Loading witness alignment...
 				</div>
 			{:else if alignmentData}
 				<div class="mb-4 flex items-center">
