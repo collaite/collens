@@ -2,16 +2,11 @@
 	import { base } from '$app/paths';
 	import { page } from '$app/stores';
 	import Toggle from '../../lib/components/Toggle.svelte';
-	import { createEventDispatcher } from 'svelte';
 	import { witnessesStore } from '$lib/stores/witnesses.store';
 	import MetricCircle from '../../lib/components/MetricCircle.svelte';
 
 	import IcBaselineArrowBack from '~icons/ic/baseline-arrow-back';
 	import PhLinkLight from '~icons/ph/link-light';
-	import FluentDocumentBulletListMultiple20Filled from '~icons/fluent/document-bullet-list-multiple-20-filled';
-	import PhGithubLogo from '~icons/ph/github-logo';
-
-	const dispatch = createEventDispatcher();
 
 	$: isCollateX = $page.route.id === '/document/x';
 
@@ -48,7 +43,9 @@
 						<span class="text-content/70">{witness.folder.title}</span>
 					</div>
 
-					<Toggle checked={witness.enabled} on:change={(e) => handleToggle(witness, e)} />
+					<div class="tooltip" data-tip="Hide/View Witness">
+						<Toggle checked={witness.enabled} on:change={(e) => handleToggle(witness, e)} />
+					</div>
 				</div>
 
 				<div class="flex items-center justify-between">
@@ -129,9 +126,6 @@
 			</a>
 			<a href="https://www.esciencecenter.nl/" target="_blank">
 				<img class="h-6" src="{base}/images/escience-light.png" alt="eScience Center" />
-			</a>
-			<a href="https://github.com/collaite/collens" target="_blank" class="text-white">
-				<PhGithubLogo class="h-6 w-6" />
 			</a>
 		</div>
 	</div>
