@@ -10,16 +10,8 @@
 	import DragDropFolder from '$lib/components/DragDropFolder.svelte';
 
 	let selectedDocument: Folder | undefined;
-	let witnesses = [];
 	let loading = true;
 	let error = '';
-
-	// Function to handle wheel event and transform vertical scroll to horizontal
-	function handleWheel(event: WheelEvent) {
-		event.preventDefault(); // Prevent the default vertical scroll
-		const container = event.currentTarget as HTMLElement;
-		container.scrollLeft += event.deltaY;
-	}
 
 	async function loadDocument(id: string) {
 		try {
@@ -128,7 +120,3 @@
 		</div>
 	{/if}
 </div>
-
-<style>
-	/* Add any additional styles here if needed */
-</style>
