@@ -19,10 +19,10 @@
 			<a href="{base}/docs/parser-documentation">Parser Documentation</a>
 			- Details about the XML parser
 		</li>
-		<li>
+		<!-- <li>
 			<a href="{base}/docs/parser-improvements">Parser Improvements</a>
 			- Information about parser improvements
-		</li>
+		</li> -->
 		<li>
 			<a href="{base}/docs/transcription">Transcription</a>
 			- Transcription documentation
