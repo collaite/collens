@@ -1,3 +1,7 @@
+<script lang="ts">
+	import { base } from '$app/paths';
+	import EditOnGithub from '$lib/components/EditOnGithub.svelte';
+</script>
 # Folder Structure Documentation
 
 ## Overview
@@ -52,7 +56,7 @@ Each witness directory must contain:
    - Contains the TEI-encoded transcription
    - Naming options:
      - Descriptive name with .xml extension (e.g., `ms-aladin-simplified.xml`, `Sheherazade-tsfolio.xml`)
-   - See [XML Parser Documentation](/docs/parser-documentation) for XML structure details
+   - See [XML Parser Documentation]({base}/docs/parser-documentation) for XML structure details
 
 
 ## Example Projects
@@ -112,7 +116,5 @@ sheherazade2/
    - Custom names should reflect the nature or source of the witness (e.g., "Author 1", "Review 2")
    - If using sequential naming, start with "witness_1"
 
-<script>
-	import EditOnGithub from '$lib/components/EditOnGithub.svelte';
-</script>
+
 <EditOnGithub />
