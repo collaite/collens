@@ -13,10 +13,10 @@ This document describes the required folder structure and file organization for 
 project_name/
 ├── project_details.json
 ├── [witness_folder_1]/      # Can be "witness_1" or custom name like "Author 1"
-│   ├── images (*.png, *.jpg)
+│   ├── images (*.png, *.jpg, *.jpeg, *.webp, *.tiff, *.avif)
 │   └── [prefix].xml        # XML transcription file
 └── [witness_folder_2]/      # Can be "witness_2" or custom name like "Review 2"
-    ├── images (*.png, *.jpg)
+    ├── images (*.png, *.jpg, *.jpeg, *.webp, *.tiff, *.avif)
     └── [prefix].xml
 ```
 
@@ -43,7 +43,7 @@ project_name/
 ### 3. Witness Contents
 
 #### 3.1 Images
-- **Format**: PNG or JPG files
+- **Format**: PNG, JPG/JPEG, WebP, TIFF, or AVIF files
 - **Naming Options**:
   - Sequential numbers: `1.png`, `2.png`, `3.png`, etc.
   - Descriptive names: `Sheherazade-tsfolio-01r.jpg`, `Sheherazade-tsfolio-02r.jpg`, etc.
@@ -103,7 +103,7 @@ sheherazade2/
    - Each witness must have an XML transcription file
 
 3. **Image Formats**
-   - Supported formats: PNG, JPG
+   - Supported formats: PNG, JPG/JPEG, WebP, TIFF, AVIF
    - Images should be high quality but optimized for web viewing
    - Consistent image dimensions recommended within each witness
 
