@@ -113,6 +113,7 @@ function processNode(node: Node): string {
           // Only add line breaks for explicit <lb> tags
           result += '\n';
           break;
+
         case 'pb':
           const pageNum = element.getAttribute('n');
           result += pageNum ? (pageNum === '1' ? `[Page ${pageNum}]\n` : `\n\n[Page ${pageNum}]\n`) : '\n[Page Break]\n';
