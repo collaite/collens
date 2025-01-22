@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { indexedDBStore } from '$lib/stores/indexeddb-store';
 	import { witnessesStore } from '$lib/stores/witnesses.store';
-	import { loadXMLContent, parseTEIXML } from '$lib/utils/witness';
+	import { loadXMLContent, parseTEIXML, cleanTextForComparison } from '$lib/utils/witness';
 	import SettingsBar from '../SettingsBar.svelte';
 	import VariantGraph from './VariantGraph.svelte';
 	import CollateXActions from './CollateXActions.svelte';
@@ -32,9 +32,10 @@
 					}
 					// Parse the XML to get the final transcription
 					const transcription = parseTEIXML(xmlContent, '1c'); // Using 1c to get final version
+					const cleanedContent = cleanTextForComparison(transcription);
 					return {
 						id: w.folder.id.split('_')[1], // Extract the number from witness_X
-						content: transcription
+						content: cleanedContent
 					};
 				})
 			);
@@ -207,7 +208,7 @@
 												<td
 													class="border-2 {isInvariant(column)
 														? 'border-green-500'
-														: 'border-base-content'} px-2 py-1 text-sm"
+														: 'border-base-content'} w-1/2 px-2 py-1 text-sm"
 												>
 													<div class="flex items-center gap-2">
 														<span class="text-xs font-semibold text-base-content/50">
