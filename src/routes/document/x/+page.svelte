@@ -150,7 +150,7 @@
 
 <div class="relative overflow-hidden">
 	<!-- Content -->
-	<div class="grid h-full gap-8 overflow-x-auto pl-[350px] pr-10">
+	<div class="grid h-full gap-8 overflow-x-auto pb-20 pl-[350px] pr-10">
 		<h2 class="mt-4 text-xl font-medium">Witness alignment - CollateX integration</h2>
 		<div class="flex flex-col gap-8">
 			{#if !alignmentData}
@@ -228,10 +228,10 @@
 					</table>
 				</div>
 
-				<div class="mt-8 w-full overflow-x-scroll rounded-lg bg-gray-200/50 p-4">
+				<!-- <div class="mt-8 w-full overflow-x-scroll rounded-lg bg-gray-200/50 p-4">
 					<h3 class="mb-4 text-lg font-medium">Variant Graph</h3>
 					<VariantGraph {alignmentData} />
-				</div>
+				</div> -->
 			{/if}
 		</div>
 	</div>
