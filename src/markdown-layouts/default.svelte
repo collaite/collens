@@ -1,13 +1,13 @@
-<div class="overflow-scroll pb-20 pt-5">
-	<div class="cointainer prose mx-auto max-w-3xl">
-		<slot />
+<script lang="ts">
+	interface Props {
+		children?: import('svelte').Snippet;
+	}
+
+	let { children }: Props = $props();
+</script>
+
+<div class="-mt-20 w-full overflow-auto break-words px-3">
+	<div class="prose mx-auto py-20 sm:prose-lg">
+		{@render children?.()}
 	</div>
 </div>
-
-<style>
-	:global(.prose pre) {
-		padding: 1.25rem;
-		border-radius: 0.5rem;
-		margin: 1.5rem 0;
-	}
-</style>
