@@ -40,8 +40,11 @@
 			<div class="text-primary">
 				<div class="mt-8">
 					{#if $indexedDBStore.length === 0}
+						<button class="btn btn-primary mb-4" on:click={() => indexedDBStore.loadAllExamples()}>
+							Load Example Projects
+						</button>
 						<p class="text-gray-600">
-							No files loaded yet. Drag and drop files or folders to get started.
+							No files loaded yet. Drag and drop files or folders to get started, or load example projects.
 						</p>
 					{:else}
 						<div class="flex flex-wrap justify-center gap-20">
