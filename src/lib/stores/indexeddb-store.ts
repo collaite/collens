@@ -242,40 +242,49 @@ async function getExampleSubfolders(exampleName: string): Promise<string[]> {
 // Helper: load all files for a given example/subfolder
 async function loadExampleFiles(exampleName: string, subfolder: string): Promise<FileData[]> {
   const files: FileData[] = [];
-  // Try up to 20 images
-  for (let i = 1; i <= 20; i++) {
-    try {
-      const response = await fetch(`${base}/documents/${exampleName}/${subfolder}/${i}.png`);
-      if (response.ok) {
-        const blob = await response.blob();
-        const reader = new FileReader();
-        const src = await new Promise<string>((resolve) => {
-          reader.onload = () => resolve(reader.result as string);
-          reader.readAsDataURL(blob);
-        });
-        files.push({
-          name: `${i}.png`,
-          size: blob.size,
-          type: blob.type,
-          lastModified: new Date().getTime(),
-          src,
-          path: `${subfolder}/${i}.png`
-        });
-      }
-    } catch { continue; }
-  }
-  // Try known text/xml files (add more as needed)
-  const textFiles = [
-    'ms-aladin-simplified_1a.txt',
-    'ms-aladin-simplified_1b.txt',
-    'ms-aladin-simplified.xml',
-    'ts-aladin-simplified_1a.txt',
-    'ts-aladin-simplified_1b.txt',
-    'ts-aladin-simplified.xml',
-    'Sheherazade-tsfolio.xml',
-    'Sheherazade-tsq.xml'
+  // Try to list all files in the subfolder (static build fallback: try common extensions and patterns)
+  const extensions = [
+    'png', 'jpg', 'jpeg', 'webp', 'tiff', 'avif', // images
+    'xml', 'txt' // text/xml
   ];
-  for (const fileName of textFiles) {
+  // Try up to 20 for numbered files
+  for (let i = 1; i <= 20; i++) {
+    for (const ext of extensions) {
+      try {
+        const response = await fetch(`${base}/documents/${exampleName}/${subfolder}/${i}.${ext}`);
+        if (response.ok) {
+          const blob = await response.blob();
+          const reader = new FileReader();
+          const src = await new Promise<string>((resolve) => {
+            reader.onload = () => resolve(reader.result as string);
+            reader.readAsDataURL(blob);
+          });
+          files.push({
+            name: `${i}.${ext}`,
+            size: blob.size,
+            type: blob.type,
+            lastModified: new Date().getTime(),
+            src,
+            path: `${subfolder}/${i}.${ext}`
+          });
+        }
+      } catch { continue; }
+    }
+  }
+  // Try known custom-named files (for sheherazade, infinito, etc.)
+  const customFiles = [
+    // Infinito
+    'Infinito-W1-AN.jpg', 'infinito-W1-AN.xml',
+    'Infinito-W2-AN.jpg', 'infinito-W2-AN.xml',
+    'Infinito-W3-AN.jpg', 'infinito-W3-AN.xml',
+    'Infinito-W4-AN.jpg', 'infinito-W4-AN.xml',
+    // Sheherazade
+    'Sheherazade-tsfolio.xml',
+    'Sheherazade-tsfolio-01r.jpg', 'Sheherazade-tsfolio-02r.jpg',
+    'Sheherazade-tsq.xml',
+    'Sheherazade-tsq-01r.jpg', 'Sheherazade-tsq-02r.jpg', 'Sheherazade-tsq-03r.jpg', 'Sheherazade-tsq-04r.jpg', 'Sheherazade-tsq-05r.jpg'
+  ];
+  for (const fileName of customFiles) {
     try {
       const response = await fetch(`${base}/documents/${exampleName}/${subfolder}/${fileName}`);
       if (response.ok) {
@@ -292,29 +301,6 @@ async function loadExampleFiles(exampleName: string, subfolder: string): Promise
           lastModified: new Date().getTime(),
           src,
           path: `${subfolder}/${fileName}`
-        });
-      }
-    } catch { continue; }
-  }
-  // Try known jpg files (for sheherazade)
-  for (let i = 1; i <= 20; i++) {
-    try {
-      const jpgName = subfolder.startsWith('Sheherazade') ? `Sheherazade-tsfolio-0${i}r.jpg` : `${i}.jpg`;
-      const response = await fetch(`${base}/documents/${exampleName}/${subfolder}/${jpgName}`);
-      if (response.ok) {
-        const blob = await response.blob();
-        const reader = new FileReader();
-        const src = await new Promise<string>((resolve) => {
-          reader.onload = () => resolve(reader.result as string);
-          reader.readAsDataURL(blob);
-        });
-        files.push({
-          name: jpgName,
-          size: blob.size,
-          type: blob.type,
-          lastModified: new Date().getTime(),
-          src,
-          path: `${subfolder}/${jpgName}`
         });
       }
     } catch { continue; }
