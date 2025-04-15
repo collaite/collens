@@ -117,31 +117,27 @@ export const indexedDBStore = {
     try {
       const projectDetailsResponse = await fetch(`${base}/documents/${exampleName}/project_details.json`);
       const projectDetails = await projectDetailsResponse.json();
-
-      // Discover all subfolders (witnesses/authors/reviews) for this example
       const subfolders = await getExampleSubfoldersDynamic(exampleName);
-      for (const [i, subfolder] of subfolders.entries()) {
+      let allFiles: FileData[] = [];
+      for (const subfolder of subfolders) {
         const files = await loadExampleFiles(exampleName, subfolder);
-        if (files.length > 0) {
-          // Make title unique per folder
-          const folderTitle = i === 0
-            ? projectDetails.title || exampleName
-            : `${projectDetails.title || exampleName} (${subfolder})`;
-          const folder: Folder = {
-            id: `${exampleName}_${subfolder}`,
-            files,
-            title: folderTitle,
-            description: projectDetails.description || subfolder
-          };
-          // Pass title/description directly, don't re-fetch project_details.json in addFolder
-          await db.add(STORE_NAME, folder);
-          update(folders => [...folders, folder].sort((a, b) => getWitnessNumber(a.id) - getWitnessNumber(b.id)));
-        }
+        allFiles = allFiles.concat(files);
+      }
+      if (allFiles.length > 0) {
+        const folder: Folder = {
+          id: `${exampleName}`,
+          files: allFiles,
+          title: projectDetails.title || exampleName,
+          description: projectDetails.description || ''
+        };
+        await db.add(STORE_NAME, folder);
+        update(folders => [...folders, folder].sort((a, b) => getWitnessNumber(a.id) - getWitnessNumber(b.id)));
       }
     } catch (error) {
       console.error(`Error loading example folder "${exampleName}":`, error);
     }
   },
+
   addFolder: async (folder: Folder) => {
     // Only add the folder, don't try to fetch project_details.json again
     const files = folder.files || [];

@@ -44,7 +44,8 @@
 							Load Example Projects
 						</button>
 						<p class="text-gray-600">
-							No files loaded yet. Drag and drop files or folders to get started, or load example projects.
+							No files loaded yet. Drag and drop files or folders to get started, or load example
+							projects.
 						</p>
 					{:else}
 						<div class="flex flex-wrap justify-center gap-20">
