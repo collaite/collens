@@ -189,7 +189,7 @@
 													{column[witnessIndex]}
 												</td>
 											{:else}
-												<td class="px-2 py-1" />
+												<td class="px-2 py-1"></td>
 											{/if}
 										{/each}
 									</tr>
@@ -218,7 +218,7 @@
 													</div>
 												</td>
 											{:else}
-												<td class="px-2 py-1" />
+												<td class="px-2 py-1"></td>
 											{/if}
 										{/each}
 									</tr>

@@ -1,4 +1,6 @@
 import { visit } from 'unist-util-visit'
+import { fileURLToPath } from 'url'
+import path from 'path'
 
 import autolinkHeadings from 'rehype-autolink-headings'
 import slugPlugin from 'rehype-slug'
@@ -10,6 +12,7 @@ import readingTime from 'remark-reading-time';
 
 // import remarkToc from 'remark-toc'
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export default {
   extensions: ['.svx', '.md'],
@@ -17,7 +20,7 @@ export default {
     dashes: 'oldschool'
   },
   layout: {
-    _: "./src/markdown-layouts/default.svelte", // Default layout for markdown files
+    _: path.join(__dirname, './src/markdown-layouts/default.svelte'), // Default layout for markdown files
   },
   remarkPlugins: [
     videos,

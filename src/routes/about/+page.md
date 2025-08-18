@@ -3,7 +3,7 @@
 </script>
 ## About COLLaiTE Collens
 
-<img src="{base}/images/COLLaiTE_v1.gif"/>
+<img src="{base}/images/COLLaiTE_v1.gif" alt="COLLaiTE visualization"/>
 
 Welcome to our Text Comparison Tool!
 

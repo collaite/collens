@@ -11,8 +11,12 @@
 	import FolderCard from '../lib/components/FolderCard.svelte';
 	import PhGithubLogo from '~icons/ph/github-logo';
 
-	onMount(() => {
-		indexedDBStore.init();
+	onMount(async () => {
+		await indexedDBStore.init();
+		// Load examples automatically if no folders are present
+		if ($indexedDBStore.length === 0) {
+			await indexedDBStore.loadAllExamples();
+		}
 	});
 
 	async function handleFolderDropped(event: CustomEvent<{ files: FileData[] }>) {
@@ -40,12 +44,8 @@
 			<div class="text-primary">
 				<div class="mt-8">
 					{#if $indexedDBStore.length === 0}
-						<button class="btn btn-primary mb-4" on:click={() => indexedDBStore.loadAllExamples()}>
-							Load Example Projects
-						</button>
 						<p class="text-gray-600">
-							No files loaded yet. Drag and drop files or folders to get started, or load example
-							projects.
+							Loading example projects...
 						</p>
 					{:else}
 						<div class="flex flex-wrap justify-center gap-20">
