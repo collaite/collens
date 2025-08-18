@@ -1,27 +1,238 @@
 # COLLaiTE Collens
 
-
 ![COLLaiTE prototype v1](https://github.com/user-attachments/assets/fa9e8479-3229-4658-b357-41abad9218ce)
 
-## Documentation
+## Overview
 
-- [XML Parser Documentation](https://github.com/collaite/collens/blob/main/src/routes/docs/parser-documentation/+page.md) - Detailed documentation of the XML parser functionality and usage
-- [Folder Structure Documentation](https://github.com/collaite/collens/blob/main/src/routes/docs/folder-structure/+page.md) - Required folder organization and file naming conventions
-- [Parser Improvements Proposal](https://github.com/collaite/collens/blob/main/src/routes/docs/parser-improvements/+page.md) - Proposed enhancements and optimizations for the XML parser
-- [Transcription Documentation](https://github.com/collaite/collens/blob/main/src/routes/docs/transcription/+page.md) - Detailed documentation of the transcription and XML parsing process
+COLLaiTE Collens is a sophisticated web-based tool for digital manuscript collation and visualization, designed specifically for digital humanities scholars working with TEI XML transcriptions. It enables side-by-side comparison of multiple witnesses, advanced text processing, and integration with CollateX for automated collation.
 
-You can also access the documentation through the website after running the application locally.
+### Key Highlights
+- 📚 **Multi-witness Comparison** - View and compare multiple manuscript witnesses simultaneously
+- 🔍 **Advanced TEI XML Processing** - Sophisticated parsing of complex editorial markup
+- 🖼️ **Image Synchronization** - Connect transcriptions with manuscript images
+- 🔄 **CollateX Integration** - Automated text collation and variant analysis
+- 💾 **Offline Support** - Local storage using IndexedDB for offline access
+- 📊 **Editorial Statistics** - Track additions, deletions, substitutions, and transpositions
 
-## Local development
-Be sure you have installed [bun](https://bun.sh) on your computer before running the application locally.
+## Features
 
-Running the app locally:
+### Core Functionality
+
+#### Document Management
+- **Drag-and-drop upload** for documents and folders
+- **Automatic project loading** with example datasets (Infinito, Sheherazade)
+- **IndexedDB storage** for persistent, offline-capable document access
+- **Batch file processing** for handling multiple witnesses simultaneously
+- **Smart folder structure recognition** for organized document import
+
+#### Multi-Witness Visualization
+- **Side-by-side comparison** view for multiple witnesses
+- **Dynamic witness management** with real-time toggle controls
+- **Individual witness metrics** showing editorial statistics
+- **Synchronized scrolling** across witness panels
+- **Customizable witness display** with show/hide controls
+
+#### TEI XML Processing
+
+##### Advanced Parser Features
+- **Three-stage transcription support:**
+  - `Stage 1a`: Original text (preserves deletions, excludes additions)
+  - `Stage 1b`: Intermediate state (applies instant edits and nested changes)
+  - `Stage 1c`: Final text (includes all additions, removes deletions)
+
+##### TEI Element Support
+- `<add>` additions rendered with `{}`
+- `<del>` deletions rendered with `[]`
+- `<unclear>` text rendered with `⟨⟩`
+- `<supplied>` text rendered with `<>`
+- `<note>` editorial notes rendered with `(())`
+- `<subst>` substitutions with proper unwrapping
+- `<lb>` line breaks and `<pb>` page breaks
+- Nested editorial interventions handling
+- Instant revision processing
+
+#### Image Visualization
+- **Multi-format support** (PNG, JPG, JPEG, WebP, TIFF, AVIF)
+- **Thumbnail sidebar** for easy navigation
+- **Page synchronization** between text and images
+- **Smart numerical sorting** of manuscript pages
+- **Full-screen image viewer** with zoom capabilities
+
+#### CollateX Integration
+- **Real-time collation** using CollateX.net web service
+- **Dekker algorithm** for optimal text alignment
+- **Interactive variant table** with horizontal/vertical orientation
+- **Invariant highlighting** for identical text sections
+- **JSON export** of collation results
+- **Dynamic updates** when witnesses are toggled
+
+### User Interface
+
+#### Components & Design
+- **Responsive layout** optimized for desktop and mobile
+- **Toast notifications** for user feedback
+- **Settings bar** with witness controls and statistics
+- **Metric circles** for visual representation of changes
+- **CodeMirror integration** for XML syntax highlighting
+- **Dark mode support** via DaisyUI themes
+
+## Getting Started
+
+### Prerequisites
+
+- [Bun](https://bun.sh) - Fast all-in-one JavaScript runtime
+- Modern web browser with JavaScript enabled
+- (Optional) Git for cloning the repository
+
+### Installation
+
+1. **Clone the repository:**
+```bash
+git clone https://github.com/collaite/collens.git
+cd collens
+```
+
+2. **Install dependencies:**
+```bash
+bun install
+```
+
+3. **Run the development server:**
 ```bash
 bun dev
 ```
-The changes in the `main` branch will be automatically deployed to github pages.
 
+4. **Open in browser:**
+Navigate to `http://localhost:5173`
 
-Build the application for production:
+### Building for Production
+
 ```bash
 bun build
+```
+
+The application will be built to the `build` directory, ready for deployment.
+
+## Usage Guide
+
+### Loading Documents
+
+1. **Using Example Projects:**
+   - Click on the Infinito or Sheherazade cards on the homepage
+   - Documents will be automatically loaded and displayed
+
+2. **Uploading Custom Documents:**
+   - Drag and drop a folder containing your TEI XML files
+   - Ensure your folder follows the required structure (see documentation)
+   - Files will be processed and stored locally
+
+### Working with Witnesses
+
+1. **Toggle Witnesses:**
+   - Use the checkboxes in the settings bar to show/hide witnesses
+   - View editorial statistics for each witness
+
+2. **Compare Texts:**
+   - Witnesses appear side-by-side for easy comparison
+   - Scroll synchronization helps maintain alignment
+
+3. **View Images:**
+   - Click on image thumbnails in the sidebar
+   - Images sync with the corresponding text sections
+
+### Using CollateX
+
+1. **Generate Collation:**
+   - Select witnesses to include in collation
+   - Click "Generate CollateX" button
+   - View results in the collation table
+
+2. **Export Results:**
+   - Copy JSON output for further analysis
+   - Toggle between horizontal/vertical table views
+
+## Documentation
+
+### User Documentation
+- [Folder Structure Guide](https://github.com/collaite/collens/blob/main/src/routes/docs/folder-structure/+page.md) - Required folder organization and file naming conventions
+- [Transcription Guide](https://github.com/collaite/collens/blob/main/src/routes/docs/transcription/+page.md) - Understanding the transcription and XML parsing process
+
+### Technical Documentation
+- [XML Parser Documentation](https://github.com/collaite/collens/blob/main/src/routes/docs/parser-documentation/+page.md) - Detailed parser functionality and TEI element handling
+- [Parser Improvements Proposal](https://github.com/collaite/collens/blob/main/src/routes/docs/parser-improvements/+page.md) - Proposed enhancements and optimizations
+
+> Documentation is also accessible through the application interface after running locally.
+
+## Example Projects
+
+### Infinito Project
+A comprehensive 4-witness manuscript comparison showcasing:
+- Multiple manuscript versions of the same text
+- Complex editorial interventions
+- Full image sets for each witness
+- Extensive TEI markup examples
+
+### Sheherazade Project
+A focused 2-witness comparison demonstrating:
+- Direct manuscript comparison
+- Clear visualization of textual variants
+- Simplified witness management
+
+## Technical Stack
+
+### Core Technologies
+- **[SvelteKit](https://kit.svelte.dev/)** - Full-stack web framework
+- **[TypeScript](https://www.typescriptlang.org/)** - Type-safe JavaScript
+- **[Tailwind CSS](https://tailwindcss.com/)** - Utility-first CSS framework
+- **[DaisyUI](https://daisyui.com/)** - Component library for Tailwind
+
+### Key Libraries
+- **MDSvex** - Markdown processing with Svelte components
+- **CodeMirror** - Code editor for XML display
+- **Prism.js** - Syntax highlighting
+- **IndexedDB** - Client-side storage
+
+### Build Tools
+- **Vite** - Fast build tool and dev server
+- **Bun** - JavaScript runtime and package manager
+
+## Development
+
+### Project Structure
+```
+collens/
+├── src/
+│   ├── routes/          # SvelteKit routes and pages
+│   ├── lib/
+│   │   ├── components/  # Reusable Svelte components
+│   │   ├── stores/      # Svelte stores for state management
+│   │   ├── utils/       # Utility functions
+│   │   └── types/       # TypeScript type definitions
+│   └── app.html         # HTML template
+├── static/              # Static assets
+└── package.json         # Project configuration
+```
+
+### Local Development
+
+The development server includes:
+- Hot module replacement for instant updates
+- TypeScript checking
+- Automatic error reporting
+- Development-specific debugging tools
+
+### Deployment
+
+Changes pushed to the `main` branch are automatically deployed to GitHub Pages, making the latest version available at the project URL.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit issues or pull requests to improve COLLaiTE Collens.
+
+## License
+
+[License information to be added]
+
+## Acknowledgments
+
+COLLaiTE Collens is developed as part of the COLLaiTE project for digital humanities research and manuscript studies.

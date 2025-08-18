@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(bun:*)",
+      "WebFetch(domain:localhost)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

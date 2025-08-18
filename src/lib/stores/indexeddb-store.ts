@@ -247,37 +247,15 @@ async function loadExampleFiles(exampleName: string, subfolder: string): Promise
     'png', 'jpg', 'jpeg', 'webp', 'tiff', 'avif', // images
     'xml', 'txt' // text/xml
   ];
-  // Try up to 20 for numbered files
-  for (let i = 1; i <= 20; i++) {
-    for (const ext of extensions) {
-      try {
-        const response = await fetch(`${base}/documents/${exampleName}/${subfolder}/${i}.${ext}`);
-        if (response.ok) {
-          const blob = await response.blob();
-          const reader = new FileReader();
-          const src = await new Promise<string>((resolve) => {
-            reader.onload = () => resolve(reader.result as string);
-            reader.readAsDataURL(blob);
-          });
-          files.push({
-            name: `${i}.${ext}`,
-            size: blob.size,
-            type: blob.type,
-            lastModified: new Date().getTime(),
-            src,
-            path: `${subfolder}/${i}.${ext}`
-          });
-        }
-      } catch { continue; }
-    }
-  }
+  // Removed numbered file loading to prevent 404 errors
+  // Files have specific names, not numbered patterns
   // Try known custom-named files (for sheherazade, infinito, etc.)
   const customFiles = [
     // Infinito
     'Infinito-W1-AN.jpg', 'infinito-W1-AN.xml',
-    'Infinito-W2-AN.jpg', 'infinito-W2-AN.xml',
-    'Infinito-W3-AN.jpg', 'infinito-W3-AN.xml',
-    'Infinito-W4-AN.jpg', 'infinito-W4-AN.xml',
+    'infinito-W2-AV.png', 'infinito-W2-AV.xml',  // Fixed: AV not AN, .png not .jpg
+    'Infinito-W3-NR25.jpg', 'infinito-W3-NR25.xml',  // Fixed: NR25 not AN
+    'Infinito-W4-N35.jpg', 'infinito-W4-N35.xml',  // Fixed: N35 not AN
     // Sheherazade
     'Sheherazade-tsfolio.xml',
     'Sheherazade-tsfolio-01r.jpg', 'Sheherazade-tsfolio-02r.jpg',
