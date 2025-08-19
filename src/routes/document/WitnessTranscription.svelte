@@ -39,6 +39,8 @@
 	let selectedWord: { text: string; variations: any[] } | null = null;
 	let popoverPosition = { x: 0, y: 0 };
 	let popoverPlacement: 'above' | 'below' = 'above';
+	let popoverWidth = 320; // Default width
+	let popoverMaxHeight = 350; // Default max height
 	let showPopover = false;
 
 	// Handle click on heatmap word
@@ -53,13 +55,47 @@
 			let x = rect.left + rect.width / 2;
 			let y = rect.top - 10;
 			
-			// Popover dimensions (approximate)
-			const popoverWidth = 320; // w-80 = 20rem = 320px
-			const popoverHeight = 350; // approximate max height
-			
 			// Viewport dimensions
 			const viewportWidth = window.innerWidth;
 			const viewportHeight = window.innerHeight;
+			
+			// Calculate available space
+			const spaceLeft = x;
+			const spaceRight = viewportWidth - x;
+			const spaceAbove = rect.top;
+			const spaceBelow = viewportHeight - rect.bottom;
+			
+			// Calculate optimal popover width based on available horizontal space
+			const minWidth = 280; // Minimum width for readability
+			const maxWidth = Math.min(600, viewportWidth - 40); // Max width with padding
+			const availableWidth = Math.min(spaceLeft, spaceRight) * 2 - 20; // Total width available
+			popoverWidth = Math.max(minWidth, Math.min(maxWidth, availableWidth));
+			
+			// Calculate optimal height based on available vertical space
+			const minHeight = 200;
+			const preferredMaxHeight = 500;
+			
+			// Determine placement and height
+			if (spaceAbove > spaceBelow && spaceAbove > minHeight) {
+				// Place above
+				popoverPlacement = 'above';
+				popoverMaxHeight = Math.min(preferredMaxHeight, spaceAbove - 20);
+			} else if (spaceBelow > minHeight) {
+				// Place below
+				y = rect.bottom + 10;
+				popoverPlacement = 'below';
+				popoverMaxHeight = Math.min(preferredMaxHeight, spaceBelow - 20);
+			} else {
+				// Use whichever has more space
+				if (spaceAbove > spaceBelow) {
+					popoverPlacement = 'above';
+					popoverMaxHeight = Math.max(minHeight, spaceAbove - 20);
+				} else {
+					y = rect.bottom + 10;
+					popoverPlacement = 'below';
+					popoverMaxHeight = Math.max(minHeight, spaceBelow - 20);
+				}
+			}
 			
 			// Adjust horizontal position if popover would go off-screen
 			if (x - popoverWidth / 2 < 10) {
@@ -68,15 +104,6 @@
 			} else if (x + popoverWidth / 2 > viewportWidth - 10) {
 				// Too far right - align right edge with viewport
 				x = viewportWidth - popoverWidth / 2 - 10;
-			}
-			
-			// Adjust vertical position if popover would go off-screen
-			if (y - popoverHeight < 10) {
-				// Not enough space above - show below instead
-				y = rect.bottom + 10;
-				popoverPlacement = 'below';
-			} else {
-				popoverPlacement = 'above';
 			}
 			
 			popoverPosition = { x, y };
@@ -708,11 +735,11 @@
 	
 	<!-- Popover content -->
 	<div 
-		class="fixed z-50 w-80 rounded-lg bg-base-100 shadow-2xl border border-base-300"
-		style="left: {popoverPosition.x}px; top: {popoverPosition.y}px; transform: translate(-50%, {popoverPlacement === 'above' ? '-100%' : '0'});"
+		class="fixed z-50 rounded-lg bg-base-100 shadow-2xl border border-base-300 flex flex-col"
+		style="left: {popoverPosition.x}px; top: {popoverPosition.y}px; width: {popoverWidth}px; max-height: {popoverMaxHeight}px; transform: translate(-50%, {popoverPlacement === 'above' ? '-100%' : '0'});"
 	>
 		<!-- Header -->
-		<div class="border-b border-base-300 bg-base-200 px-4 py-3 rounded-t-lg">
+		<div class="border-b border-base-300 bg-base-200 px-4 py-3 rounded-t-lg flex-shrink-0">
 			<div class="flex items-center justify-between">
 				<h3 class="font-bold">Witness Variations</h3>
 				<button 
@@ -728,7 +755,7 @@
 		</div>
 		
 		<!-- Content -->
-		<div class="max-h-64 overflow-y-auto p-4">
+		<div class="overflow-y-auto p-4 flex-1">
 			<div class="space-y-2">
 				{#each selectedWord.variations as variation}
 					{@const diffColor = variation.difference === 0 ? '#22c55e' :
