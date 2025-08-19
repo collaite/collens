@@ -119,16 +119,16 @@ export const indexedDBStore = {
     const examples = await getExampleFolders();
     const currentFolders = await db.getAll(STORE_NAME);
     const existingIds = currentFolders.map(folder => folder.id);
-    
+
     const missingExamples = examples.filter(example => !existingIds.includes(example));
-    
+
     if (missingExamples.length > 0) {
       console.log('Loading missing examples:', missingExamples);
       for (const example of missingExamples) {
         await indexedDBStore.loadExampleFolders(example);
       }
     }
-    
+
     return missingExamples.length;
   },
 
@@ -278,9 +278,9 @@ async function loadExampleFiles(exampleName: string, subfolder: string): Promise
     'Infinito-W4-N35.jpg', 'infinito-W4-N35.xml',  // Fixed: N35 not AN
     // Sheherazade
     'Sheherazade-tsfolio.xml',
-    'Sheherazade-tsfolio-01r.jpg', 'Sheherazade-tsfolio-02r.jpg',
+    'Sheherazade-tsfolio-01r.avif', 'Sheherazade-tsfolio-02r.avif',
     'Sheherazade-tsq.xml',
-    'Sheherazade-tsq-01r.jpg', 'Sheherazade-tsq-02r.jpg', 'Sheherazade-tsq-03r.jpg', 'Sheherazade-tsq-04r.jpg', 'Sheherazade-tsq-05r.jpg',
+    'Sheherazade-tsq-01r.avif', 'Sheherazade-tsq-02r.jpg', 'Sheherazade-tsq-03r.jpg', 'Sheherazade-tsq-04r.jpg', 'Sheherazade-tsq-05r.jpg',
     // Test Example
     'test-witness-1.xml', 'test-witness-2.xml', 'test-witness-3.xml', 'test-witness-4.xml',
     'poem-01.png', '2.png'
