@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_all.rng" type="application/xml" schematypens="http://relaxng.org/ns/structure/1.0"?>
+<?xml-model href="http://www.tei-c.org/release/xml/tei/custom/schema/relaxng/tei_all.rng" type="application/xml" schematypens="http://purl.oclc.org/dsdl/schematron"?>
+<TEI xmlns="http://www.tei-c.org/ns/1.0">
+   <teiHeader>
+      <fileDesc>
+         <titleStmt>
+            <title>The Garden of Time</title>
+         </titleStmt>
+         <publicationStmt>
+            <p>Witness 2 - First revision with minor variations. Copied circa 1851 with author's corrections.</p>
+         </publicationStmt>
+         <sourceDesc>
+            <p>Copy held in the Private Collection, showing minor editorial changes</p>
+         </sourceDesc>
+      </fileDesc>
+   </teiHeader>
+   <facsimile>
+      <surface n="1r" xml:id="s1r">
+         <graphic url="poem-01.png"/>
+      </surface>
+   </facsimile>
+   <text>
+      <body>
+         <div type="original" xml:lang="en">
+            <pb n="1" facs="#s1r"/>
+            <head>The Garden of <add>Eternal</add> Time</head>
+            <l>In gardens where the <subst><del>roses</del><add>lilies</add></subst> bloom,</l>
+            <l>And evening shadows softly fall,</l>
+            <l>I wander through the fragrant gloom,</l>
+            <l>And hear the <del>blackbird's</del> <add>nightingale's</add> distant call.</l>
+            <lb/>
+            <l>The <add>old</add> fountain whispers ancient tales,</l>
+            <l>Of love and <subst><del>loss</del><add>hope</add></subst> beneath the moon,</l>
+            <l>While autumn <add>breezes</add> wind through garden rails,</l>
+            <l>Carries the melody's <del>sweet</del> <add instant="true">soft</add> tune.</l>
+            <note>Second stanza shows improvements in rhythm</note>
+            <lb/>
+            <l>Time passes like <add>a</add> flowing stream,</l>
+            <l>Through gardens old and <del instant="true">ever</del> always new,</l>
+            <l>Where memories dance and gently gleam,</l>
+            <l>In morning's <subst><del>silver-golden</del><add>pearl and golden</add></subst> dew.</l>
+         </div>
+      </body>
+   </text>
+</TEI>

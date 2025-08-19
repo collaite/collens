@@ -1,0 +1,4 @@
+{
+  "title": "Test Example - TEI-XML Feature Demonstration",
+  "description": "A test project with four witness versions of a short poem. This example demonstrates all major TEI-XML features including additions, deletions, substitutions, unclear text, and nested edits. Each witness shows progressively more variation to test the difference calculator and heatmap visualization features."
+}
