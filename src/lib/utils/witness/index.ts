@@ -5,3 +5,4 @@ export * from './label-utils';
 export * from './stats-utils';
 export * from './xml-parser';
 export * from './text-cleaner';
+export * from './diff-calculator';

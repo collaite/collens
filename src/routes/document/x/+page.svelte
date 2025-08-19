@@ -4,6 +4,8 @@
 	import { loadXMLContent, parseTEIXML, cleanTextForComparison } from '$lib/utils/witness';
 	import SettingsBar from '../SettingsBar.svelte';
 	import VariantGraph from './VariantGraph.svelte';
+	import VersionHeatmap from './VersionHeatmap.svelte';
+	import InlineHeatmap from './InlineHeatmap.svelte';
 	import CollateXActions from './CollateXActions.svelte';
 	import { onMount } from 'svelte';
 	import { page } from '$app/stores';
@@ -15,6 +17,7 @@
 	let loading = true;
 	let error = '';
 	let isVerticalOrientation = true;
+	let viewMode: 'table' | 'heatmap' | 'inline' = 'table';
 
 	async function fetchCollation() {
 		loading = true;
@@ -118,7 +121,17 @@
 
 	onMount(() => {
 		const documentId = $page.url.searchParams.get('id');
-		if (documentId) {
+		const isDemo = $page.url.searchParams.get('demo');
+		
+		if (isDemo === 'true') {
+			// Load mock data for demo
+			const mockData = sessionStorage.getItem('mockAlignmentData');
+			if (mockData) {
+				alignmentData = JSON.parse(mockData);
+				jsonData = JSON.stringify(alignmentData, null, 2);
+				loading = false;
+			}
+		} else if (documentId) {
 			loadDocument(documentId);
 		}
 	});
@@ -126,7 +139,11 @@
 	// React to URL changes
 	$: {
 		const documentId = $page.url.searchParams.get('id');
-		if (documentId) {
+		const isDemo = $page.url.searchParams.get('demo');
+		
+		if (isDemo === 'true') {
+			// Keep mock data loaded
+		} else if (documentId) {
 			loadDocument(documentId);
 		}
 	}
@@ -160,13 +177,36 @@
 				</div>
 			{:else if alignmentData}
 				<div class="mb-4 flex items-center justify-between">
-					<Toggle
-						label="Vertical orientation"
-						checked={isVerticalOrientation}
-						on:change={({ detail }) => (isVerticalOrientation = detail.checked)}
-					/>
+					<div class="flex items-center gap-4">
+						<Toggle
+							label="Vertical orientation"
+							checked={isVerticalOrientation}
+							on:change={({ detail }) => (isVerticalOrientation = detail.checked)}
+						/>
+						<div class="btn-group">
+							<button
+								class="btn btn-sm {viewMode === 'table' ? 'btn-primary' : 'btn-outline'}"
+								on:click={() => (viewMode = 'table')}
+							>
+								Table
+							</button>
+							<button
+								class="btn btn-sm {viewMode === 'heatmap' ? 'btn-primary' : 'btn-outline'}"
+								on:click={() => (viewMode = 'heatmap')}
+							>
+								Grid Heatmap
+							</button>
+							<button
+								class="btn btn-sm {viewMode === 'inline' ? 'btn-primary' : 'btn-outline'}"
+								on:click={() => (viewMode = 'inline')}
+							>
+								Text Heatmap
+							</button>
+						</div>
+					</div>
 					<CollateXActions {jsonData} />
 				</div>
+				{#if viewMode === 'table'}
 				<div class="overflow-x-auto">
 					<table class="border-separate border-spacing-[2px]">
 						<tbody>
@@ -227,6 +267,11 @@
 						</tbody>
 					</table>
 				</div>
+				{:else if viewMode === 'heatmap'}
+					<VersionHeatmap {alignmentData} {isVerticalOrientation} />
+				{:else if viewMode === 'inline'}
+					<InlineHeatmap {alignmentData} />
+				{/if}
 
 				<!-- <div class="mt-8 w-full overflow-x-scroll rounded-lg bg-gray-200/50 p-4">
 					<h3 class="mb-4 text-lg font-medium">Variant Graph</h3>

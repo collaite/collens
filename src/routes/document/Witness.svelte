@@ -12,6 +12,7 @@
 		parseTEIHeader,
 		getWitnessType
 	} from '$lib/utils/witness';
+	import { witnessesStore } from '$lib/stores/witnesses.store';
 
 	export let selectedFile: FileData | undefined = undefined;
 	export let selectedFolder: Folder | undefined = undefined;
@@ -86,6 +87,7 @@
 			{parsedContent}
 			{headerEntries}
 			{showParsedText}
+			allWitnesses={$witnessesStore}
 			on:pageScroll={handlePageScroll}
 		/>
 	</div>

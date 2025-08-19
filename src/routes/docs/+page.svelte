@@ -27,5 +27,9 @@
 			<a href="{base}/docs/transcription">Transcription</a>
 			- Transcription documentation
 		</li>
+		<li>
+			<a href="{base}/docs/heatmap-comparison">Version Comparison Heatmap</a>
+			- Visual analysis tool for comparing textual variations across witnesses
+		</li>
 	</ul>
 </div>

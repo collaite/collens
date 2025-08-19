@@ -45,7 +45,7 @@ function getWitnessNumber(folderId: string): number {
 }
 
 // List of example folders in static/documents (update as needed)
-const EXAMPLES = ['example1', 'infinito', 'sheherazade'];
+const EXAMPLES = ['example1', 'infinito', 'sheherazade', 'test_example'];
 
 const { subscribe, set, update } = writable<Folder[]>([]);
 
@@ -56,9 +56,9 @@ async function getExampleFolders(): Promise<string[]> {
     // This will not work in production (static) builds, so fallback to hardcoded if needed
     // For dev, you can use a server endpoint or generate an index.json
     // Here, fallback to hardcoded for static
-    return ['example1', 'infinito', 'sheherazade'];
+    return ['example1', 'infinito', 'sheherazade', 'test_example'];
   } catch {
-    return ['example1', 'infinito', 'sheherazade'];
+    return ['example1', 'infinito', 'sheherazade', 'test_example'];
   }
 }
 
@@ -72,11 +72,13 @@ async function getExampleSubfoldersDynamic(exampleName: string): Promise<string[
     if (exampleName === 'example1') return ['witness_1', 'witness_2'];
     if (exampleName === 'infinito') return ['witness_1', 'witness_2', 'witness_3', 'witness_4'];
     if (exampleName === 'sheherazade') return ['witness_1', 'witness_2'];
+    if (exampleName === 'test_example') return ['witness_1', 'witness_2', 'witness_3', 'witness_4'];
     return [];
   } catch {
     if (exampleName === 'example1') return ['witness_1', 'witness_2'];
     if (exampleName === 'infinito') return ['witness_1', 'witness_2', 'witness_3', 'witness_4'];
     if (exampleName === 'sheherazade') return ['witness_1', 'witness_2'];
+    if (exampleName === 'test_example') return ['witness_1', 'witness_2', 'witness_3', 'witness_4'];
     return [];
   }
 }
@@ -110,6 +112,24 @@ export const indexedDBStore = {
     for (const example of examples) {
       await indexedDBStore.loadExampleFolders(example);
     }
+  },
+
+  // Check for missing examples and load only those that are missing
+  loadMissingExamples: async () => {
+    const examples = await getExampleFolders();
+    const currentFolders = await db.getAll(STORE_NAME);
+    const existingIds = currentFolders.map(folder => folder.id);
+    
+    const missingExamples = examples.filter(example => !existingIds.includes(example));
+    
+    if (missingExamples.length > 0) {
+      console.log('Loading missing examples:', missingExamples);
+      for (const example of missingExamples) {
+        await indexedDBStore.loadExampleFolders(example);
+      }
+    }
+    
+    return missingExamples.length;
   },
 
   // Load all folders (witnesses/authors/reviews) for a given example
@@ -260,7 +280,10 @@ async function loadExampleFiles(exampleName: string, subfolder: string): Promise
     'Sheherazade-tsfolio.xml',
     'Sheherazade-tsfolio-01r.jpg', 'Sheherazade-tsfolio-02r.jpg',
     'Sheherazade-tsq.xml',
-    'Sheherazade-tsq-01r.jpg', 'Sheherazade-tsq-02r.jpg', 'Sheherazade-tsq-03r.jpg', 'Sheherazade-tsq-04r.jpg', 'Sheherazade-tsq-05r.jpg'
+    'Sheherazade-tsq-01r.jpg', 'Sheherazade-tsq-02r.jpg', 'Sheherazade-tsq-03r.jpg', 'Sheherazade-tsq-04r.jpg', 'Sheherazade-tsq-05r.jpg',
+    // Test Example
+    'test-witness-1.xml', 'test-witness-2.xml', 'test-witness-3.xml', 'test-witness-4.xml',
+    'poem-01.png', '2.png'
   ];
   for (const fileName of customFiles) {
     try {

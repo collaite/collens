@@ -16,6 +16,12 @@
 		// Load examples automatically if no folders are present
 		if ($indexedDBStore.length === 0) {
 			await indexedDBStore.loadAllExamples();
+		} else {
+			// Check for and load any missing examples
+			const missingCount = await indexedDBStore.loadMissingExamples();
+			if (missingCount > 0) {
+				console.log(`Loaded ${missingCount} missing example(s)`);
+			}
 		}
 	});
 
