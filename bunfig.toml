@@ -1,0 +1,7 @@
+# Bun Configuration
+# This file configures Bun's test runner and other settings
+
+[test]
+# Preload script that runs before all tests
+# Sets up DOM APIs using happy-dom
+preload = ["./tests/setup.ts"]

@@ -113,6 +113,46 @@ bun build
 
 The application will be built to the `build` directory, ready for deployment.
 
+### Running Tests
+
+The project includes a comprehensive test suite using Bun's built-in test runner.
+
+**Run all tests:**
+```bash
+bun test
+```
+
+**Run tests in watch mode:**
+```bash
+bun test:watch
+```
+
+**Run tests with coverage:**
+```bash
+bun test:coverage
+```
+
+**Test Structure:**
+```
+tests/
+└── utils/          # Tests for utility functions
+    ├── xml-parser.test.ts      # TEI XML parsing tests
+    ├── text-cleaner.test.ts    # Text cleaning tests
+    ├── stats-utils.test.ts     # Editorial statistics tests
+    ├── label-utils.test.ts     # Witness label utilities tests
+    ├── file-utils.test.ts      # File handling tests
+    └── header-parser.test.ts   # TEI header parsing tests
+```
+
+**What's Tested:**
+- TEI XML parsing with different witness types (1a, 1b, 1c)
+- Editorial element handling (additions, deletions, substitutions)
+- Text cleaning and normalization
+- Witness statistics calculation
+- File name pattern matching and page number extraction
+- TEI header metadata extraction
+- Label generation and type determination
+
 ## Usage Guide
 
 ### Loading Documents

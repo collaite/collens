@@ -12,7 +12,10 @@
     "check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
     "lint": "prettier --check . && eslint .",
     "format": "prettier --write .",
-    "postbuild": "vite build --mode preview"
+    "postbuild": "vite build --mode preview",
+    "test": "bun test",
+    "test:watch": "bun test --watch",
+    "test:coverage": "bun test --coverage"
   },
   "devDependencies": {
     "@iconify-json/arcticons": "^1.2.4",
@@ -52,6 +55,7 @@
     "eslint-plugin-svelte": "^2.46.0",
     "fs-extra": "^11.2.0",
     "glob": "^11.0.0",
+    "happy-dom": "^20.0.10",
     "idb": "^8.0.0",
     "mdsvex": "^0.12.3",
     "mdsvex-relative-images": "^1.0.3",
