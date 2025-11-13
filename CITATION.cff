@@ -1,0 +1,36 @@
+cff-version: 1.2.0
+title: 'COLLaiTE Collens'
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Jesse
+    family-names: Gonzalez
+    email: ctw@ctwhome.com
+  - given-names: Elli
+    family-names: Bleeker
+    email: elli.bleeker@huygens.knaw.nl
+    affiliation: Huygens Institute
+repository-code: 'https://github.com/collaite/collens'
+url: 'https://collaite.github.io/collens'
+abstract: >-
+  COLLaiTE Collens is a sophisticated web-based tool for
+  digital manuscript collation and visualization, designed
+  specifically for digital humanities scholars working with
+  TEI XML transcriptions. It enables side-by-side comparison
+  of multiple witnesses, advanced text processing, and
+  integration with CollateX for automated collation.
+keywords:
+  - digital humanities
+  - manuscript collation
+  - TEI XML
+  - textual criticism
+  - collation
+  - digital philology
+  - manuscript studies
+  - CollateX
+  - SvelteKit
+license: Apache-2.0
+version: 0.0.1
+date-released: '2024-10-01'
