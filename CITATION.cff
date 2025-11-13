@@ -7,7 +7,8 @@ type: software
 authors:
   - given-names: Jesse
     family-names: Gonzalez
-    email: ctw@ctwhome.com
+    email: j.g.gonzalez@esciencecenter.nl
+    affiliation: The Netherlands eScience Center
   - given-names: Elli
     family-names: Bleeker
     email: elli.bleeker@huygens.knaw.nl
