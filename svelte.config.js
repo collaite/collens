@@ -26,8 +26,8 @@ const config = {
 			precompress: true
 		}),
 		paths: {
-			     base: process.env.NODE_ENV === "production" ? "/collens" : "",
-			   },
+			base: process.env.BASE_PATH ?? (process.env.NODE_ENV === "production" ? "/collens" : "")
+		},
 
 		alias: {
 			// these are the aliases and paths to them

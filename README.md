@@ -1,5 +1,10 @@
 # COLLaiTE Collens
 
+[![License](https://img.shields.io/github/license/collaite/collens)](LICENSE)
+[![CITATION.cff](https://img.shields.io/badge/citation-CFF-blue)](CITATION.cff)
+[![Metadata checks](https://github.com/collaite/collens/actions/workflows/metadata.yml/badge.svg)](https://github.com/collaite/collens/actions/workflows/metadata.yml)
+[![Deploy to GitHub Pages](https://github.com/collaite/collens/actions/workflows/deploy.yml/badge.svg)](https://github.com/collaite/collens/actions/workflows/deploy.yml)
+
 ![COLLaiTE prototype v1](https://github.com/user-attachments/assets/fa9e8479-3229-4658-b357-41abad9218ce)
 
 ## Overview
@@ -263,16 +268,26 @@ The development server includes:
 
 ### Deployment
 
-Changes pushed to the `main` branch are automatically deployed to GitHub Pages, making the latest version available at the project URL.
+Changes pushed to the `main` branch are built by GitHub Actions for GitHub Pages. The public URL is `https://collaite.github.io/collens/` when GitHub Pages is enabled for the repository.
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit issues or pull requests to improve COLLaiTE Collens.
+Contributions are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md) before opening an issue or pull request.
+
+## Citation
+
+If you use Collens in research, teaching, or software work, please cite it using the metadata in [CITATION.cff](CITATION.cff).
 
 ## License
 
-[License information to be added]
+This project is licensed under the Apache License 2.0. See [LICENSE](LICENSE) and [NOTICE](NOTICE).
+
+## Governance and security
+
+- Governance: [GOVERNANCE.md](GOVERNANCE.md)
+- Code of conduct: [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
+- Security policy: [SECURITY.md](SECURITY.md)
 
 ## Acknowledgments
 
-COLLaiTE Collens is developed as part of the COLLaiTE project for digital humanities research and manuscript studies.
+COLLaiTE Collens is developed as part of the COLLaiTE project for digital humanities research and manuscript studies, in collaboration with the Netherlands eScience Center and Huygens Institute.

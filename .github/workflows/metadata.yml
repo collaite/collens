@@ -1,0 +1,32 @@
+name: Metadata checks
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  metadata:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check required files
+        run: |
+          test -f LICENSE
+          test -f NOTICE
+          test -f README.md
+          test -f CITATION.cff
+          test -f .zenodo.json
+          test -f codemeta.json
+          test -f CONTRIBUTING.md
+          test -f CODE_OF_CONDUCT.md
+          test -f GOVERNANCE.md
+          test -f SECURITY.md
+          test -f CHANGELOG.md
+      - name: Validate JSON metadata
+        run: |
+          python -m json.tool .zenodo.json > /dev/null
+          python -m json.tool codemeta.json > /dev/null
+      - name: Check metadata placeholders
+        run: |
+          ! grep -R "TODO:" README.md CITATION.cff .zenodo.json codemeta.json docs || (echo "Remove TODO placeholders before release" && exit 1)

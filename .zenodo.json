@@ -1,0 +1,46 @@
+{
+  "title": "COLLaiTE Collens",
+  "description": "Browser-based research software for visual exploration of textual variation in TEI-encoded manuscript witnesses, including side-by-side witness comparison, image synchronization, editorial statistics, and CollateX-based collation workflows.",
+  "upload_type": "software",
+  "license": "Apache-2.0",
+  "creators": [
+    {
+      "name": "Gonzalez, Jesse",
+      "affiliation": "Netherlands eScience Center"
+    },
+    {
+      "name": "Bleeker, Elli",
+      "affiliation": "Huygens Institute"
+    }
+  ],
+  "contributors": [
+    {
+      "name": "Netherlands eScience Center",
+      "type": "ResearchGroup"
+    },
+    {
+      "name": "Huygens Institute",
+      "type": "ResearchGroup"
+    }
+  ],
+  "keywords": [
+    "research software",
+    "open science",
+    "FAIR software",
+    "digital humanities",
+    "TEI XML",
+    "manuscript collation",
+    "textual criticism",
+    "digital philology",
+    "CollateX",
+    "visualization"
+  ],
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/collaite/collens",
+      "relation": "isSupplementTo",
+      "scheme": "url"
+    }
+  ],
+  "notes": "Developed as part of the COLLaiTE project for digital humanities research and manuscript studies."
+}
